@@ -41,6 +41,7 @@
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\MessageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

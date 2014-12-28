@@ -21,17 +21,28 @@ namespace CardBoard.Test
         }
 
         [TestMethod]
-        public void CardCreatedOnce()
+        public void OneCardCreated()
         {
-            JObject body = new JObject();
+            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
 
-            _application.ReceiveMessage(new Message
-            {
-                Type = "CardCreated",
-                Predecessors = new List<MessageHash>(),
-                Body = body,
-                Hash = new MessageHash()
-            });
+            _application.Board.Cards.Count().Should().Be(1);
+        }
+
+        [TestMethod]
+        public void TwoCardsCreated()
+        {
+            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
+            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
+
+            _application.Board.Cards.Count().Should().Be(2);
+        }
+
+        [TestMethod]
+        public void CardCreatedTwice()
+        {
+            Guid cardId = Guid.NewGuid();
+            _application.ReceiveMessage(MessageFactory.CardCreated(cardId));
+            _application.ReceiveMessage(MessageFactory.CardCreated(cardId));
 
             _application.Board.Cards.Count().Should().Be(1);
         }
