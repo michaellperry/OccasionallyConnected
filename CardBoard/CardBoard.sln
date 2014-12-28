@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardBoard.Windows", "CardBo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardBoard.WindowsPhone", "CardBoard\CardBoard.WindowsPhone\CardBoard.WindowsPhone.csproj", "{EA44AC08-E864-4B23-BCF7-0FF9FA06CF07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardBoard.Logic", "CardBoard.Logic\CardBoard.Logic.csproj", "{1DD4F123-7657-49A2-885E-DCF8609D79F4}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		CardBoard\CardBoard.Shared\CardBoard.Shared.projitems*{b047af7e-7708-43ec-acdb-70b9cadf6215}*SharedItemsImports = 13
@@ -72,6 +74,16 @@ Global
 		{EA44AC08-E864-4B23-BCF7-0FF9FA06CF07}.Release|x86.ActiveCfg = Release|x86
 		{EA44AC08-E864-4B23-BCF7-0FF9FA06CF07}.Release|x86.Build.0 = Release|x86
 		{EA44AC08-E864-4B23-BCF7-0FF9FA06CF07}.Release|x86.Deploy.0 = Release|x86
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{1DD4F123-7657-49A2-885E-DCF8609D79F4}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
