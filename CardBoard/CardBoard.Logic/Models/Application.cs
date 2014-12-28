@@ -26,7 +26,9 @@ namespace CardBoard.Models
 
         private void HandleCardCreated(Message message)
         {
-            _board.NewCard();
+            var cardId = message.Body.Value<Guid>("CardId");
+            if (!_board.Cards.Any(c => c.CardId == cardId))
+                _board.NewCard(cardId);
         }
     }
 }

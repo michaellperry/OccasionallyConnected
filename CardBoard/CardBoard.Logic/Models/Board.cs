@@ -15,9 +15,9 @@ namespace CardBoard.Models
             get { return _cards; }
         }
 
-        public void NewCard()
+        public void NewCard(Guid cardId)
         {
-            _cards.Add(new Card());
+            _cards.Add(new Card(cardId));
         }
     }
 }
