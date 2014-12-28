@@ -9,11 +9,24 @@ namespace CardBoard.Models
 {
     public class Application
     {
-        public Board Board { get; set; }
+        private Board _board = new Board();
+
+        public Board Board
+        {
+            get { return _board; }
+        }
 
         public void ReceiveMessage(Message message)
         {
-            throw new NotImplementedException();
+            if (message.Type == "CardCreated")
+            {
+                HandleCardCreated(message);
+            }
+        }
+
+        private void HandleCardCreated(Message message)
+        {
+            _board.NewCard();
         }
     }
 }

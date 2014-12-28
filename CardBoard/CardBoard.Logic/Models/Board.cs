@@ -8,6 +8,16 @@ namespace CardBoard.Models
 {
     public class Board
     {
-        public List<Card> Cards { get; set; }
+        private List<Card> _cards = new List<Card>();
+
+        public IEnumerable<Card> Cards
+        {
+            get { return _cards; }
+        }
+
+        public void NewCard()
+        {
+            _cards.Add(new Card());
+        }
     }
 }

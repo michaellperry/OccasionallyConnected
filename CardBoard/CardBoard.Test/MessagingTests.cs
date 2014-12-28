@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using CardBoard.Messages;
 using System.Collections.Generic;
 using FluentAssertions;
+using System.Linq;
 
 namespace CardBoard.Test
 {
@@ -32,7 +33,7 @@ namespace CardBoard.Test
                 Hash = new MessageHash()
             });
 
-            _application.Board.Cards.Count.Should().Be(1);
+            _application.Board.Cards.Count().Should().Be(1);
         }
     }
 }
