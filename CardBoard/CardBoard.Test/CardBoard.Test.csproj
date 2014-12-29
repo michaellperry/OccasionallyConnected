@@ -62,8 +62,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MessagingTests.cs" />
+    <Compile Include="GivenEmptyBoard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GivenOneCard.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CardBoard.Logic\CardBoard.Logic.csproj">

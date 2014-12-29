@@ -10,7 +10,7 @@ using System.Linq;
 namespace CardBoard.Test
 {
     [TestClass]
-    public class MessagingTests
+    public class GivenEmptyBoard
     {
         private Application _application;
 

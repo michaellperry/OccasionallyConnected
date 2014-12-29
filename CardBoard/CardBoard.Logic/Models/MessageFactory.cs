@@ -14,7 +14,15 @@ namespace CardBoard.Models
             JObject body = new JObject();
             body["CardId"] = cardId;
 
-            return Message.CreateMessage("CardCreated", new List<MessageHash>(), body);
+            return Message.CreateMessage("CardCreated", new List<MessageHash>(), Guid.Empty, body);
+        }
+
+        public static Message CardTextChanged(Guid cardId, string value)
+        {
+            JObject body = new JObject();
+            body["Value"] = value;
+
+            return Message.CreateMessage("CardTextChanged", new List<MessageHash>(), cardId, body);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace CardBoard.Models
     {
         private readonly Guid _cardId;
 
+        private List<Candidate<string>> _text = new List<Candidate<string>>();
+
         public Card(Guid cardId)
         {
             _cardId = cardId;
@@ -20,7 +22,17 @@ namespace CardBoard.Models
         {
             get { return _cardId; }
         }
-        public List<Candidate<string>> Text { get; set; }
+
+        public IEnumerable<Candidate<string>> Text
+        {
+            get { return _text; }
+        }
+
         public List<Candidate<Column>> Column { get; set; }
+
+        public void SetCardText(MessageHash messageHash, string value)
+        {
+            _text.Add(new Candidate<string>(messageHash, value));
+        }
     }
 }

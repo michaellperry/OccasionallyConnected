@@ -22,6 +22,10 @@ namespace CardBoard.Models
             {
                 HandleCardCreated(message);
             }
+            else if (message.Type == "CardTextChanged")
+            {
+                HandleCardTextChanged(message);
+            }
         }
 
         private void HandleCardCreated(Message message)
@@ -29,6 +33,16 @@ namespace CardBoard.Models
             var cardId = message.Body.Value<Guid>("CardId");
             if (!_board.Cards.Any(c => c.CardId == cardId))
                 _board.NewCard(cardId);
+        }
+
+        private void HandleCardTextChanged(Message message)
+        {
+            var cardId = message.ObjectId;
+            var value = message.Body.Value<string>("Value");
+            foreach (var card in _board.Cards.Where(c => c.CardId == cardId))
+            {
+                card.SetCardText(message.Hash, value);
+            }
         }
     }
 }
