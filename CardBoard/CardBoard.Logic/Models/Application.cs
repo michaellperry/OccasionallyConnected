@@ -41,7 +41,7 @@ namespace CardBoard.Models
             var value = message.Body.Value<string>("Value");
             foreach (var card in _board.Cards.Where(c => c.CardId == cardId))
             {
-                card.SetCardText(message.Hash, value);
+                card.SetCardText(message.Hash, value, message.Predecessors);
             }
         }
     }

@@ -16,14 +16,14 @@ namespace CardBoard.Messages
 
         public static Message CreateMessage(
             string messageType, 
-            List<MessageHash> predecessors, 
+            IEnumerable<MessageHash> predecessors, 
             Guid objectId, 
             JObject body)
         {
             return new Message
             {
                 Type = messageType,
-                Predecessors = predecessors,
+                Predecessors = predecessors.ToList(),
                 ObjectId = objectId,
                 Body = body,
                 Hash = MessageHash.OfMessage(messageType, predecessors, body)

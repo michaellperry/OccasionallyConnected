@@ -10,7 +10,7 @@ namespace CardBoard.Messages
     {
         private byte[] _value;
 
-        public static MessageHash OfMessage(string messageType, List<MessageHash> predecessors, JObject body)
+        public static MessageHash OfMessage(string messageType, IEnumerable<MessageHash> predecessors, JObject body)
         {
             return new MessageHash();
         }

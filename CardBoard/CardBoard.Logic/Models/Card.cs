@@ -30,8 +30,9 @@ namespace CardBoard.Models
 
         public List<Candidate<Column>> Column { get; set; }
 
-        public void SetCardText(MessageHash messageHash, string value)
+        public void SetCardText(MessageHash messageHash, string value, IEnumerable<MessageHash> predecessors)
         {
+            _text.RemoveAll(c => predecessors.Contains(c.MessageHash));
             _text.Add(new Candidate<string>(messageHash, value));
         }
     }

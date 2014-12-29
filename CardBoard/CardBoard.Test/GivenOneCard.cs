@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CardBoard.Models;
 using System.Linq;
 using FluentAssertions;
+using CardBoard.Messages;
+using System.Collections.Generic;
 
 namespace CardBoard.Test
 {
@@ -10,23 +12,38 @@ namespace CardBoard.Test
     public class GivenOneCard
     {
         private Application _application;
+        private Card _card;
 
         [TestInitialize]
         public void Initialize()
         {
             _application = new Application();
             _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
+            _card = _application.Board.Cards.Single();
         }
 
         [TestMethod]
         public void CardTextChanged()
         {
-            var card = _application.Board.Cards.Single();
             _application.ReceiveMessage(MessageFactory.CardTextChanged(
-                card.CardId, "Initial Text"));
+                _card.CardId, "Initial Text", new List<MessageHash>()));
 
-            card.Text.Count().Should().Be(1);
-            card.Text.Single().Value.Should().Be("Initial Text");
+            _card.Text.Count().Should().Be(1);
+            _card.Text.Single().Value.Should().Be("Initial Text");
+        }
+
+        [TestMethod]
+        public void CardTextChangedAgain()
+        {
+            var firstMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "Initial Text", new List<MessageHash>());
+            var secondMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "New Text", new List<MessageHash> { firstMessage.Hash });
+            _application.ReceiveMessage(firstMessage);
+            _application.ReceiveMessage(secondMessage);
+
+            _card.Text.Count().Should().Be(1);
+            _card.Text.Single().Value.Should().Be("New Text");
         }
     }
 }
