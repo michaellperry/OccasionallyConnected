@@ -81,7 +81,7 @@ namespace CardBoard.Test
         }
 
         [TestMethod]
-        public void CardTextRaceToResolve()
+        public void CardTextConflictingResolutions()
         {
             var firstMessage = MessageFactory.CardTextChanged(
                 _card.CardId, "Initial Text", new List<MessageHash>());
