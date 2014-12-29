@@ -60,5 +60,24 @@ namespace CardBoard.Test
             _card.Text.Select(c => c.Value).Should().Contain("Initial Text");
             _card.Text.Select(c => c.Value).Should().Contain("New Text");
         }
+
+        [TestMethod]
+        public void CardTextResolveConflict()
+        {
+            var firstMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "Initial Text", new List<MessageHash>());
+            var secondMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "New Text", new List<MessageHash>());
+            _application.ReceiveMessage(firstMessage);
+            _application.ReceiveMessage(secondMessage);
+
+            var resolutionMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "Resolved Text",
+                _card.Text.Select(c => c.MessageHash));
+            _application.ReceiveMessage(resolutionMessage);
+
+            _card.Text.Count().Should().Be(1);
+            _card.Text.Single().Value.Should().Be("Resolved Text");
+        }
     }
 }
