@@ -79,5 +79,29 @@ namespace CardBoard.Test
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("Resolved Text");
         }
+
+        [TestMethod]
+        public void CardTextRaceToResolve()
+        {
+            var firstMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "Initial Text", new List<MessageHash>());
+            var secondMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "New Text", new List<MessageHash>());
+            _application.ReceiveMessage(firstMessage);
+            _application.ReceiveMessage(secondMessage);
+
+            var firstResolution = MessageFactory.CardTextChanged(
+                _card.CardId, "First Resolution",
+                _card.Text.Select(c => c.MessageHash));
+            var secondResolution = MessageFactory.CardTextChanged(
+                _card.CardId, "Second Resolution",
+                _card.Text.Select(c => c.MessageHash));
+            _application.ReceiveMessage(firstResolution);
+            _application.ReceiveMessage(secondResolution);
+
+            _card.Text.Count().Should().Be(2);
+            _card.Text.Select(c => c.Value).Should().Contain("First Resolution");
+            _card.Text.Select(c => c.Value).Should().Contain("Second Resolution");
+        }
     }
 }
