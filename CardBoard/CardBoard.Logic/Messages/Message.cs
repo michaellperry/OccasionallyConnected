@@ -5,17 +5,55 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace CardBoard.Messages
 {
     public class Message
     {
-        public string Type { get; set; }
-        public List<MessageHash> Predecessors { get; set; }
-        public Guid ObjectId { get; set; }
-        public JObject Body { get; set; }
-        public MessageHash Hash { get; set; }
+        private readonly string _type;
+        private readonly List<MessageHash> _predecessors;
+        private readonly Guid _objectId;
+        private readonly JObject _body;
+        private readonly MessageHash _hash;
+
+        private Message(
+            string type,
+            List<MessageHash> predecessors,
+            Guid objectId,
+            JObject body,
+            MessageHash hash)
+        {
+            _type = type;
+            _predecessors = predecessors;
+            _objectId = objectId;
+            _body = body;
+            _hash = hash;
+        }
+
+        public string Type
+        {
+            get { return _type; }
+        }
+
+        public IEnumerable<MessageHash> Predecessors
+        {
+            get { return _predecessors; }
+        }
+
+        public Guid ObjectId
+        {
+            get { return _objectId; }
+        }
+
+        public JObject Body
+        {
+            get { return _body; }
+        }
+
+        public MessageHash Hash
+        {
+            get { return _hash; }
+        }
 
         public static Message CreateMessage(
             string messageType,
@@ -23,14 +61,7 @@ namespace CardBoard.Messages
             Guid objectId,
             JObject body)
         {
-            return new Message
-            {
-                Type = messageType,
-                Predecessors = predecessors.ToList(),
-                ObjectId = objectId,
-                Body = body,
-                Hash = ComputeHash(messageType, predecessors, objectId, body)
-            };
+            return new Message(messageType, predecessors.ToList(), objectId, body, ComputeHash(messageType, predecessors, objectId, body));
         }
 
         private static MessageHash ComputeHash(
