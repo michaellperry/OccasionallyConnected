@@ -61,7 +61,12 @@ namespace CardBoard.Messages
             Guid objectId,
             JObject body)
         {
-            return new Message(messageType, predecessors.ToList(), objectId, body, ComputeHash(messageType, predecessors, objectId, body));
+            return new Message(
+                messageType,
+                predecessors.ToList(),
+                objectId,
+                body,
+                ComputeHash(messageType, predecessors, objectId, body));
         }
 
         private static MessageHash ComputeHash(
