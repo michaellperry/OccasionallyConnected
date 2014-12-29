@@ -3,6 +3,7 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.IO;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -11,14 +12,14 @@ namespace CardBoard.Messages
     public class Message
     {
         private readonly string _type;
-        private readonly List<MessageHash> _predecessors;
+        private readonly ImmutableList<MessageHash> _predecessors;
         private readonly Guid _objectId;
         private readonly JObject _body;
         private readonly MessageHash _hash;
 
         private Message(
             string type,
-            List<MessageHash> predecessors,
+            ImmutableList<MessageHash> predecessors,
             Guid objectId,
             JObject body,
             MessageHash hash)
@@ -35,7 +36,7 @@ namespace CardBoard.Messages
             get { return _type; }
         }
 
-        public IEnumerable<MessageHash> Predecessors
+        public IImmutableList<MessageHash> Predecessors
         {
             get { return _predecessors; }
         }
@@ -63,7 +64,7 @@ namespace CardBoard.Messages
         {
             return new Message(
                 messageType,
-                predecessors.ToList(),
+                predecessors.ToImmutableList(),
                 objectId,
                 body,
                 ComputeHash(messageType, predecessors, objectId, body));
