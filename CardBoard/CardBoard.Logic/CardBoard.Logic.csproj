@@ -34,9 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Crypto\DigestStream.cs" />
     <Compile Include="Messages\Candidate.cs" />
+    <Compile Include="Crypto\GeneralDigest.cs" />
+    <Compile Include="Crypto\IDigest.cs" />
+    <Compile Include="Crypto\IMemoable.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageHash.cs" />
+    <Compile Include="Crypto\Pack.cs" />
+    <Compile Include="Crypto\Sha256Digest.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Card.cs" />
