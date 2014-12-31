@@ -19,6 +19,9 @@ namespace CardBoard.Models
 
             else if (message.Type == "CardTextChanged")
                 HandleCardTextChanged(message);
+
+            else if (message.Type == "CardMoved")
+                HandleCardMoved(message);
         }
 
         private void HandleCardCreated(Message message)
@@ -30,6 +33,12 @@ namespace CardBoard.Models
         {
             foreach (var card in _board.Cards.Where(c => c.CardId == message.ObjectId))
                 card.HandleCardTextChanged(message);
+        }
+
+        private void HandleCardMoved(Message message)
+        {
+            foreach (var card in _board.Cards.Where(c => c.CardId == message.ObjectId))
+                card.HandleCardMoved(message);
         }
     }
 }

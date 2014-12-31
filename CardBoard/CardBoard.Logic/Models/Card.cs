@@ -10,6 +10,7 @@ namespace CardBoard.Models
         private readonly Guid _cardId;
 
         private Mutable<string> _text = new Mutable<string>();
+        private Mutable<Column> _column = new Mutable<Column>();
 
         public Card(Guid cardId)
         {
@@ -26,13 +27,24 @@ namespace CardBoard.Models
             get { return _text.Candidates; }
         }
 
-        public List<Candidate<Column>> Column { get; set; }
+        public IEnumerable<Candidate<Column>> Column
+        {
+            get { return _column.Candidates; }
+        }
 
         public void HandleCardTextChanged(Message message)
         {
             _text.SetValue(
                 message.Hash,
                 message.Body.Value<string>("Value"),
+                message.Predecessors);
+        }
+
+        public void HandleCardMoved(Message message)
+        {
+            _column.SetValue(
+                message.Hash,
+                message.Body.Value<Column>("Value"),
                 message.Predecessors);
         }
     }
