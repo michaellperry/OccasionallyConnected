@@ -45,20 +45,5 @@ namespace CardBoard.Test
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("New Text");
         }
-
-        [TestMethod]
-        public void CardTextInConflict()
-        {
-            var firstMessage = MessageFactory.CardTextChanged(
-                _card.CardId, "Initial Text", new List<MessageHash>());
-            var parallelMessage = MessageFactory.CardTextChanged(
-                _card.CardId, "New Text", new List<MessageHash>());
-            _application.ReceiveMessage(firstMessage);
-            _application.ReceiveMessage(parallelMessage);
-
-            _card.Text.Count().Should().Be(2);
-            _card.Text.Select(c => c.Value).Should().Contain("Initial Text");
-            _card.Text.Select(c => c.Value).Should().Contain("New Text");
-        }
     }
 }

@@ -30,6 +30,14 @@ namespace CardBoard.Test
         }
 
         [TestMethod]
+        public void CardTextInConflict()
+        {
+            _card.Text.Count().Should().Be(2);
+            _card.Text.Select(c => c.Value).Should().Contain("Initial Text");
+            _card.Text.Select(c => c.Value).Should().Contain("New Text");
+        }
+
+        [TestMethod]
         public void CardTextResolveConflict()
         {
             var resolution = MessageFactory.CardTextChanged(
