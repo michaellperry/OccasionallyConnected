@@ -2,8 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CardBoard.Models
 {
@@ -11,18 +9,32 @@ namespace CardBoard.Models
     {
         public static Message CardCreated(Guid cardId)
         {
-            JObject body = new JObject();
-            body["CardId"] = cardId;
-
-            return Message.CreateMessage("CardCreated", new List<MessageHash>(), Guid.Empty, body);
+            return Message.CreateMessage(
+                "CardCreated",
+                new List<MessageHash>(),
+                Guid.Empty,
+                new JObject(
+                    new JProperty("CardId", cardId)));
         }
 
         public static Message CardTextChanged(Guid cardId, string value, IEnumerable<MessageHash> predecessors)
         {
-            JObject body = new JObject();
-            body["Value"] = value;
+            return Message.CreateMessage(
+                "CardTextChanged",
+                predecessors,
+                cardId,
+                new JObject(
+                    new JProperty("Value", value)));
+        }
 
-            return Message.CreateMessage("CardTextChanged", predecessors, cardId, body);
+        public static Message CardMoved(Guid cardId, Column value, IEnumerable<MessageHash> predecessors)
+        {
+            return Message.CreateMessage(
+                "CardMoved",
+                predecessors,
+                cardId,
+                new JObject(
+                    new JProperty("Value", value)));
         }
     }
 }

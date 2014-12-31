@@ -59,5 +59,15 @@ namespace CardBoard.Test
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("New Text");
         }
+
+        [TestMethod]
+        public void CardMoved()
+        {
+            _application.ReceiveMessage(MessageFactory.CardMoved(
+                _card.CardId, Column.ToDo, new List<MessageHash>()));
+
+            _card.Column.Count().Should().Be(1);
+            _card.Column.Single().Value.Should().Be(Column.ToDo);
+        }
     }
 }
