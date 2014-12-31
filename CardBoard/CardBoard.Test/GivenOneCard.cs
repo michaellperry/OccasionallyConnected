@@ -45,5 +45,19 @@ namespace CardBoard.Test
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("New Text");
         }
+
+        [TestMethod]
+        public void MessagesReceivedOutOfOrder()
+        {
+            var firstMessage = MessageFactory.CardTextChanged(
+                _card.CardId, "Initial Text", new List<MessageHash>());
+            var successor = MessageFactory.CardTextChanged(
+                _card.CardId, "New Text", new List<MessageHash> { firstMessage.Hash });
+            _application.ReceiveMessage(successor);
+            _application.ReceiveMessage(firstMessage);
+
+            _card.Text.Count().Should().Be(1);
+            _card.Text.Single().Value.Should().Be("New Text");
+        }
     }
 }
