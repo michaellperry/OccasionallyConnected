@@ -28,9 +28,12 @@ namespace CardBoard.Models
 
         public List<Candidate<Column>> Column { get; set; }
 
-        public void SetCardText(MessageHash messageHash, string value, IEnumerable<MessageHash> predecessors)
+        public void HandleCardTextChanged(Message message)
         {
-            _text.SetValue(messageHash, value, predecessors);
+            _text.SetValue(
+                message.Hash,
+                message.Body.Value<string>("Value"),
+                message.Predecessors);
         }
     }
 }

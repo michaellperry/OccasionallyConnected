@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CardBoard.Messages;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CardBoard.Messages;
 
 namespace CardBoard.Models
 {
@@ -19,30 +15,21 @@ namespace CardBoard.Models
         public void ReceiveMessage(Message message)
         {
             if (message.Type == "CardCreated")
-            {
                 HandleCardCreated(message);
-            }
+
             else if (message.Type == "CardTextChanged")
-            {
                 HandleCardTextChanged(message);
-            }
         }
 
         private void HandleCardCreated(Message message)
         {
-            var cardId = message.Body.Value<Guid>("CardId");
-            if (!_board.Cards.Any(c => c.CardId == cardId))
-                _board.NewCard(cardId);
+            _board.HandleCardCreated(message);
         }
 
         private void HandleCardTextChanged(Message message)
         {
-            var cardId = message.ObjectId;
-            var value = message.Body.Value<string>("Value");
-            foreach (var card in _board.Cards.Where(c => c.CardId == cardId))
-            {
-                card.SetCardText(message.Hash, value, message.Predecessors);
-            }
+            foreach (var card in _board.Cards.Where(c => c.CardId == message.ObjectId))
+                card.HandleCardTextChanged(message);
         }
     }
 }
