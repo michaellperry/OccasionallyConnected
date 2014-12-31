@@ -9,7 +9,7 @@ namespace CardBoard.Models
     {
         private readonly Guid _cardId;
 
-        private List<Candidate<string>> _text = new List<Candidate<string>>();
+        private Mutable<string> _text = new Mutable<string>();
 
         public Card(Guid cardId)
         {
@@ -23,15 +23,14 @@ namespace CardBoard.Models
 
         public IEnumerable<Candidate<string>> Text
         {
-            get { return _text; }
+            get { return _text.Candidates; }
         }
 
         public List<Candidate<Column>> Column { get; set; }
 
         public void SetCardText(MessageHash messageHash, string value, IEnumerable<MessageHash> predecessors)
         {
-            _text.RemoveAll(c => predecessors.Contains(c.MessageHash));
-            _text.Add(new Candidate<string>(messageHash, value));
+            _text.SetValue(messageHash, value, predecessors);
         }
     }
 }

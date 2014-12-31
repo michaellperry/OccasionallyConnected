@@ -43,6 +43,7 @@
     <Compile Include="Messages\MessageHash.cs" />
     <Compile Include="Crypto\Pack.cs" />
     <Compile Include="Crypto\Sha256Digest.cs" />
+    <Compile Include="Messages\Mutable.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Card.cs" />
