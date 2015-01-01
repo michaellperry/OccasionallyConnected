@@ -90,20 +90,10 @@
     <Compile Include="Board\Views\CardControl.xaml.cs">
       <DependentUpon>CardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Board\Views\CardDetailControl.xaml.cs">
-      <DependentUpon>CardDetailControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Board\Views\FullScreenBoardControl.xaml.cs">
-      <DependentUpon>FullScreenBoardControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Board\Views\SnappedBoardControl.xaml.cs">
-      <DependentUpon>SnappedBoardControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueConverters\ConflictValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -120,18 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Board\Views\CardControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Board\Views\CardDetailControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Board\Views\FullScreenBoardControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Board\Views\SnappedBoardControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
