@@ -2,13 +2,59 @@
     x:Class="CardBoard.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CardBoard"
+    xmlns:views="using:CardBoard.Board.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded">
 
-    <Grid>
+    <Page.Resources>
+        <DataTemplate x:Key="CardItemTemplate">
+            <views:CardControl />
+        </DataTemplate>
+    </Page.Resources>
+    <Page.Background>
+        <StaticResource ResourceKey="AppBackgroundBrush"/>
+    </Page.Background>
 
+    <Grid DataContext="{Binding ProjectDetail}">
+        <Pivot Title="{Binding Name}">
+            <PivotItem Header="To Do">
+                <ListView
+                    x:Name="ToDo"
+                    ItemsSource="{Binding ToDoCards}"
+                    SelectedItem="{Binding SelectedToDoCard, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource CardItemTemplate}">
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Doing">
+                <ListView
+                    x:Name="Doing"
+                    ItemsSource="{Binding DoingCards}"
+                    SelectedItem="{Binding SelectedDoingCard, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource CardItemTemplate}">
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Done">
+                <ListView
+                    x:Name="Done"
+                    ItemsSource="{Binding DoneCards}"
+                    SelectedItem="{Binding SelectedDoneCard, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource CardItemTemplate}">
+                </ListView>
+            </PivotItem>
+        </Pivot>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="New Card" Icon="Add" Click="NewCard_Click" />
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Manage Projects" Click="ManageProjects_Click" />
+                <AppBarButton Label="Refresh" Command="{Binding Refresh}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
