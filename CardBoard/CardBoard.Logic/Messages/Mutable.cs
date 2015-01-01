@@ -13,11 +13,12 @@ namespace CardBoard.Messages
             get { return _candidates; }
         }
 
-        public void SetValue(
-            MessageHash messageHash,
-            T value,
-            IEnumerable<MessageHash> predecessors)
+        public void HandleMessage(Message message)
         {
+            var messageHash = message.Hash;
+            var value = message.Body.Value<T>("Value");
+            var predecessors = message.Predecessors;
+
             if (!_predecessors.Contains(messageHash))
             {
                 _candidates.Add(new Candidate<T>(messageHash, value));

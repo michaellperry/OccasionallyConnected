@@ -34,18 +34,12 @@ namespace CardBoard.Models
 
         public void HandleCardTextChanged(Message message)
         {
-            _text.SetValue(
-                message.Hash,
-                message.Body.Value<string>("Value"),
-                message.Predecessors);
+            _text.HandleMessage(message);
         }
 
         public void HandleCardMoved(Message message)
         {
-            _column.SetValue(
-                message.Hash,
-                message.Body.Value<Column>("Value"),
-                message.Predecessors);
+            _column.HandleMessage(message);
         }
     }
 }
