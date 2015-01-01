@@ -110,13 +110,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board\Views\CardControl.xaml.cs">
+    <Compile Include="Board\CardControl.xaml.cs">
       <DependentUpon>CardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Board\Views\CardDetailControl.xaml.cs">
+    <Compile Include="Board\CardDetailControl.xaml.cs">
       <DependentUpon>CardDetailControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Board\Views\FullScreenBoardControl.xaml.cs">
+    <Compile Include="Board\FullScreenBoardControl.xaml.cs">
       <DependentUpon>FullScreenBoardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
@@ -138,15 +138,15 @@
     <Content Include="Assets\StoreLogo.scale-100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Board\Views\CardControl.xaml">
+    <Page Include="Board\CardControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Board\Views\CardDetailControl.xaml">
+    <Page Include="Board\CardDetailControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Board\Views\FullScreenBoardControl.xaml">
+    <Page Include="Board\FullScreenBoardControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

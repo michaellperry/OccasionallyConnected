@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace CardBoard.Board.Views
+namespace CardBoard.Board
 {
     public sealed partial class CardDetailControl : UserControl
     {
