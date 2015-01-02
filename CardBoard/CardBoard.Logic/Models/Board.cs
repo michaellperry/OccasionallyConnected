@@ -1,4 +1,5 @@
-﻿using CardBoard.Messages;
+﻿using Assisticant.Collections;
+using CardBoard.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ namespace CardBoard.Models
 {
     public class Board
     {
-        private List<Card> _cards = new List<Card>();
+        private ObservableList<Card> _cards = new ObservableList<Card>();
 
         public IEnumerable<Card> Cards
         {

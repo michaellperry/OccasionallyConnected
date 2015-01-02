@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Assisticant.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CardBoard.Messages
 {
     public class Mutable<T>
     {
-        private List<MessageHash> _predecessors = new List<MessageHash>();
-        private List<Candidate<T>> _candidates = new List<Candidate<T>>();
+        private ObservableList<MessageHash> _predecessors = new ObservableList<MessageHash>();
+        private ObservableList<Candidate<T>> _candidates = new ObservableList<Candidate<T>>();
 
         public IEnumerable<Candidate<T>> Candidates
         {
