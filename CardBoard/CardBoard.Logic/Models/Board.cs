@@ -17,7 +17,7 @@ namespace CardBoard.Models
 
         public void HandleCardCreated(Message message)
         {
-            var cardId = message.Body.Value<Guid>("CardId");
+            var cardId = message.Body.CardId;
             if (!_cards.Any(c => c.CardId == cardId))
                 _cards.Add(new Card(cardId));
         }

@@ -17,7 +17,7 @@ namespace CardBoard.Messages
         public void HandleMessage(Message message)
         {
             var messageHash = message.Hash;
-            var value = message.Body.Value<T>("Value");
+            var value = message.Body.Value;
             var predecessors = message.Predecessors;
 
             if (!_predecessors.Contains(messageHash))

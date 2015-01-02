@@ -1,5 +1,4 @@
 ﻿using CardBoard.Messages;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -13,8 +12,7 @@ namespace CardBoard.Models
                 "CardCreated",
                 new List<MessageHash>(),
                 Guid.Empty,
-                new JObject(
-                    new JProperty("CardId", cardId)));
+                new { CardId = cardId });
         }
 
         public static Message CardTextChanged(Guid cardId, string value, IEnumerable<MessageHash> predecessors)
@@ -23,8 +21,7 @@ namespace CardBoard.Models
                 "CardTextChanged",
                 predecessors,
                 cardId,
-                new JObject(
-                    new JProperty("Value", value)));
+                new { Value = value });
         }
 
         public static Message CardMoved(Guid cardId, Column value, IEnumerable<MessageHash> predecessors)
@@ -33,8 +30,7 @@ namespace CardBoard.Models
                 "CardMoved",
                 predecessors,
                 cardId,
-                new JObject(
-                    new JProperty("Value", value)));
+                new { Value = value });
         }
     }
 }

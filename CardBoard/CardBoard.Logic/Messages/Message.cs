@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.IO;
 using System;
@@ -14,14 +14,14 @@ namespace CardBoard.Messages
         private readonly string _type;
         private readonly ImmutableList<MessageHash> _predecessors;
         private readonly Guid _objectId;
-        private readonly JObject _body;
+        private readonly dynamic _body;
         private readonly MessageHash _hash;
 
         private Message(
             string type,
             ImmutableList<MessageHash> predecessors,
             Guid objectId,
-            JObject body,
+            dynamic body,
             MessageHash hash)
         {
             _type = type;
@@ -46,7 +46,7 @@ namespace CardBoard.Messages
             get { return _objectId; }
         }
 
-        public JObject Body
+        public dynamic Body
         {
             get { return _body; }
         }
@@ -60,7 +60,7 @@ namespace CardBoard.Messages
             string messageType,
             IEnumerable<MessageHash> predecessors,
             Guid objectId,
-            JObject body)
+            dynamic body)
         {
             return new Message(
                 messageType,
@@ -74,20 +74,22 @@ namespace CardBoard.Messages
             string messageType,
             IEnumerable<MessageHash> predecessors,
             Guid objectId,
-            JObject body)
+            dynamic body)
         {
-            JObject memento = new JObject(
-                new JProperty("MessageType", messageType),
-                new JProperty("Predecessors", new JArray(
-                    from p in predecessors
-                    select Convert.ToBase64String(p.Value))),
-                new JProperty("ObjectId", objectId),
-                new JProperty("Body", body));
+            dynamic memento = new
+            {
+                MessageType = messageType,
+                Predecessors = predecessors
+                    .Select(p => Convert.ToBase64String(p.Value))
+                    .ToArray(),
+                ObjectId = objectId,
+                Body = body
+            };
             var sha = new Sha256Digest();
             var stream = new DigestStream(new MemoryStream(), null, sha);
             using (var writer = new StreamWriter(stream))
             {
-                string mementoToString = memento.ToString();
+                string mementoToString = JsonConvert.SerializeObject(memento);
                 writer.Write(mementoToString);
             }
             byte[] buffer = new byte[sha.GetByteLength()];
