@@ -69,5 +69,17 @@ namespace CardBoard.Test
             _card.Column.Count().Should().Be(1);
             _card.Column.Single().Value.Should().Be(Column.ToDo);
         }
+
+        [TestMethod]
+        public void CardMovedAgain()
+        {
+            _application.ReceiveMessage(MessageFactory.CardMoved(
+                _card.CardId, Column.ToDo, new List<MessageHash>()));
+            _application.ReceiveMessage(MessageFactory.CardMoved(
+                _card.CardId, Column.Doing, _card.Column.Select(c => c.MessageHash)));
+
+            _card.Column.Count().Should().Be(1);
+            _card.Column.Single().Value.Should().Be(Column.Doing);
+        }
     }
 }
