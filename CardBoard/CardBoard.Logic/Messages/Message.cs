@@ -62,29 +62,27 @@ namespace CardBoard.Messages
             Guid objectId,
             dynamic body)
         {
+            dynamic memento = new
+            {
+                MessageType = messageType,
+                Predecessors = predecessors
+                    .Select(p => p.ToString())
+                    .ToArray(),
+                ObjectId = objectId,
+                Body = body
+            };
+            var messageHash = new MessageHash(ComputeHash(memento));
+
             return new Message(
                 messageType,
                 predecessors.ToImmutableList(),
                 objectId,
                 body,
-                ComputeHash(messageType, predecessors, objectId, body));
+                messageHash);
         }
 
-        private static MessageHash ComputeHash(
-            string messageType,
-            IEnumerable<MessageHash> predecessors,
-            Guid objectId,
-            dynamic body)
+        private static byte[] ComputeHash(dynamic memento)
         {
-            dynamic memento = new
-            {
-                MessageType = messageType,
-                Predecessors = predecessors
-                    .Select(p => Convert.ToBase64String(p.Value))
-                    .ToArray(),
-                ObjectId = objectId,
-                Body = body
-            };
             var sha = new Sha256Digest();
             var stream = new DigestStream(new MemoryStream(), null, sha);
             using (var writer = new StreamWriter(stream))
@@ -94,7 +92,7 @@ namespace CardBoard.Messages
             }
             byte[] buffer = new byte[sha.GetByteLength()];
             sha.DoFinal(buffer, 0);
-            return new MessageHash(buffer);
+            return buffer;
         }
     }
 }
