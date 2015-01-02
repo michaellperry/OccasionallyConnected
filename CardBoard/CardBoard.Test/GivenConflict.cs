@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CardBoard.Messages;
 using CardBoard.Models;
-using System.Linq;
 using FluentAssertions;
-using CardBoard.Messages;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CardBoard.Test
 {

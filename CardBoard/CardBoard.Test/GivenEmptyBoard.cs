@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CardBoard.Models;
-using Newtonsoft.Json.Linq;
-using CardBoard.Messages;
-using System.Collections.Generic;
+﻿using CardBoard.Models;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System;
 using System.Linq;
 
 namespace CardBoard.Test
