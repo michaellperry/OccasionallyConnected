@@ -5,61 +5,39 @@ using System.Text;
 using System.Threading.Tasks;
 using Assisticant;
 using CardBoard.Models;
+using CardBoard.BoardView;
 
 namespace CardBoard.ViewModels
 {
     public class ViewModelLocator : ViewModelLocatorBase
     {
-        private Document _document;
-		private Selection _selection;
+        private Application _application;
+        private SelectionModel _selection;
 
         public ViewModelLocator()
         {
 			if (DesignMode)
-				_document = LoadDesignModeDocument();
+                _application = LoadDesignModeApplication();
 			else
-				_document = LoadDocument();
-			_selection = new Selection();
+                _application = LoadApplication();
+            _selection = new SelectionModel();
         }
 
         public object Main
         {
-            get { return ViewModel(() => new MainViewModel(_document, _selection)); }
+            get { return ViewModel(() => new MainViewModel(_application, _selection)); }
         }
 
-		public object Item
+        private Application LoadApplication()
 		{
-			get
-			{
-				return ViewModel(() => _selection.SelectedItem == null
-					? null
-					: new ItemViewModel(_selection.SelectedItem));
-			}
+            Application application = new Application();
+            return application;
 		}
 
-		private Document LoadDocument()
+        private Application LoadDesignModeApplication()
 		{
-			// TODO: Load your document here.
-            Document document = new Document();
-            var one = document.NewItem();
-            one.Name = "One";
-            var two = document.NewItem();
-            two.Name = "Two";
-            var three = document.NewItem();
-            three.Name = "Three";
-            return document;
-		}
-
-		private Document LoadDesignModeDocument()
-		{
-            Document document = new Document();
-            var one = document.NewItem();
-            one.Name = "Design";
-            var two = document.NewItem();
-            two.Name = "Mode";
-            var three = document.NewItem();
-            three.Name = "Data";
-            return document;
-		}
+            Application application = new Application();
+            return application;
+        }
     }
 }

@@ -6,108 +6,77 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CardBoard.Models;
 using Assisticant;
+using CardBoard.BoardView;
 
 namespace CardBoard.ViewModels
 {
     public class MainViewModel
     {
-        private readonly Document _document;
-		private readonly Selection _selection;
-
-        public MainViewModel(Document document, Selection selection)
+        private readonly Application _application;
+        private readonly SelectionModel _selection;
+        
+        public MainViewModel(Application application, SelectionModel selection)
         {
-            _document = document;
-			_selection = selection;
+            _application = application;
+            _selection = selection;
         }
 
-        public IEnumerable<ItemHeader> Items
+        public string BoardName
         {
-            get
-            {
-                return
-                    from item in _document.Items
-                    select new ItemHeader(item);
-            }
+            get { return _application.Board.Name; }
         }
 
-        public ItemHeader SelectedItem
+        public bool Busy
         {
-            get
-            {
-                return _selection.SelectedItem == null
-                    ? null
-                    : new ItemHeader(_selection.SelectedItem);
-            }
-            set
-            {
-                if (value != null)
-                    _selection.SelectedItem = value.Item;
-            }
+            get { return _application.Busy; }
         }
 
-        public ItemViewModel ItemDetail
+        public string LastError
         {
-            get
-            {
-                return _selection.SelectedItem == null
-                    ? null
-                    : new ItemViewModel(_selection.SelectedItem);
-            }
+            get { return _application.LastError; }
         }
 
-        public ICommand AddItem
+        public BoardViewModel BoardDetail
+        {
+            get { return new BoardViewModel(_application.Board); }
+        }
+
+        public ICommand DeleteCard
         {
             get
             {
                 return MakeCommand
-                    .Do(delegate
-                    {
-                        _selection.SelectedItem = _document.NewItem();
-                    });
+                    .When(() => _selection.SelectedCard != null)
+                    .Do(() => _application.Board.DeleteCard(_selection.SelectedCard));
             }
         }
 
-        public ICommand DeleteItem
+        public ICommand EditCard
         {
             get
             {
                 return MakeCommand
-                    .When(() => _selection.SelectedItem != null)
-                    .Do(delegate
-                    {
-                        _document.DeleteItem(_selection.SelectedItem);
-                        _selection.SelectedItem = null;
-                    });
+                    .When(() => _selection.SelectedCard != null)
+                    .Do(() => { });
             }
         }
 
-        public ICommand MoveItemDown
+        public ICommand NewCard
         {
             get
             {
                 return MakeCommand
-                    .When(() =>
-                        _selection.SelectedItem != null &&
-                        _document.CanMoveDown(_selection.SelectedItem))
-                    .Do(delegate
-                    {
-                        _document.MoveDown(_selection.SelectedItem);
-                    });
+                    .When(() => _selection.SelectedCard != null)
+                    .Do(() => { });
             }
         }
 
-        public ICommand MoveItemUp
+        public ICommand Refresh
         {
             get
             {
                 return MakeCommand
-                    .When(() =>
-                        _selection.SelectedItem != null &&
-                        _document.CanMoveUp(_selection.SelectedItem))
-                    .Do(delegate
-                    {
-                        _document.MoveUp(_selection.SelectedItem);
-                    });
+                    .Do(() => _application.Refresh());
             }
         }
     }

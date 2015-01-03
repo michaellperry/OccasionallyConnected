@@ -3,49 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:local="using:CardBoard" 
-    xmlns:views="using:CardBoard.Board"
+    xmlns:views="using:CardBoard.BoardView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d" >
-
-    <Page.Resources>
-        <ItemsPanelTemplate
-            x:Key="ProjectsItemsPanelTemplate">
-            <VirtualizingStackPanel
-                Orientation="Horizontal"
-                VerticalAlignment="Top" />
-        </ItemsPanelTemplate>
-        <DataTemplate
-            x:Key="ProjectItemTemplate">
-            <Grid
-                Width="180"
-                Background="#FF113C4B"
-                HorizontalAlignment="Left"
-                Height="120">
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    TextWrapping="Wrap"
-                    Text="{Binding Name}"
-                    VerticalAlignment="Top"
-                    FontSize="21.333"
-                    Margin="10" />
-            </Grid>
-        </DataTemplate>
-    </Page.Resources>
-    <Page.TopAppBar>
-        <AppBar>
-            <ListView
-                ItemsPanel="{StaticResource ProjectsItemsPanelTemplate}"
-                ItemTemplate="{StaticResource ProjectItemTemplate}"
-                ItemsSource="{Binding Projects}"
-                SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
-                VerticalContentAlignment="Stretch"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                Height="130">
-            </ListView>
-        </AppBar>
-    </Page.TopAppBar>
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}" >
 
     <Grid
         Background="#114253">
@@ -65,7 +27,7 @@
             </Grid.RowDefinitions>
             <TextBlock
                 TextWrapping="Wrap"
-                Text="{Binding ProjectName}"
+                Text="{Binding BoardName}"
                 Style="{StaticResource HeaderTextStyle}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
@@ -99,7 +61,7 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
-                DataContext="{Binding ProjectDetail}" />
+                DataContext="{Binding BoardDetail}" />
         </Grid>
     </Grid>
     <Page.BottomAppBar>
