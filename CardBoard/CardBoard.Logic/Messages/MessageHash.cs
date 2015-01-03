@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CardBoard.Messages
 {
-    public class MessageHash
+    public class MessageHash : IComparable<MessageHash>
     {
         private byte[] _code;
 
@@ -40,6 +40,19 @@ namespace CardBoard.Messages
                 hash = hash * 37 + b;
 
             return hash;
+        }
+
+        public int CompareTo(MessageHash other)
+        {
+            for(int index = 0; index < _code.Length; index++)
+            {
+                if (_code[index] < other._code[index])
+                    return -1;
+                if (_code[index] > other._code[index])
+                    return 1;
+            }
+
+            return 0;
         }
     }
 }
