@@ -27,9 +27,21 @@ namespace CardBoard.Models
             get { return _text.Candidates; }
         }
 
+        public void SetText(string text)
+        {
+            var message = _text.CreateMessage("CardTextChanged", _cardId, text);
+            HandleCardTextChanged(message);
+        }
+
         public IEnumerable<Candidate<Column>> Column
         {
             get { return _column.Candidates; }
+        }
+
+        public void MoveTo(Column column)
+        {
+            var message = _column.CreateMessage("CardMoved", _cardId, column);
+            HandleCardMoved(message);
         }
 
         public void HandleCardTextChanged(Message message)

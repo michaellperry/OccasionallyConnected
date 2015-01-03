@@ -1,4 +1,5 @@
 ﻿using Assisticant.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,18 @@ namespace CardBoard.Messages
         public IEnumerable<Candidate<T>> Candidates
         {
             get { return _candidates; }
+        }
+
+        public Message CreateMessage(
+            string messageType,
+            Guid objectId,
+            T value)
+        {
+            return Message.CreateMessage(
+                messageType,
+                _candidates.Select(t => t.MessageHash),
+                objectId,
+                new { Value = value });
         }
 
         public void HandleMessage(Message message)

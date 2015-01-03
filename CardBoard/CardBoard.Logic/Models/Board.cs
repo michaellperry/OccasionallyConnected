@@ -22,6 +22,14 @@ namespace CardBoard.Models
             get { return _cards; }
         }
 
+        public Card NewCard()
+        {
+            Guid cardId = Guid.NewGuid();
+            var message = MessageFactory.CardCreated(cardId);
+            HandleCardCreated(message);
+            return _cards.Where(c => c.CardId == cardId).Single();
+        }
+
         public void DeleteCard(Card card)
         {
             throw new NotImplementedException();

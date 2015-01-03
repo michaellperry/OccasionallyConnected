@@ -37,7 +37,17 @@ namespace CardBoard.ViewModels
         private Application LoadDesignModeApplication()
 		{
             Application application = new Application();
+            CreateCard(application, "Record the demo", Column.Doing);
+            CreateCard(application, "Edit the demo", Column.ToDo);
+            CreateCard(application, "Publish the course", Column.ToDo);
             return application;
+        }
+
+        private static void CreateCard(Application application, string text, Column column)
+        {
+            Card card = application.Board.NewCard();
+            card.SetText(text);
+            card.MoveTo(column);
         }
     }
 }
