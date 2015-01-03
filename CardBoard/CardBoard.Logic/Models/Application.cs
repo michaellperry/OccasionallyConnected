@@ -2,6 +2,8 @@
 using System.Linq;
 using System;
 using Assisticant.Fields;
+using Assisticant.Collections;
+using System.Collections.Generic;
 
 namespace CardBoard.Models
 {
@@ -10,6 +12,15 @@ namespace CardBoard.Models
         private Board _board = new Board();
         private Observable<bool> _busy = new Observable<bool>();
         private Observable<string> _lastError = new Observable<string>();
+        private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
+
+        public Application()
+        {
+            _messageHandlers = new ComputedDictionary<Guid,IMessageHandler>(
+                () => new List<IMessageHandler> { _board }.Union(
+                    _board.GetChildMessageHandlers())
+                    .ToDictionary(h => h.GetObjectId()));
+        }
 
         public Board Board
         {
@@ -35,31 +46,9 @@ namespace CardBoard.Models
 
         public void ReceiveMessage(Message message)
         {
-            if (message.Type == "CardCreated")
-                HandleCardCreated(message);
-
-            else if (message.Type == "CardTextChanged")
-                HandleCardTextChanged(message);
-
-            else if (message.Type == "CardMoved")
-                HandleCardMoved(message);
-        }
-
-        private void HandleCardCreated(Message message)
-        {
-            _board.HandleCardCreated(message);
-        }
-
-        private void HandleCardTextChanged(Message message)
-        {
-            foreach (var card in _board.Cards.Where(c => c.CardId == message.ObjectId))
-                card.HandleCardTextChanged(message);
-        }
-
-        private void HandleCardMoved(Message message)
-        {
-            foreach (var card in _board.Cards.Where(c => c.CardId == message.ObjectId))
-                card.HandleCardMoved(message);
+            IMessageHandler messageHandler;
+            if (_messageHandlers.TryGetValue(message.ObjectId, out messageHandler))
+                messageHandler.HandleMessage(message);
         }
     }
 }

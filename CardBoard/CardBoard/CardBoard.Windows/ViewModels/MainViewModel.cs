@@ -48,7 +48,8 @@ namespace CardBoard.ViewModels
 
         public void DeleteCard()
         {
-            _application.Board.DeleteCard(_selection.SelectedCard);
+            _application.ReceiveMessage(_application.Board.DeleteCard(
+                _selection.SelectedCard));
         }
 
         public bool CanEditCard

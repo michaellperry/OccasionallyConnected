@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CardBoard.Models
 {
-    public class Card
+    public class Card : IMessageHandler
     {
         private readonly Guid _cardId;
 
@@ -50,6 +50,25 @@ namespace CardBoard.Models
         public void HandleCardMoved(Message message)
         {
             _column.HandleMessage(message);
+        }
+
+        public Guid GetObjectId()
+        {
+            return _cardId;
+        }
+
+        public IEnumerable<IMessageHandler> GetChildMessageHandlers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HandleMessage(Message message)
+        {
+            if (message.Type == "CardTextChanged")
+                HandleCardTextChanged(message);
+
+            else if (message.Type == "CardMoved")
+                HandleCardMoved(message);
         }
     }
 }

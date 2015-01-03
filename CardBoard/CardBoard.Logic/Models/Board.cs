@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace CardBoard.Models
 {
-    public class Board
+    public class Board : IMessageHandler
     {
         private Observable<string> _name = new Observable<string>("Pluralsight");
         private ObservableList<Card> _cards = new ObservableList<Card>();
@@ -24,17 +24,20 @@ namespace CardBoard.Models
 
         public Message CreateCard(Guid cardId)
         {
-            var message = Message.CreateMessage(
+            return Message.CreateMessage(
                 "CardCreated",
                 new List<MessageHash>(),
                 Guid.Empty,
                 new { CardId = cardId });
-            return message;
         }
 
-        public void DeleteCard(Card card)
+        public Message DeleteCard(Card card)
         {
-            throw new NotImplementedException();
+            return Message.CreateMessage(
+                "CardDeleted",
+                new List<MessageHash>(),
+                Guid.Empty,
+                new { CardId = card.CardId });
         }
 
         public void HandleCardCreated(Message message)
@@ -42,6 +45,22 @@ namespace CardBoard.Models
             Guid cardId = Guid.Parse(message.Body.CardId);
             if (!_cards.Any(c => c.CardId == cardId))
                 _cards.Add(new Card(cardId));
+        }
+
+        public Guid GetObjectId()
+        {
+            return Guid.Empty;
+        }
+
+        public IEnumerable<IMessageHandler> GetChildMessageHandlers()
+        {
+            return _cards;
+        }
+
+        public void HandleMessage(Message message)
+        {
+            if (message.Type == "CardCreated")
+                HandleCardCreated(message);
         }
     }
 }

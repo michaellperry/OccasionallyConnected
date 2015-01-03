@@ -40,6 +40,7 @@
     <Compile Include="Crypto\GeneralDigest.cs" />
     <Compile Include="Crypto\IDigest.cs" />
     <Compile Include="Crypto\IMemoable.cs" />
+    <Compile Include="Messages\IMessageHandler.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageHash.cs" />
     <Compile Include="Crypto\Pack.cs" />
