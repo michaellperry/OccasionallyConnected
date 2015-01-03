@@ -6,15 +6,6 @@ namespace CardBoard.Models
 {
     public static class MessageFactory
     {
-        public static Message CardCreated(Guid cardId)
-        {
-            return Message.CreateMessage(
-                "CardCreated",
-                new List<MessageHash>(),
-                Guid.Empty,
-                new { CardId = cardId });
-        }
-
         public static Message CardTextChanged(Guid cardId, string value, IEnumerable<MessageHash> predecessors)
         {
             return Message.CreateMessage(

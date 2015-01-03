@@ -18,8 +18,10 @@ namespace CardBoard.Test
         public void Initialize()
         {
             _application = new Application();
-            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
-            _card = _application.Board.Cards.Single();
+            var message = _application.Board.CreateCard();
+            var cardId = Guid.Parse(message.Body.CardId);
+            _application.ReceiveMessage(message);
+            _card = _application.Board.Cards.Single(c => c.CardId == cardId);
 
             var firstMessage = MessageFactory.CardTextChanged(
                 _card.CardId, "Initial Text", new List<MessageHash>());
