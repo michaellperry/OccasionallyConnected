@@ -9,7 +9,7 @@ namespace CardBoard.Messages
     {
         private ObservableList<MessageHash> _predecessors = new ObservableList<MessageHash>();
         private ObservableList<Candidate<T>> _candidates = new ObservableList<Candidate<T>>();
-
+        
         public IEnumerable<Candidate<T>> Candidates
         {
             get { return _candidates; }
@@ -30,7 +30,7 @@ namespace CardBoard.Messages
         public void HandleMessage(Message message)
         {
             var messageHash = message.Hash;
-            T value = message.Body.Value;
+            T value = (T)message.Body.Value;
             var predecessors = message.Predecessors;
 
             if (!_predecessors.Contains(messageHash))

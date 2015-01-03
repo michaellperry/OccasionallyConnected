@@ -4,6 +4,7 @@ using Org.BouncyCastle.Crypto.IO;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 
@@ -14,14 +15,14 @@ namespace CardBoard.Messages
         private readonly string _type;
         private readonly ImmutableList<MessageHash> _predecessors;
         private readonly Guid _objectId;
-        private readonly dynamic _body;
+        private readonly ExpandoObject _body;
         private readonly MessageHash _hash;
 
         private Message(
             string type,
             ImmutableList<MessageHash> predecessors,
             Guid objectId,
-            dynamic body,
+            ExpandoObject body,
             MessageHash hash)
         {
             _type = type;
@@ -60,8 +61,11 @@ namespace CardBoard.Messages
             string messageType,
             IEnumerable<MessageHash> predecessors,
             Guid objectId,
-            dynamic body)
+            object body)
         {
+            // Convert the anonymous typed object to an ExpandoObject.
+            var expandoBody = JsonConvert.DeserializeObject<ExpandoObject>(
+                JsonConvert.SerializeObject(body));
             dynamic memento = new
             {
                 MessageType = messageType,
@@ -69,7 +73,7 @@ namespace CardBoard.Messages
                     .Select(p => p.ToString())
                     .ToArray(),
                 ObjectId = objectId,
-                Body = body
+                Body = expandoBody
             };
             var messageHash = new MessageHash(ComputeHash(memento));
 
@@ -77,7 +81,7 @@ namespace CardBoard.Messages
                 messageType,
                 predecessors.ToImmutableList(),
                 objectId,
-                body,
+                expandoBody,
                 messageHash);
         }
 

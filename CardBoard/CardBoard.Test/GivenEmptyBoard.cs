@@ -20,7 +20,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void OneCardCreated()
         {
-            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
+            _application.ReceiveMessage(_application.Board.CreateCard());
 
             _application.Board.Cards.Count().Should().Be(1);
         }
@@ -28,8 +28,8 @@ namespace CardBoard.Test
         [TestMethod]
         public void TwoCardsCreated()
         {
-            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
-            _application.ReceiveMessage(MessageFactory.CardCreated(Guid.NewGuid()));
+            _application.ReceiveMessage(_application.Board.CreateCard());
+            _application.ReceiveMessage(_application.Board.CreateCard());
 
             _application.Board.Cards.Count().Should().Be(2);
         }
@@ -37,9 +37,9 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardCreatedTwice()
         {
-            Guid cardId = Guid.NewGuid();
-            _application.ReceiveMessage(MessageFactory.CardCreated(cardId));
-            _application.ReceiveMessage(MessageFactory.CardCreated(cardId));
+            var message = _application.Board.CreateCard();
+            _application.ReceiveMessage(message);
+            _application.ReceiveMessage(message);
 
             _application.Board.Cards.Count().Should().Be(1);
         }

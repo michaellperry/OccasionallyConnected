@@ -22,12 +22,14 @@ namespace CardBoard.Models
             get { return _cards; }
         }
 
-        public Card NewCard()
+        public Message CreateCard()
         {
-            Guid cardId = Guid.NewGuid();
-            var message = MessageFactory.CardCreated(cardId);
-            HandleCardCreated(message);
-            return _cards.Where(c => c.CardId == cardId).Single();
+            var message = Message.CreateMessage(
+                "CardCreated",
+                new List<MessageHash>(),
+                Guid.Empty,
+                new { CardId = Guid.NewGuid() });
+            return message;
         }
 
         public void DeleteCard(Card card)
@@ -37,7 +39,7 @@ namespace CardBoard.Models
 
         public void HandleCardCreated(Message message)
         {
-            var cardId = message.Body.CardId;
+            Guid cardId = Guid.Parse(message.Body.CardId);
             if (!_cards.Any(c => c.CardId == cardId))
                 _cards.Add(new Card(cardId));
         }

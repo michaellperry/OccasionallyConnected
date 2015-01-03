@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Assisticant;
 using CardBoard.Models;
 using CardBoard.BoardView;
+using CardBoard.Messages;
 
 namespace CardBoard.ViewModels
 {
@@ -45,9 +46,12 @@ namespace CardBoard.ViewModels
 
         private static void CreateCard(Application application, string text, Column column)
         {
-            Card card = application.Board.NewCard();
-            card.SetText(text);
-            card.MoveTo(column);
+            Message createdMessage = application.Board.CreateCard();
+            application.ReceiveMessage(createdMessage);
+            Card card = application.Board.Cards
+                .Single(c => c.CardId == createdMessage.Body.CardId);
+            application.ReceiveMessage(card.SetText(text));
+            application.ReceiveMessage(card.MoveTo(column));
         }
     }
 }
