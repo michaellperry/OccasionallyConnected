@@ -41,65 +41,51 @@ namespace CardBoard.ViewModels
             get { return new BoardViewModel(_application.Board, _selection); }
         }
 
-        public ICommand DeleteCard
+        public bool CanDeleteCard
         {
-            get
-            {
-                return MakeCommand
-                    .When(() => _selection.SelectedCard != null)
-                    .Do(() => _application.Board.DeleteCard(_selection.SelectedCard));
-            }
+            get { return _selection.SelectedCard != null; }
         }
 
-        public ICommand EditCard
+        public void DeleteCard()
         {
-            get
-            {
-                return MakeCommand
-                    .When(() => _selection.SelectedCard != null)
-                    .Do(() =>
-                    {
-                        Card card = _selection.SelectedCard;
-                        DialogManager.ShowCardDetail(new CardDetailModel
-                        {
-                            Text = card.Text
-                                .OrderBy(t => t.MessageHash)
-                                .Select(t => t.Value)
-                                .FirstOrDefault()
-                        }, detail =>
-                        {
-                            _application.ReceiveMessage(card.SetText(detail.Text));
-                        });
-                    });
-            }
+            _application.Board.DeleteCard(_selection.SelectedCard);
         }
 
-        public ICommand NewCard
+        public bool CanEditCard
         {
-            get
-            {
-                return MakeCommand
-                    .Do(() =>
-                    {
-                        DialogManager.ShowCardDetail(new CardDetailModel(), detail =>
-                        {
-                            var cardId = Guid.NewGuid();
-                            _application.ReceiveMessage(_application.Board.CreateCard(cardId));
-                            var card = _application.Board.Cards.Single(c => c.CardId == cardId);
-                            _application.ReceiveMessage(card.SetText(detail.Text));
-                            _application.ReceiveMessage(card.MoveTo(Column.ToDo));
-                        });
-                    });
-            }
+            get { return _selection.SelectedCard != null; }
         }
 
-        public ICommand Refresh
+        public void EditCard()
         {
-            get
+            Card card = _selection.SelectedCard;
+            DialogManager.ShowCardDetail(new CardDetailModel
             {
-                return MakeCommand
-                    .Do(() => _application.Refresh());
-            }
+                Text = card.Text
+                    .OrderBy(t => t.MessageHash)
+                    .Select(t => t.Value)
+                    .FirstOrDefault()
+            }, detail =>
+            {
+                _application.ReceiveMessage(card.SetText(detail.Text));
+            });
+        }
+
+        public void NewCard()
+        {
+            DialogManager.ShowCardDetail(new CardDetailModel(), detail =>
+            {
+                var cardId = Guid.NewGuid();
+                _application.ReceiveMessage(_application.Board.CreateCard(cardId));
+                var card = _application.Board.Cards.Single(c => c.CardId == cardId);
+                _application.ReceiveMessage(card.SetText(detail.Text));
+                _application.ReceiveMessage(card.MoveTo(Column.ToDo));
+            });
+        }
+
+        public void Refresh()
+        {
+            _application.Refresh();
         }
     }
 }
