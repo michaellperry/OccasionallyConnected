@@ -22,13 +22,13 @@ namespace CardBoard.Models
             get { return _cards; }
         }
 
-        public Message CreateCard()
+        public Message CreateCard(Guid cardId)
         {
             var message = Message.CreateMessage(
                 "CardCreated",
                 new List<MessageHash>(),
                 Guid.Empty,
-                new { CardId = Guid.NewGuid() });
+                new { CardId = cardId });
             return message;
         }
 

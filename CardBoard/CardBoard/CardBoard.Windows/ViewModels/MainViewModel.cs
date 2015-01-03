@@ -57,7 +57,20 @@ namespace CardBoard.ViewModels
             {
                 return MakeCommand
                     .When(() => _selection.SelectedCard != null)
-                    .Do(() => { });
+                    .Do(() =>
+                    {
+                        Card card = _selection.SelectedCard;
+                        DialogManager.ShowCardDetail(new CardDetailModel
+                        {
+                            Text = card.Text
+                                .OrderBy(t => t.MessageHash)
+                                .Select(t => t.Value)
+                                .FirstOrDefault()
+                        }, detail =>
+                        {
+                            _application.ReceiveMessage(card.SetText(detail.Text));
+                        });
+                    });
             }
         }
 
@@ -66,8 +79,17 @@ namespace CardBoard.ViewModels
             get
             {
                 return MakeCommand
-                    .When(() => _selection.SelectedCard != null)
-                    .Do(() => { });
+                    .Do(() =>
+                    {
+                        DialogManager.ShowCardDetail(new CardDetailModel(), detail =>
+                        {
+                            var cardId = Guid.NewGuid();
+                            _application.ReceiveMessage(_application.Board.CreateCard(cardId));
+                            var card = _application.Board.Cards.Single(c => c.CardId == cardId);
+                            _application.ReceiveMessage(card.SetText(detail.Text));
+                            _application.ReceiveMessage(card.MoveTo(Column.ToDo));
+                        });
+                    });
             }
         }
 

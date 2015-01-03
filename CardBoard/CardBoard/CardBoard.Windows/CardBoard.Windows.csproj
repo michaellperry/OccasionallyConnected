@@ -117,7 +117,9 @@
     <Compile Include="BoardView\CardDetailControl.xaml.cs">
       <DependentUpon>CardDetailControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoardView\CardDetailModel.cs" />
     <Compile Include="BoardView\CardViewModel.cs" />
+    <Compile Include="BoardView\DialogManager.cs" />
     <Compile Include="BoardView\FullScreenBoardControl.xaml.cs">
       <DependentUpon>FullScreenBoardControl.xaml</DependentUpon>
     </Compile>

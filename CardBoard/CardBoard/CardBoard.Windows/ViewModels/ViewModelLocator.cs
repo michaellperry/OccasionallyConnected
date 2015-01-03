@@ -46,10 +46,9 @@ namespace CardBoard.ViewModels
 
         private static void CreateCard(Application application, string text, Column column)
         {
-            Message createdMessage = application.Board.CreateCard();
-            application.ReceiveMessage(createdMessage);
-            Card card = application.Board.Cards
-                .Single(c => c.CardId == createdMessage.Body.CardId);
+            var cardId = Guid.NewGuid();
+            application.ReceiveMessage(application.Board.CreateCard(cardId));
+            var card = application.Board.Cards.Single(c => c.CardId == cardId);
             application.ReceiveMessage(card.SetText(text));
             application.ReceiveMessage(card.MoveTo(column));
         }

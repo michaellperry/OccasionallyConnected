@@ -17,9 +17,8 @@ namespace CardBoard.Test
         public void Initialize()
         {
             _application = new Application();
-            var message = _application.Board.CreateCard();
-            Guid cardId = Guid.Parse(message.Body.CardId);
-            _application.ReceiveMessage(message);
+            var cardId = Guid.NewGuid();
+            _application.ReceiveMessage(_application.Board.CreateCard(cardId));
             _card = _application.Board.Cards.Single(c => c.CardId == cardId);
         }
 
