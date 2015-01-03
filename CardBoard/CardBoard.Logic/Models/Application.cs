@@ -17,8 +17,7 @@ namespace CardBoard.Models
         public Application()
         {
             _messageHandlers = new ComputedDictionary<Guid,IMessageHandler>(
-                () => new List<IMessageHandler> { _board }.Union(
-                    _board.GetChildMessageHandlers())
+                () => new List<IMessageHandler> { _board }.Union(_board.Cards)
                     .ToDictionary(h => h.GetObjectId()));
         }
 

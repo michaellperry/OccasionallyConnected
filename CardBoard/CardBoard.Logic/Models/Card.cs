@@ -42,24 +42,9 @@ namespace CardBoard.Models
             return _column.CreateMessage("CardMoved", _cardId, column);
         }
 
-        public void HandleCardTextChanged(Message message)
-        {
-            _text.HandleMessage(message);
-        }
-
-        public void HandleCardMoved(Message message)
-        {
-            _column.HandleMessage(message);
-        }
-
         public Guid GetObjectId()
         {
             return _cardId;
-        }
-
-        public IEnumerable<IMessageHandler> GetChildMessageHandlers()
-        {
-            throw new NotImplementedException();
         }
 
         public void HandleMessage(Message message)
@@ -69,6 +54,16 @@ namespace CardBoard.Models
 
             else if (message.Type == "CardMoved")
                 HandleCardMoved(message);
+        }
+
+        private void HandleCardTextChanged(Message message)
+        {
+            _text.HandleMessage(message);
+        }
+
+        private void HandleCardMoved(Message message)
+        {
+            _column.HandleMessage(message);
         }
     }
 }

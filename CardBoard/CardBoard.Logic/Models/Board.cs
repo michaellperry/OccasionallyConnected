@@ -40,27 +40,22 @@ namespace CardBoard.Models
                 new { CardId = card.CardId });
         }
 
-        public void HandleCardCreated(Message message)
-        {
-            Guid cardId = Guid.Parse(message.Body.CardId);
-            if (!_cards.Any(c => c.CardId == cardId))
-                _cards.Add(new Card(cardId));
-        }
-
         public Guid GetObjectId()
         {
             return Guid.Empty;
-        }
-
-        public IEnumerable<IMessageHandler> GetChildMessageHandlers()
-        {
-            return _cards;
         }
 
         public void HandleMessage(Message message)
         {
             if (message.Type == "CardCreated")
                 HandleCardCreated(message);
+        }
+
+        private void HandleCardCreated(Message message)
+        {
+            Guid cardId = Guid.Parse(message.Body.CardId);
+            if (!_cards.Any(c => c.CardId == cardId))
+                _cards.Add(new Card(cardId));
         }
     }
 }
