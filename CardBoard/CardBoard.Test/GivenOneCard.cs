@@ -3,7 +3,6 @@ using CardBoard.Models;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace CardBoard.Test
@@ -27,8 +26,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardTextChanged()
         {
-            _application.ReceiveMessage(MessageFactory.CardTextChanged(
-                _card.CardId, "Initial Text", new List<MessageHash>()));
+            _application.ReceiveMessage(CardTextChanged("Initial Text"));
 
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("Initial Text");
@@ -37,10 +35,9 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardTextChangedAgain()
         {
-            var firstMessage = MessageFactory.CardTextChanged(
-                _card.CardId, "Initial Text", new List<MessageHash>());
-            var successor = MessageFactory.CardTextChanged(
-                _card.CardId, "New Text", new List<MessageHash> { firstMessage.Hash });
+            var firstMessage = CardTextChanged("Initial Text");
+            var successor = CardTextChanged("New Text", firstMessage.Hash);
+
             _application.ReceiveMessage(firstMessage);
             _application.ReceiveMessage(successor);
 
@@ -51,10 +48,9 @@ namespace CardBoard.Test
         [TestMethod]
         public void MessagesReceivedOutOfOrder()
         {
-            var firstMessage = MessageFactory.CardTextChanged(
-                _card.CardId, "Initial Text", new List<MessageHash>());
-            var successor = MessageFactory.CardTextChanged(
-                _card.CardId, "New Text", new List<MessageHash> { firstMessage.Hash });
+            var firstMessage = CardTextChanged("Initial Text");
+            var successor = CardTextChanged("New Text", firstMessage.Hash);
+
             _application.ReceiveMessage(successor);
             _application.ReceiveMessage(firstMessage);
 
@@ -65,8 +61,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardMoved()
         {
-            _application.ReceiveMessage(MessageFactory.CardMoved(
-                _card.CardId, Column.ToDo, new List<MessageHash>()));
+            _application.ReceiveMessage(CardMoved(Column.ToDo));
 
             _card.Column.Count().Should().Be(1);
             _card.Column.Single().Value.Should().Be(Column.ToDo);
@@ -75,13 +70,32 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardMovedAgain()
         {
-            _application.ReceiveMessage(MessageFactory.CardMoved(
-                _card.CardId, Column.ToDo, new List<MessageHash>()));
-            _application.ReceiveMessage(MessageFactory.CardMoved(
-                _card.CardId, Column.Doing, _card.Column.Select(c => c.MessageHash)));
+            Message firstMessage = CardMoved(Column.ToDo);
+            Message successor = CardMoved(Column.Doing, firstMessage.Hash);
+
+            _application.ReceiveMessage(firstMessage);
+            _application.ReceiveMessage(successor);
 
             _card.Column.Count().Should().Be(1);
             _card.Column.Single().Value.Should().Be(Column.Doing);
+        }
+
+        private Message CardTextChanged(string text, params MessageHash[] predecessors)
+        {
+            return Message.CreateMessage(
+                "CardTextChanged",
+                predecessors,
+                _card.CardId,
+                new { Value = text });
+        }
+
+        private Message CardMoved(Column column, params MessageHash[] predecessors)
+        {
+            return Message.CreateMessage(
+                "CardMoved",
+                predecessors,
+                _card.CardId,
+                new { Value = column });
         }
     }
 }

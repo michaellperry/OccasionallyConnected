@@ -23,10 +23,9 @@ namespace CardBoard.Test
             _application.ReceiveMessage(message);
             _card = _application.Board.Cards.Single(c => c.CardId == cardId);
 
-            var firstMessage = MessageFactory.CardTextChanged(
-                _card.CardId, "Initial Text", new List<MessageHash>());
-            var parallelMessage = MessageFactory.CardTextChanged(
-                _card.CardId, "New Text", new List<MessageHash>());
+            var firstMessage = CardTextChanged("Initial Text");
+            var parallelMessage = CardTextChanged("New Text");
+
             _application.ReceiveMessage(firstMessage);
             _application.ReceiveMessage(parallelMessage);
         }
@@ -42,9 +41,9 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardTextResolveConflict()
         {
-            var resolution = MessageFactory.CardTextChanged(
-                _card.CardId, "Resolved Text",
+            var resolution = CardTextChanged("Resolved Text",
                 _card.Text.Select(c => c.MessageHash));
+
             _application.ReceiveMessage(resolution);
 
             _card.Text.Count().Should().Be(1);
@@ -54,18 +53,26 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardTextConflictingResolutions()
         {
-            var firstResolution = MessageFactory.CardTextChanged(
-                _card.CardId, "First Resolution",
+            var firstResolution = CardTextChanged("First Resolution",
                 _card.Text.Select(c => c.MessageHash));
-            var secondResolution = MessageFactory.CardTextChanged(
-                _card.CardId, "Second Resolution",
+            var secondResolution = CardTextChanged("Second Resolution",
                 _card.Text.Select(c => c.MessageHash));
+
             _application.ReceiveMessage(firstResolution);
             _application.ReceiveMessage(secondResolution);
 
             _card.Text.Count().Should().Be(2);
             _card.Text.Select(c => c.Value).Should().Contain("First Resolution");
             _card.Text.Select(c => c.Value).Should().Contain("Second Resolution");
+        }
+
+        private Message CardTextChanged(string text, IEnumerable<MessageHash> predecessors = null)
+        {
+            return Message.CreateMessage(
+                "CardTextChanged",
+                predecessors ?? new List<MessageHash>(),
+                _card.CardId,
+                new { Value = text });
         }
     }
 }
