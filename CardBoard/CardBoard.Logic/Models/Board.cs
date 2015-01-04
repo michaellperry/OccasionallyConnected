@@ -32,6 +32,28 @@ namespace CardBoard.Models
             get { return _cards; }
         }
 
+        public Message CreateCard(Guid cardId)
+        {
+            return Message.CreateMessage(
+                "CardCreated",
+                Guid.Empty,
+                new
+                {
+                    CardId = cardId
+                });
+        }
+
+        public Message DeleteCard(Guid cardId)
+        {
+            return Message.CreateMessage(
+                "CardDeleted",
+                Guid.Empty,
+                new
+                {
+                    CardId = cardId
+                });
+        }
+
         private void HandleCardCreatedMessage(Message message)
         {
             Guid cardId = Guid.Parse(message.Body.CardId);

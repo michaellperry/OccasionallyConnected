@@ -30,7 +30,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void OneCardCreated()
         {
-            _application.HandleMessage(CardCreated(Guid.NewGuid()));
+            _application.HandleMessage(_application.Board.CreateCard(Guid.NewGuid()));
 
             _application.Board.Cards.Count().Should().Be(1);
         }
@@ -38,8 +38,10 @@ namespace CardBoard.Test
         [TestMethod]
         public void TwoCardsCreated()
         {
-            _application.HandleMessage(CardCreated(Guid.NewGuid()));
-            _application.HandleMessage(CardCreated(Guid.NewGuid()));
+            _application.HandleMessage(
+                _application.Board.CreateCard(Guid.NewGuid()));
+            _application.HandleMessage(
+                _application.Board.CreateCard(Guid.NewGuid()));
 
             _application.Board.Cards.Count().Should().Be(2);
         }
@@ -47,7 +49,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardCreatedTwice()
         {
-            Message message = CardCreated(Guid.NewGuid());
+            Message message = _application.Board.CreateCard(Guid.NewGuid());
             _application.HandleMessage(message);
             _application.HandleMessage(message);
 
@@ -58,32 +60,12 @@ namespace CardBoard.Test
         public void CardCreatedAndDeleted()
         {
             var cardId = Guid.NewGuid();
-            _application.HandleMessage(CardCreated(cardId));
-            _application.HandleMessage(CardDeleted(cardId));
+            _application.HandleMessage(
+                _application.Board.CreateCard(cardId));
+            _application.HandleMessage(
+                _application.Board.DeleteCard(cardId));
 
             _application.Board.Cards.Count().Should().Be(0);
-        }
-
-        private static Message CardCreated(Guid cardId)
-        {
-            return Message.CreateMessage(
-                "CardCreated",
-                Guid.Empty,
-                new
-                {
-                    CardId = cardId
-                });
-        }
-
-        private static Message CardDeleted(Guid cardId)
-        {
-            return Message.CreateMessage(
-                "CardDeleted",
-                Guid.Empty,
-                new
-                {
-                    CardId = cardId
-                });
         }
     }
 }
