@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CardBoard.Models;
-using Assisticant;
 using CardBoard.BoardView;
+using CardBoard.Models;
+using System;
+using System.Linq;
 
 namespace CardBoard.ViewModels
 {
@@ -48,7 +43,7 @@ namespace CardBoard.ViewModels
 
         public void DeleteCard()
         {
-            _application.ReceiveMessage(_application.Board.DeleteCard(
+            _application.EmitMessage(_application.Board.DeleteCard(
                 _selection.SelectedCard));
         }
 
@@ -68,7 +63,7 @@ namespace CardBoard.ViewModels
                     .FirstOrDefault()
             }, detail =>
             {
-                _application.ReceiveMessage(card.SetText(detail.Text));
+                _application.EmitMessage(card.SetText(detail.Text));
             });
         }
 
@@ -77,10 +72,10 @@ namespace CardBoard.ViewModels
             DialogManager.ShowCardDetail(new CardDetailModel(), detail =>
             {
                 var cardId = Guid.NewGuid();
-                _application.ReceiveMessage(_application.Board.CreateCard(cardId));
+                _application.EmitMessage(_application.Board.CreateCard(cardId));
                 var card = _application.Board.Cards.Single(c => c.CardId == cardId);
-                _application.ReceiveMessage(card.SetText(detail.Text));
-                _application.ReceiveMessage(card.MoveTo(Column.ToDo));
+                _application.EmitMessage(card.SetText(detail.Text));
+                _application.EmitMessage(card.MoveTo(Column.ToDo));
             });
         }
 

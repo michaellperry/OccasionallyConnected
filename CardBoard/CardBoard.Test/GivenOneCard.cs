@@ -18,14 +18,14 @@ namespace CardBoard.Test
         {
             _application = new Application();
             var cardId = Guid.NewGuid();
-            _application.ReceiveMessage(_application.Board.CreateCard(cardId));
+            _application.EmitMessage(_application.Board.CreateCard(cardId));
             _card = _application.Board.Cards.Single(c => c.CardId == cardId);
         }
 
         [TestMethod]
         public void CardTextChanged()
         {
-            _application.ReceiveMessage(CardTextChanged("Initial Text"));
+            _application.EmitMessage(CardTextChanged("Initial Text"));
 
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("Initial Text");
@@ -37,8 +37,8 @@ namespace CardBoard.Test
             var firstMessage = CardTextChanged("Initial Text");
             var successor = CardTextChanged("New Text", firstMessage.Hash);
 
-            _application.ReceiveMessage(firstMessage);
-            _application.ReceiveMessage(successor);
+            _application.EmitMessage(firstMessage);
+            _application.EmitMessage(successor);
 
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("New Text");
@@ -50,8 +50,8 @@ namespace CardBoard.Test
             var firstMessage = CardTextChanged("Initial Text");
             var successor = CardTextChanged("New Text", firstMessage.Hash);
 
-            _application.ReceiveMessage(successor);
-            _application.ReceiveMessage(firstMessage);
+            _application.EmitMessage(successor);
+            _application.EmitMessage(firstMessage);
 
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("New Text");
@@ -60,7 +60,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardMoved()
         {
-            _application.ReceiveMessage(CardMoved(Column.ToDo));
+            _application.EmitMessage(CardMoved(Column.ToDo));
 
             _card.Column.Count().Should().Be(1);
             _card.Column.Single().Value.Should().Be(Column.ToDo);
@@ -72,8 +72,8 @@ namespace CardBoard.Test
             Message firstMessage = CardMoved(Column.ToDo);
             Message successor = CardMoved(Column.Doing, firstMessage.Hash);
 
-            _application.ReceiveMessage(firstMessage);
-            _application.ReceiveMessage(successor);
+            _application.EmitMessage(firstMessage);
+            _application.EmitMessage(successor);
 
             _card.Column.Count().Should().Be(1);
             _card.Column.Single().Value.Should().Be(Column.Doing);
@@ -82,7 +82,7 @@ namespace CardBoard.Test
         [TestMethod]
         public void CardDeleted()
         {
-            _application.ReceiveMessage(_application.Board.DeleteCard(_card));
+            _application.EmitMessage(_application.Board.DeleteCard(_card));
 
             _application.Board.Cards.Count().Should().Be(0);
         }

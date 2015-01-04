@@ -43,7 +43,7 @@ namespace CardBoard.Models
             set { _lastError.Value = value; }
         }
 
-        public void ReceiveMessage(Message message)
+        public void EmitMessage(Message message)
         {
             IMessageHandler messageHandler;
             if (_messageHandlers.TryGetValue(message.ObjectId, out messageHandler))

@@ -20,14 +20,14 @@ namespace CardBoard.Test
             _application = new Application();
             var cardId = Guid.NewGuid();
             var message = _application.Board.CreateCard(cardId);
-            _application.ReceiveMessage(message);
+            _application.EmitMessage(message);
             _card = _application.Board.Cards.Single(c => c.CardId == cardId);
 
             var firstMessage = CardTextChanged("Initial Text");
             var parallelMessage = CardTextChanged("New Text");
 
-            _application.ReceiveMessage(firstMessage);
-            _application.ReceiveMessage(parallelMessage);
+            _application.EmitMessage(firstMessage);
+            _application.EmitMessage(parallelMessage);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace CardBoard.Test
             var resolution = CardTextChanged("Resolved Text",
                 _card.Text.Select(c => c.MessageHash));
 
-            _application.ReceiveMessage(resolution);
+            _application.EmitMessage(resolution);
 
             _card.Text.Count().Should().Be(1);
             _card.Text.Single().Value.Should().Be("Resolved Text");
@@ -58,8 +58,8 @@ namespace CardBoard.Test
             var secondResolution = CardTextChanged("Second Resolution",
                 _card.Text.Select(c => c.MessageHash));
 
-            _application.ReceiveMessage(firstResolution);
-            _application.ReceiveMessage(secondResolution);
+            _application.EmitMessage(firstResolution);
+            _application.EmitMessage(secondResolution);
 
             _card.Text.Count().Should().Be(2);
             _card.Text.Select(c => c.Value).Should().Contain("First Resolution");

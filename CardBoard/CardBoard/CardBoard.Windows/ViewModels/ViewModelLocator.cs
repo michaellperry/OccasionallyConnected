@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assisticant;
-using CardBoard.Models;
 using CardBoard.BoardView;
-using CardBoard.Messages;
+using CardBoard.Models;
+using System;
+using System.Linq;
 
 namespace CardBoard.ViewModels
 {
@@ -47,10 +43,10 @@ namespace CardBoard.ViewModels
         private static void CreateCard(Application application, string text, Column column)
         {
             var cardId = Guid.NewGuid();
-            application.ReceiveMessage(application.Board.CreateCard(cardId));
+            application.EmitMessage(application.Board.CreateCard(cardId));
             var card = application.Board.Cards.Single(c => c.CardId == cardId);
-            application.ReceiveMessage(card.SetText(text));
-            application.ReceiveMessage(card.MoveTo(column));
+            application.EmitMessage(card.SetText(text));
+            application.EmitMessage(card.MoveTo(column));
         }
     }
 }
