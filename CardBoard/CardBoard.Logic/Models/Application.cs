@@ -1,4 +1,5 @@
-﻿
+﻿using CardBoard.Messaging;
+
 namespace CardBoard.Models
 {
     public class Application
@@ -8,6 +9,11 @@ namespace CardBoard.Models
         public Board Board
         {
             get { return _board; }
+        }
+
+        public void HandleMessage(Message message)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
