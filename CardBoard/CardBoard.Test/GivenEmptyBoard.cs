@@ -54,10 +54,31 @@ namespace CardBoard.Test
             _application.Board.Cards.Count().Should().Be(1);
         }
 
+        [TestMethod]
+        public void CardCreatedAndDeleted()
+        {
+            var cardId = Guid.NewGuid();
+            _application.HandleMessage(CardCreated(cardId));
+            _application.HandleMessage(CardDeleted(cardId));
+
+            _application.Board.Cards.Count().Should().Be(0);
+        }
+
         private static Message CardCreated(Guid cardId)
         {
             return Message.CreateMessage(
                 "CardCreated",
+                Guid.Empty,
+                new
+                {
+                    CardId = cardId
+                });
+        }
+
+        private static Message CardDeleted(Guid cardId)
+        {
+            return Message.CreateMessage(
+                "CardDeleted",
                 Guid.Empty,
                 new
                 {

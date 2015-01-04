@@ -9,13 +9,17 @@ namespace CardBoard.Models
 {
     public class Board
     {
+
+        private static readonly MessageDispatcher<Board> _dispatcher = new MessageDispatcher<Board>()
+            .On("CardCreated", (o, m) => o.HandleCardCreatedMessage(m))
+            .On("CardDeleted", (o, m) => o.HandleCardDeletedMessage(m));
+
         private Observable<string> _name = new Observable<string>("Pluralsight");
         private ObservableList<Card> _cards = new ObservableList<Card>();
 
         public void HandleMessage(Message message)
         {
-            if (message.Type == "CardCreated")
-                HandleCardCreatedMessage(message);
+            _dispatcher.Dispatch(this, message);
         }
 
         public string Name
@@ -33,6 +37,12 @@ namespace CardBoard.Models
             Guid cardId = Guid.Parse(message.Body.CardId);
             if (!_cards.Any(c => c.CardId == cardId))
                 _cards.Add(new Card(cardId));
+        }
+
+        private void HandleCardDeletedMessage(Message message)
+        {
+            Guid cardId = Guid.Parse(message.Body.CardId);
+            _cards.RemoveAll(c => c.CardId == cardId);
         }
     }
 }
