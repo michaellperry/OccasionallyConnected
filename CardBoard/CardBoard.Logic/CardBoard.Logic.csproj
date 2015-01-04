@@ -41,10 +41,12 @@
     <Compile Include="Crypto\Pack.cs" />
     <Compile Include="Crypto\Sha256Digest.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Messaging\Candidate.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Messaging\MessageDispatcher.cs" />
     <Compile Include="Messaging\MessageHash.cs" />
+    <Compile Include="Messaging\Mutable.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Card.cs" />
