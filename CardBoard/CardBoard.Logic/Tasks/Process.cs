@@ -38,10 +38,7 @@ namespace CardBoard.Tasks
         public Task JoinAsync()
         {
             TaskCompletionSource<bool> completion = new TaskCompletionSource<bool>();
-            Perform(async delegate
-            {
-                completion.SetResult(true);
-            });
+            Perform(() => completion.SetResult(true));
             return completion.Task;
         }
 

@@ -56,7 +56,7 @@ namespace CardBoard.Messaging
                         return;
                     var message = queue.Peek();
 
-                    dynamic memento = message.GetMemento();
+                    var memento = message.GetMemento();
                     string messageJson = JsonConvert.SerializeObject(memento);
 
                     IHttpContent content = new HttpStringContent(messageJson);

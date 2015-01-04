@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Immutable;
-using Windows.Storage;
-using System.Text.RegularExpressions;
-using System.Dynamic;
+﻿using CardBoard.Tasks;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
-using CardBoard.Tasks;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace CardBoard.Messaging
 {
@@ -76,21 +74,21 @@ namespace CardBoard.Messaging
             return objectFile;
         }
 
-        private async Task<List<ExpandoObject>> ReadMessagesAsync(StorageFile objectFile)
+        private async Task<List<MessageMemento>> ReadMessagesAsync(StorageFile objectFile)
         {
-            List<ExpandoObject> messageList;
+            List<MessageMemento> messageList;
             var inputStream = await objectFile.OpenStreamForReadAsync();
             using (JsonReader reader = new JsonTextReader(new StreamReader(inputStream)))
             {
-                messageList = _serializer.Deserialize<List<ExpandoObject>>(reader);
+                messageList = _serializer.Deserialize<List<MessageMemento>>(reader);
             }
 
             if (messageList == null)
-                messageList = new List<ExpandoObject>();
+                messageList = new List<MessageMemento>();
             return messageList;
         }
 
-        private async Task WriteMessagesAsync(StorageFile objectFile, List<ExpandoObject> messageList)
+        private async Task WriteMessagesAsync(StorageFile objectFile, List<MessageMemento> messageList)
         {
             var outputStream = await objectFile.OpenStreamForWriteAsync();
             using (JsonWriter writer = new JsonTextWriter(new StreamWriter(outputStream)))

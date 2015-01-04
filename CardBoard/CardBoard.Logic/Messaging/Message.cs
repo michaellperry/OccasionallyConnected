@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.IO;
 using System;
@@ -58,17 +57,18 @@ namespace CardBoard.Messaging
             get { return _hash; }
         }
 
-        public dynamic GetMemento()
+        public MessageMemento GetMemento()
         {
-            dynamic memento = new ExpandoObject();
-            memento.Hash = Hash.ToString();
-            memento.MessageType = Type;
-            memento.Predecessors = Predecessors
-                .Select(p => p.ToString())
-                .ToList();
-            memento.ObjectId = ObjectId;
-            memento.Body = Body;
-            return memento;
+            return new MessageMemento()
+            {
+                Hash = Hash.ToString(),
+                MessageType = Type,
+                Predecessors = Predecessors
+                    .Select(p => p.ToString())
+                    .ToList(),
+                ObjectId = ObjectId,
+                Body = Body
+            };
         }
 
         public static Message CreateMessage(
@@ -80,7 +80,7 @@ namespace CardBoard.Messaging
             // Convert the anonymous typed object to an ExpandoObject.
             var expandoBody = JsonConvert.DeserializeObject<ExpandoObject>(
                 JsonConvert.SerializeObject(body));
-            dynamic memento = new
+            object document = new
             {
                 MessageType = messageType,
                 Predecessors = predecessors
@@ -89,7 +89,7 @@ namespace CardBoard.Messaging
                 ObjectId = objectId,
                 Body = expandoBody
             };
-            var messageHash = new MessageHash(ComputeHash(memento));
+            var messageHash = new MessageHash(ComputeHash(document));
 
             return new Message(
                 messageType,
@@ -99,32 +99,25 @@ namespace CardBoard.Messaging
                 messageHash);
         }
 
-        public static Message FromMemento(dynamic memento)
+        public static Message FromMemento(MessageMemento memento)
         {
-            string messageType = memento.MessageType;
-            JArray predecessorStrings = memento.Predecessors;
-            string objectId = memento.ObjectId;
-            var expandoBody = JsonConvert.DeserializeObject<ExpandoObject>(
-                JsonConvert.SerializeObject(memento.Body));
-            string hash = memento.Hash;
-
             return new Message(
-                messageType,
-                predecessorStrings
-                    .Select(h => MessageHash.Parse(h.Value<string>()))
+                memento.MessageType,
+                memento.Predecessors
+                    .Select(h => MessageHash.Parse(h))
                     .ToImmutableList(),
-                Guid.Parse(objectId),
-                expandoBody,
-                MessageHash.Parse(hash));
+                memento.ObjectId,
+                memento.Body,
+                MessageHash.Parse(memento.Hash));
         }
 
-        private static byte[] ComputeHash(dynamic memento)
+        private static byte[] ComputeHash(object document)
         {
             var sha = new Sha256Digest();
             var stream = new DigestStream(new MemoryStream(), null, sha);
             using (var writer = new StreamWriter(stream))
             {
-                string mementoToString = JsonConvert.SerializeObject(memento);
+                string mementoToString = JsonConvert.SerializeObject(document);
                 writer.Write(mementoToString);
             }
             byte[] buffer = new byte[sha.GetDigestSize()];

@@ -1,13 +1,12 @@
 ﻿using CardBoard.Tasks;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Dynamic;
+using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using System.Collections.Immutable;
 
 namespace CardBoard.Messaging
 {
@@ -62,7 +61,7 @@ namespace CardBoard.Messaging
             await CreateFileAsync();
             var messageList = await ReadMessagesAsync();
 
-            dynamic memento = message.GetMemento();
+            var memento = message.GetMemento();
             messageList.Add(memento);
 
             await WriteMessagesAsync(messageList);
@@ -74,7 +73,7 @@ namespace CardBoard.Messaging
             var messageList = await ReadMessagesAsync();
 
             string hash = message.Hash.ToString();
-            messageList.RemoveAll(o => ((dynamic)o).Hash == hash);
+            messageList.RemoveAll(o => o.Hash == hash);
 
             await WriteMessagesAsync(messageList);
         }
@@ -90,21 +89,21 @@ namespace CardBoard.Messaging
             }
         }
 
-        private async Task<List<ExpandoObject>> ReadMessagesAsync()
+        private async Task<List<MessageMemento>> ReadMessagesAsync()
         {
-            List<ExpandoObject> messageList;
+            List<MessageMemento> messageList;
             var inputStream = await _messageQueueFile.OpenStreamForReadAsync();
             using (JsonReader reader = new JsonTextReader(new StreamReader(inputStream)))
             {
-                messageList = _serializer.Deserialize<List<ExpandoObject>>(reader);
+                messageList = _serializer.Deserialize<List<MessageMemento>>(reader);
             }
 
             if (messageList == null)
-                messageList = new List<ExpandoObject>();
+                messageList = new List<MessageMemento>();
             return messageList;
         }
 
-        private async Task WriteMessagesAsync(List<ExpandoObject> messageList)
+        private async Task WriteMessagesAsync(List<MessageMemento> messageList)
         {
             var outputStream = await _messageQueueFile.OpenStreamForWriteAsync();
             using (JsonWriter writer = new JsonTextWriter(new StreamWriter(outputStream)))
