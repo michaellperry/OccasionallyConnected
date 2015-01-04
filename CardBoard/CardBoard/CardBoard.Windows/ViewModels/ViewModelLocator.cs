@@ -28,13 +28,13 @@ namespace CardBoard.ViewModels
 
         private Application LoadApplication()
 		{
-            Application application = new Application(new FileMessageQueue());
+            Application application = new Application(new FileMessageQueue(), new HttpMessagePump());
             return application;
 		}
 
         private Application LoadDesignModeApplication()
 		{
-            Application application = new Application(new MemoryMessageQueue());
+            Application application = new Application(new MemoryMessageQueue(), new MemoryMessagePump());
             CreateCard(application, "Record the demo", Column.Doing);
             CreateCard(application, "Edit the demo", Column.ToDo);
             CreateCard(application, "Publish the course", Column.ToDo);
