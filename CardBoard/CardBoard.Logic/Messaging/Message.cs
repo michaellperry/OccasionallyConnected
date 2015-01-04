@@ -8,7 +8,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 
-namespace CardBoard.Messages
+namespace CardBoard.Messaging
 {
     public class Message
     {

@@ -3,6 +3,7 @@ using CardBoard.BoardView;
 using CardBoard.Models;
 using System;
 using System.Linq;
+using CardBoard.Messaging;
 
 namespace CardBoard.ViewModels
 {
@@ -27,13 +28,13 @@ namespace CardBoard.ViewModels
 
         private Application LoadApplication()
 		{
-            Application application = new Application();
+            Application application = new Application(new FileMessageQueue());
             return application;
 		}
 
         private Application LoadDesignModeApplication()
 		{
-            Application application = new Application();
+            Application application = new Application(new MemoryMessageQueue());
             CreateCard(application, "Record the demo", Column.Doing);
             CreateCard(application, "Edit the demo", Column.ToDo);
             CreateCard(application, "Publish the course", Column.ToDo);

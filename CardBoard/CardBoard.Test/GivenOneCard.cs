@@ -1,4 +1,4 @@
-﻿using CardBoard.Messages;
+﻿using CardBoard.Messaging;
 using CardBoard.Models;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -16,7 +16,7 @@ namespace CardBoard.Test
         [TestInitialize]
         public void Initialize()
         {
-            _application = new Application();
+            _application = new Application(new MemoryMessageQueue());
             var cardId = Guid.NewGuid();
             _application.EmitMessage(_application.Board.CreateCard(cardId));
             _card = _application.Board.Cards.Single(c => c.CardId == cardId);

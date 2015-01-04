@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CardBoard.Messages
+namespace CardBoard.Messaging
 {
     class MessageDispatcher<T>
     {
