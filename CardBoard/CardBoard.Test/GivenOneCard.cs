@@ -79,6 +79,14 @@ namespace CardBoard.Test
             _card.Column.Single().Value.Should().Be(Column.Doing);
         }
 
+        [TestMethod]
+        public void CardDeleted()
+        {
+            _application.ReceiveMessage(_application.Board.DeleteCard(_card));
+
+            _application.Board.Cards.Count().Should().Be(0);
+        }
+
         private Message CardTextChanged(string text, params MessageHash[] predecessors)
         {
             return Message.CreateMessage(

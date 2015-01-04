@@ -7,6 +7,10 @@ namespace CardBoard.Models
 {
     public class Card : IMessageHandler
     {
+        private static MessageDispatcher<Card> _dispatcher = new MessageDispatcher<Card>()
+            .On("CardTextChanged", (o, m) => o.HandleCardTextChanged(m))
+            .On("CardMoved", (o, m) => o.HandleCardMoved(m));
+
         private readonly Guid _cardId;
 
         private Mutable<string> _text = new Mutable<string>();
@@ -49,11 +53,7 @@ namespace CardBoard.Models
 
         public void HandleMessage(Message message)
         {
-            if (message.Type == "CardTextChanged")
-                HandleCardTextChanged(message);
-
-            else if (message.Type == "CardMoved")
-                HandleCardMoved(message);
+            _dispatcher.Dispatch(this, message);
         }
 
         private void HandleCardTextChanged(Message message)
