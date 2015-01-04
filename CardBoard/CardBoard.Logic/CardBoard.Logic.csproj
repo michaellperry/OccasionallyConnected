@@ -40,6 +40,7 @@
     <Compile Include="Crypto\GeneralDigest.cs" />
     <Compile Include="Crypto\IDigest.cs" />
     <Compile Include="Crypto\IMemoable.cs" />
+    <Compile Include="Messaging\CommunicationException.cs" />
     <Compile Include="Messaging\FileMessageQueue.cs" />
     <Compile Include="Messaging\FileMessageStore.cs" />
     <Compile Include="Messaging\HttpMessagePump.cs" />

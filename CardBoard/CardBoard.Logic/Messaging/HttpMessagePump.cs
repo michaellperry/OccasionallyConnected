@@ -62,7 +62,7 @@ namespace CardBoard.Messaging
                     IHttpContent content = new HttpStringContent(messageJson);
                     var result = await client.PostAsync(_uri, content);
                     if (!result.IsSuccessStatusCode)
-                        return;
+                        throw new CommunicationException(result.ReasonPhrase);
 
                     lock (this)
                     {
