@@ -30,15 +30,39 @@ namespace CardBoard.Test
         [TestMethod]
         public void OneCardCreated()
         {
-            _application.HandleMessage(Message.CreateMessage(
+            _application.HandleMessage(CardCreated(Guid.NewGuid()));
+
+            _application.Board.Cards.Count().Should().Be(1);
+        }
+
+        [TestMethod]
+        public void TwoCardsCreated()
+        {
+            _application.HandleMessage(CardCreated(Guid.NewGuid()));
+            _application.HandleMessage(CardCreated(Guid.NewGuid()));
+
+            _application.Board.Cards.Count().Should().Be(2);
+        }
+
+        [TestMethod]
+        public void CardCreatedTwice()
+        {
+            Message message = CardCreated(Guid.NewGuid());
+            _application.HandleMessage(message);
+            _application.HandleMessage(message);
+
+            _application.Board.Cards.Count().Should().Be(1);
+        }
+
+        private static Message CardCreated(Guid cardId)
+        {
+            return Message.CreateMessage(
                 "CardCreated",
                 Guid.Empty,
                 new
                 {
-                    CardId = Guid.NewGuid()
-                }));
-
-            _application.Board.Cards.Count().Should().Be(1);
+                    CardId = cardId
+                });
         }
     }
 }

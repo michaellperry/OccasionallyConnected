@@ -13,7 +13,7 @@ namespace CardBoard.Models
 
         public void HandleMessage(Message message)
         {
-            throw new System.NotImplementedException();
+            _board.HandleMessage(message);
         }
     }
 }
