@@ -113,9 +113,6 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GivenConflict.cs" />
-    <Compile Include="GivenEmptyBoard.cs" />
-    <Compile Include="GivenOneCard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,8 +6,7 @@
     xmlns:views="using:CardBoard.BoardView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d"
-    DataContext="{Binding Main, Source={StaticResource Locator}}" >
+    mc:Ignorable="d" >
 
     <Grid
         Background="#114253">

@@ -34,37 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Crypto\DigestStream.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Messaging\Candidate.cs" />
-    <Compile Include="Crypto\GeneralDigest.cs" />
-    <Compile Include="Crypto\IDigest.cs" />
-    <Compile Include="Crypto\IMemoable.cs" />
-    <Compile Include="Messaging\CommunicationException.cs" />
-    <Compile Include="Messaging\FileMessageQueue.cs" />
-    <Compile Include="Messaging\FileMessageStore.cs" />
-    <Compile Include="Messaging\HttpMessagePump.cs" />
-    <Compile Include="Messaging\IMessageHandler.cs" />
-    <Compile Include="Messaging\IMessagePump.cs" />
-    <Compile Include="Messaging\IMessageQueue.cs" />
-    <Compile Include="Messaging\IMessageStore.cs" />
-    <Compile Include="Messaging\MemoryMessagePump.cs" />
-    <Compile Include="Messaging\MemoryMessageQueue.cs" />
-    <Compile Include="Messaging\MemoryMessageStore.cs" />
-    <Compile Include="Messaging\Message.cs" />
-    <Compile Include="Messaging\MessageDispatcher.cs" />
-    <Compile Include="Messaging\MessageHash.cs" />
-    <Compile Include="Crypto\Pack.cs" />
-    <Compile Include="Crypto\Sha256Digest.cs" />
-    <Compile Include="Messaging\MessageMemento.cs" />
-    <Compile Include="Messaging\Mutable.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tasks\AsyncSemaphore.cs" />
-    <Compile Include="Tasks\Process.cs" />
   </ItemGroup>
   <ItemGroup>
     <TargetPlatform Include="Windows, Version=8.1" />
