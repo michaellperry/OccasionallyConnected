@@ -8,11 +8,13 @@ namespace CardBoard.BoardView
 {
     public class BoardViewModel
     {
+        private readonly Application _application;
         private readonly Board _board;
         private readonly SelectionModel _selection;
         
-        public BoardViewModel(Board board, SelectionModel selection)
+        public BoardViewModel(Application application, Board board, SelectionModel selection)
         {
+            _application = application;
             _board = board;
             _selection = selection;
         }
@@ -48,6 +50,24 @@ namespace CardBoard.BoardView
         {
             get { return SelectedCardIn(Column.Done); }
             set { SetSelectedCard(value); }
+        }
+
+        public static Uri UriOfCard(Card card)
+        {
+            return new Uri(
+                String.Format("cardboard://card/{0}",
+                    card.CardId),
+                UriKind.Absolute);
+        }
+
+        public void MoveCard(Uri uri, Column column)
+        {
+            var cards = _board.Cards;
+            var card = cards.FirstOrDefault(c => UriOfCard(c) == uri);
+            if (card == null)
+                return;
+
+            _application.ReceiveMessage(card.MoveTo(column));
         }
 
         private IEnumerable<CardViewModel> CardsIn(Column column)

@@ -38,7 +38,7 @@ namespace CardBoard.ViewModels
 
         public BoardViewModel BoardDetail
         {
-            get { return new BoardViewModel(_application.Board, _selection); }
+            get { return new BoardViewModel(_application, _application.Board, _selection); }
         }
 
         public bool CanDeleteCard

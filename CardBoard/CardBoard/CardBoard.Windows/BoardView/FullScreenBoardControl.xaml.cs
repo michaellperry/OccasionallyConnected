@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assisticant;
+using CardBoard.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.UI.Xaml;
@@ -14,71 +16,69 @@ namespace CardBoard.BoardView
             this.InitializeComponent();
         }
 
-        //private Card _draggingCard;
+        private Card _draggingCard;
 
         private void CardList_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-            //var cardViewModel = ForView.Unwrap<CardViewModel>(e.Items.FirstOrDefault());
-            //if (cardViewModel != null)
-            //{
-            //    var card = cardViewModel.Card;
-            //    _draggingCard = card;
-            //    e.Data.SetApplicationLink(ProjectDetailViewModel.UriOfCard(card));
-            //}
+            var cardViewModel = ForView.Unwrap<CardViewModel>(e.Items.FirstOrDefault());
+            if (cardViewModel != null)
+            {
+                var card = cardViewModel.Card;
+                _draggingCard = card;
+                e.Data.SetApplicationLink(BoardViewModel.UriOfCard(card));
+            }
         }
 
-        private void CardList_Drop(object sender, DragEventArgs e)
+        private async void CardList_Drop(object sender, DragEventArgs e)
         {
-            //var viewModel = ForView.Unwrap<ProjectDetailViewModel>(DataContext);
-            //if (viewModel == null)
-            //    return;
+            var viewModel = ForView.Unwrap<BoardViewModel>(DataContext);
+            if (viewModel == null)
+                return;
 
-            //int columnIndex =
-            //    sender == ToDo ? 0 :
-            //    sender == Doing ? 1 :
-            //    sender == Done ? 2 :
-            //        -1;
-            //if (columnIndex == -1)
-            //    return;
+            Column columnIndex =
+                sender == ToDo  ? Column.ToDo :
+                sender == Doing ? Column.Doing :
+                sender == Done  ? Column.Done :
+                    Column.ToDo;
 
-            //e.Handled = true;
+            e.Handled = true;
 
-            //RemoveFromLists();
+            RemoveFromLists();
 
-            //var uri = await e.Data.GetView().GetApplicationLinkAsync();
+            var uri = await e.Data.GetView().GetApplicationLinkAsync();
 
-            //await viewModel.MoveCard(uri, columnIndex);
+            viewModel.MoveCard(uri, columnIndex);
         }
 
-        //private void RemoveFromLists()
-        //{
-        //    RemoveFromList(ToDo);
-        //    RemoveFromList(Doing);
-        //    RemoveFromList(Done);
-        //}
+        private void RemoveFromLists()
+        {
+            RemoveFromList(ToDo);
+            RemoveFromList(Doing);
+            RemoveFromList(Done);
+        }
 
-        //private void RemoveFromList(ListView listView)
-        //{
-        //    TransitionCollection saveTransitions = listView.ItemContainerTransitions;
-        //    listView.ItemContainerTransitions = new TransitionCollection();
+        private void RemoveFromList(ListView listView)
+        {
+            TransitionCollection saveTransitions = listView.ItemContainerTransitions;
+            listView.ItemContainerTransitions = new TransitionCollection();
 
-        //    var observableCollection = listView.ItemsSource as ObservableCollection<object>;
-        //    if (observableCollection == null)
-        //        return;
+            var observableCollection = listView.ItemsSource as ObservableCollection<object>;
+            if (observableCollection == null)
+                return;
 
-        //    var removed = observableCollection
-        //        .Where(wrapper =>
-        //        {
-        //            CardViewModel viewModel = ForView.Unwrap<CardViewModel>(wrapper);
-        //            if (viewModel == null)
-        //                return false;
-        //            return viewModel.Card == _draggingCard;
-        //        })
-        //        .ToList();
-        //    foreach (var obj in removed)
-        //        observableCollection.Remove(obj);
+            var removed = observableCollection
+                .Where(wrapper =>
+                {
+                    CardViewModel viewModel = ForView.Unwrap<CardViewModel>(wrapper);
+                    if (viewModel == null)
+                        return false;
+                    return viewModel.Card == _draggingCard;
+                })
+                .ToList();
+            foreach (var obj in removed)
+                observableCollection.Remove(obj);
 
-        //    listView.ItemContainerTransitions = saveTransitions;
-        //}
+            listView.ItemContainerTransitions = saveTransitions;
+        }
     }
 }
