@@ -8,5 +8,7 @@ namespace CardBoard.Messaging
     public interface IMessageQueue
     {
         void Enqueue(Message message);
+        void Confirm(Message message);
+        Exception Exception { get; }
     }
 }

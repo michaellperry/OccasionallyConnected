@@ -7,11 +7,17 @@ namespace CardBoard.Messaging
 {
     public class MemoryMessageQueue : IMessageQueue
     {
-        private Queue<Message> _messages = new Queue<Message>();
+        public void Confirm(Message message)
+        {
+        }
 
         public void Enqueue(Message message)
         {
-            _messages.Enqueue(message);
+        }
+
+        public Exception Exception
+        {
+            get { return null; }
         }
     }
 }

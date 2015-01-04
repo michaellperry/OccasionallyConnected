@@ -45,16 +45,17 @@ namespace CardBoard.Models
         {
             get
             {
-                return _messagePump.Exception == null
+                var exception = _messagePump.Exception ?? _messageQueue.Exception;
+                return exception == null
                     ? null
-                    : _messagePump.Exception.Message;
+                    : exception.Message;
             }
         }
 
         public void EmitMessage(Message message)
         {
             _messageQueue.Enqueue(message);
-            _messagePump.SendAndReceiveMessages();
+            _messagePump.Enqueue(message);
             HandleMessage(message);
         }
 

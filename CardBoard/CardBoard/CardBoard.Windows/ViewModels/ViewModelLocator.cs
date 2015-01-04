@@ -29,7 +29,7 @@ namespace CardBoard.ViewModels
         private Application LoadApplication()
         {
             var messageQueue = new FileMessageQueue("CardBoard");
-            var messagePump = new HttpMessagePump();
+            var messagePump = new HttpMessagePump(new Uri("http://localhost/distributor"), messageQueue);
             var application = new Application(messageQueue, messagePump);
             return application;
         }

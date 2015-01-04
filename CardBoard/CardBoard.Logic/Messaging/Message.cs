@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using CardBoard.Messaging;
 
 namespace CardBoard.Messaging
 {
@@ -55,6 +56,19 @@ namespace CardBoard.Messaging
         public MessageHash Hash
         {
             get { return _hash; }
+        }
+
+        public dynamic GetMemento()
+        {
+            dynamic memento = new ExpandoObject();
+            memento.Hash = Hash.ToString();
+            memento.MessageType = Type;
+            memento.Predecessors = Predecessors
+                .Select(p => p.ToString())
+                .ToList();
+            memento.ObjectId = ObjectId;
+            memento.Body = Body;
+            return memento;
         }
 
         public static Message CreateMessage(

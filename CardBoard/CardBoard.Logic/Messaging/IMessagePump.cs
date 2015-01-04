@@ -7,6 +7,7 @@ namespace CardBoard.Messaging
 {
     public interface IMessagePump
     {
+        void Enqueue(Message message);
         void SendAndReceiveMessages();
         bool Busy { get; }
         Exception Exception { get; }

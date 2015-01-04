@@ -7,6 +7,10 @@ namespace CardBoard.Messaging
 {
     public class MemoryMessagePump : IMessagePump
     {
+        public void Enqueue(CardBoard.Messaging.Message message)
+        {
+        }
+
         public void SendAndReceiveMessages()
         {
         }
