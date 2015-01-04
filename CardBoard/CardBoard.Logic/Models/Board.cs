@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace CardBoard.Models
 {
-    public class Board
+    public class Board : IMessageHandler
     {
 
         private static readonly MessageDispatcher<Board> _dispatcher = new MessageDispatcher<Board>()
@@ -65,6 +65,11 @@ namespace CardBoard.Models
         {
             Guid cardId = Guid.Parse(message.Body.CardId);
             _cards.RemoveAll(c => c.CardId == cardId);
+        }
+
+        public Guid GetObjectId()
+        {
+            return Guid.Empty;
         }
     }
 }

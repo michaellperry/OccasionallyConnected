@@ -1,10 +1,22 @@
-﻿using CardBoard.Messaging;
+﻿using Assisticant.Collections;
+using CardBoard.Messaging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CardBoard.Models
 {
     public class Application
     {
         private Board _board = new Board();
+        private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
+
+        public Application()
+        {
+            _messageHandlers = new ComputedDictionary<Guid, IMessageHandler>(() =>
+                new List <IMessageHandler> { _board }.Union(_board.Cards)
+                    .ToDictionary(m => m.GetObjectId()));
+        }
 
         public Board Board
         {
@@ -13,7 +25,9 @@ namespace CardBoard.Models
 
         public void HandleMessage(Message message)
         {
-            _board.HandleMessage(message);
+            IMessageHandler messageHandler;
+            if (_messageHandlers.TryGetValue(message.ObjectId, out messageHandler))
+                messageHandler.HandleMessage(message);
         }
     }
 }
