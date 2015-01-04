@@ -45,7 +45,7 @@ namespace CardBoard.Messaging
                     {
                         if (_queue.IsEmpty)
                             return;
-                        _queue = _queue.Dequeue(out message);
+                        message = _queue.Peek();
                     }
 
                     dynamic memento = message.GetMemento();
@@ -56,6 +56,10 @@ namespace CardBoard.Messaging
                     if (!result.IsSuccessStatusCode)
                         return;
 
+                    lock (this)
+                    {
+                        _queue = _queue.Dequeue();
+                    }
                     _messageQueue.Confirm(message);
                 }
             }
