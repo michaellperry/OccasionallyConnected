@@ -15,7 +15,10 @@ namespace CardBoard.Test
         [TestInitialize]
         public void Initialize()
         {
-            _application = new Application(new MemoryMessageQueue(), new MemoryMessagePump());
+            _application = new Application(
+                new MemoryMessageQueue(),
+                new MemoryMessagePump(),
+                new MemoryMessageStore());
         }
 
         [TestMethod]

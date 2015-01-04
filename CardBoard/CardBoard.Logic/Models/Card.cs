@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Immutable;
 
 namespace CardBoard.Models
 {
@@ -54,6 +55,14 @@ namespace CardBoard.Models
         public void HandleMessage(Message message)
         {
             _dispatcher.Dispatch(this, message);
+        }
+
+        public void HandleAllMessages(ImmutableList<Message> messages)
+        {
+            _text.HandleAllMessages(messages
+                .Where(m => m.Type == "CardTextChanged"));
+            _column.HandleAllMessages(messages
+                .Where(m => m.Type == "CardMoved"));
         }
 
         private void HandleCardTextChanged(Message message)

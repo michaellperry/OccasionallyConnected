@@ -41,12 +41,15 @@
     <Compile Include="Crypto\IDigest.cs" />
     <Compile Include="Crypto\IMemoable.cs" />
     <Compile Include="Messaging\FileMessageQueue.cs" />
+    <Compile Include="Messaging\FileMessageStore.cs" />
     <Compile Include="Messaging\HttpMessagePump.cs" />
     <Compile Include="Messaging\IMessageHandler.cs" />
     <Compile Include="Messaging\IMessagePump.cs" />
     <Compile Include="Messaging\IMessageQueue.cs" />
+    <Compile Include="Messaging\IMessageStore.cs" />
     <Compile Include="Messaging\MemoryMessagePump.cs" />
     <Compile Include="Messaging\MemoryMessageQueue.cs" />
+    <Compile Include="Messaging\MemoryMessageStore.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Messaging\MessageDispatcher.cs" />
     <Compile Include="Messaging\MessageHash.cs" />

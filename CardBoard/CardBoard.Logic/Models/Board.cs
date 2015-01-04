@@ -54,6 +54,21 @@ namespace CardBoard.Models
             _dispatcher.Dispatch(this, message);
         }
 
+        public void HandleAllMessages(IEnumerable<Message> messages)
+        {
+            var cardsDeleted = messages
+                .Where(m => m.Type == "CardDeleted")
+                .Select(m => Guid.Parse(m.Body.CardId))
+                .ToLookup(g => g);
+            var cardsCreated = messages
+                .Where(m => m.Type == "CardCreated")
+                .Select(m => Guid.Parse(m.Body.CardId))
+                .Where(g => !cardsDeleted.Contains(g))
+                .Select(g => new Card(g));
+
+            _cards.AddRange(cardsCreated);
+        }
+
         private void HandleCardCreated(Message message)
         {
             var cardId = Guid.Parse(message.Body.CardId);

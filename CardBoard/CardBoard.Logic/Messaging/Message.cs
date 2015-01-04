@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.IO;
 using System;
@@ -7,7 +8,6 @@ using System.Collections.Immutable;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
-using CardBoard.Messaging;
 
 namespace CardBoard.Messaging
 {
@@ -97,6 +97,25 @@ namespace CardBoard.Messaging
                 objectId,
                 expandoBody,
                 messageHash);
+        }
+
+        public static Message FromMemento(dynamic memento)
+        {
+            string messageType = memento.MessageType;
+            JArray predecessorStrings = memento.Predecessors;
+            string objectId = memento.ObjectId;
+            var expandoBody = JsonConvert.DeserializeObject<ExpandoObject>(
+                JsonConvert.SerializeObject(memento.Body));
+            string hash = memento.Hash;
+
+            return new Message(
+                messageType,
+                predecessorStrings
+                    .Select(h => MessageHash.Parse(h.Value<string>()))
+                    .ToImmutableList(),
+                Guid.Parse(objectId),
+                expandoBody,
+                MessageHash.Parse(hash));
         }
 
         private static byte[] ComputeHash(dynamic memento)

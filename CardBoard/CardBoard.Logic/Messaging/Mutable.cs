@@ -43,5 +43,19 @@ namespace CardBoard.Messaging
 
             _predecessors.AddRange(newPredecessors);
         }
+
+        public void HandleAllMessages(IEnumerable<Message> messages)
+        {
+            var predecessors = messages
+                .SelectMany(m => m.Predecessors)
+                .ToLookup(h => h);
+            var candidates = messages
+                .Where(m => !predecessors.Contains(m.Hash))
+                .Select(m => new Candidate<T>(m.Hash, (T)m.Body.Value));
+
+            _candidates.RemoveAll(c => predecessors.Contains(c.MessageHash));
+            _predecessors.AddRange(predecessors.Select(p => p.Key));
+            _candidates.AddRange(candidates);
+        }
     }
 }

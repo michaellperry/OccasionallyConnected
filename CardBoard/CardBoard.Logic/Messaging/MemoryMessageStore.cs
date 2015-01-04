@@ -7,18 +7,14 @@ using System.Threading.Tasks;
 
 namespace CardBoard.Messaging
 {
-    public class MemoryMessageQueue : IMessageQueue
+    public class MemoryMessageStore : IMessageStore
     {
-        public Task<ImmutableList<Message>> LoadAsync()
+        public Task<ImmutableList<Message>> LoadAsync(Guid objectId)
         {
             return Task.FromResult(ImmutableList<Message>.Empty);
         }
 
-        public void Confirm(Message message)
-        {
-        }
-
-        public void Enqueue(Message message)
+        public void Save(Message message)
         {
         }
 

@@ -11,6 +11,10 @@ namespace CardBoard.Messaging
         {
         }
 
+        public void SendAllMessages(System.Collections.Immutable.ImmutableList<Message> messages)
+        {
+            throw new NotImplementedException();
+        }
         public void SendAndReceiveMessages()
         {
         }

@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace CardBoard.Messaging
 {
-    public interface IMessageQueue
+    public interface IMessageStore
     {
-        Task<ImmutableList<Message>> LoadAsync();
-        void Enqueue(Message message);
-        void Confirm(Message message);
+        Task<ImmutableList<Message>> LoadAsync(Guid objectId);
+        void Save(Message message);
         Exception Exception { get; }
     }
 }

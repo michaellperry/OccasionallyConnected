@@ -1,11 +1,13 @@
 ﻿using CardBoard.Tasks;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using System.Collections.Immutable;
 
 namespace CardBoard.Messaging
 {
@@ -21,36 +23,60 @@ namespace CardBoard.Messaging
             _folderName = folderName;
         }
 
+        public Task<ImmutableList<Message>> LoadAsync()
+        {
+            var completion = new TaskCompletionSource<ImmutableList<Message>>();
+            Perform(() => LoadInternalAsync(completion));
+            return completion.Task;
+        }
+
         public void Enqueue(Message message)
         {
-            Perform(() => EnqueueAsync(message));
+            Perform(() => EnqueueInternalAsync(message));
         }
 
         public void Confirm(Message message)
         {
-            Perform(() => ConfirmAsync(message));
+            Perform(() => ConfirmInternalAsync(message));
         }
 
-        private async Task EnqueueAsync(Message message)
+        private async Task LoadInternalAsync(TaskCompletionSource<ImmutableList<Message>> completion)
+        {
+            try
+            {
+                await CreateFileAsync();
+                var messages = await ReadMessagesAsync();
+                var result = messages
+                    .Select(m => Message.FromMemento(m))
+                    .ToImmutableList();
+                completion.SetResult(result);
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
+        }
+
+        private async Task EnqueueInternalAsync(Message message)
         {
             await CreateFileAsync();
-            var messageList = await ReadMessageList();
+            var messageList = await ReadMessagesAsync();
 
             dynamic memento = message.GetMemento();
             messageList.Add(memento);
 
-            await WriteMessageList(messageList);
+            await WriteMessagesAsync(messageList);
         }
 
-        private async Task ConfirmAsync(Message message)
+        private async Task ConfirmInternalAsync(Message message)
         {
             await CreateFileAsync();
-            var messageList = await ReadMessageList();
+            var messageList = await ReadMessagesAsync();
 
             string hash = message.Hash.ToString();
             messageList.RemoveAll(o => ((dynamic)o).Hash == hash);
 
-            await WriteMessageList(messageList);
+            await WriteMessagesAsync(messageList);
         }
 
         private async Task CreateFileAsync()
@@ -64,7 +90,7 @@ namespace CardBoard.Messaging
             }
         }
 
-        private async Task<List<ExpandoObject>> ReadMessageList()
+        private async Task<List<ExpandoObject>> ReadMessagesAsync()
         {
             List<ExpandoObject> messageList;
             var inputStream = await _messageQueueFile.OpenStreamForReadAsync();
@@ -78,7 +104,7 @@ namespace CardBoard.Messaging
             return messageList;
         }
 
-        private async Task WriteMessageList(List<ExpandoObject> messageList)
+        private async Task WriteMessagesAsync(List<ExpandoObject> messageList)
         {
             var outputStream = await _messageQueueFile.OpenStreamForWriteAsync();
             using (JsonWriter writer = new JsonTextWriter(new StreamWriter(outputStream)))

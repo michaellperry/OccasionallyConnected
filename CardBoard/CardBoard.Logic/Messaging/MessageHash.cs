@@ -54,5 +54,10 @@ namespace CardBoard.Messaging
 
             return 0;
         }
+
+        public static MessageHash Parse(string str)
+        {
+            return new MessageHash(Convert.FromBase64String(str));
+        }
     }
 }

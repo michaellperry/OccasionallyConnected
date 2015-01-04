@@ -17,7 +17,10 @@ namespace CardBoard.Test
         [TestInitialize]
         public void Initialize()
         {
-            _application = new Application(new MemoryMessageQueue(), new MemoryMessagePump());
+            _application = new Application(
+                new MemoryMessageQueue(),
+                new MemoryMessagePump(),
+                new MemoryMessageStore());
             var cardId = Guid.NewGuid();
             var message = _application.Board.CreateCard(cardId);
             _application.EmitMessage(message);

@@ -30,7 +30,9 @@ namespace CardBoard.ViewModels
         {
             var messageQueue = new FileMessageQueue("CardBoard");
             var messagePump = new HttpMessagePump(new Uri("http://localhost/distributor"), messageQueue);
-            var application = new Application(messageQueue, messagePump);
+            var messageStore = new FileMessageStore("CardBoard");
+            var application = new Application(messageQueue, messagePump, messageStore);
+            application.Load();
             return application;
         }
 
@@ -38,7 +40,8 @@ namespace CardBoard.ViewModels
         {
             var messageQueue = new MemoryMessageQueue();
             var messagePump = new MemoryMessagePump();
-            var application = new Application(messageQueue, messagePump);
+            var messageStore = new MemoryMessageStore();
+            var application = new Application(messageQueue, messagePump, messageStore);
             CreateCard(application, "Record the demo", Column.Doing);
             CreateCard(application, "Edit the demo", Column.ToDo);
             CreateCard(application, "Publish the course", Column.ToDo);

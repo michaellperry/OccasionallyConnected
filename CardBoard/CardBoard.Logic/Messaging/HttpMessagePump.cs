@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Web.Http;
 
@@ -26,27 +27,34 @@ namespace CardBoard.Messaging
             {
                 _queue = _queue.Enqueue(message);
             }
-            Perform(() => SendAndReceiveMessagesAsync());
+            Perform(() => SendAndReceiveMessagesInternalAsync());
+        }
+
+        public void SendAllMessages(ImmutableList<Message> messages)
+        {
+            lock (this)
+            {
+                _queue = messages.Aggregate(_queue,
+                    (queue, message) => _queue.Enqueue(message));
+            }
+            Perform(() => SendAndReceiveMessagesInternalAsync());
         }
 
         public void SendAndReceiveMessages()
         {
-            Perform(() => SendAndReceiveMessagesAsync());
+            Perform(() => SendAndReceiveMessagesInternalAsync());
         }
 
-        private async Task SendAndReceiveMessagesAsync()
+        private async Task SendAndReceiveMessagesInternalAsync()
         {
             using (HttpClient client = new HttpClient())
             {
                 while (true)
                 {
-                    Message message;
-                    lock (this)
-                    {
-                        if (_queue.IsEmpty)
-                            return;
-                        message = _queue.Peek();
-                    }
+                    var queue = _queue;
+                    if (queue.IsEmpty)
+                        return;
+                    var message = queue.Peek();
 
                     dynamic memento = message.GetMemento();
                     string messageJson = JsonConvert.SerializeObject(memento);
