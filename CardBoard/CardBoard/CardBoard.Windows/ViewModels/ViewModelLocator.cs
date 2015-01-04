@@ -27,14 +27,18 @@ namespace CardBoard.ViewModels
         }
 
         private Application LoadApplication()
-		{
-            Application application = new Application(new FileMessageQueue(), new HttpMessagePump());
+        {
+            var messageQueue = new FileMessageQueue("CardBoard");
+            var messagePump = new HttpMessagePump();
+            var application = new Application(messageQueue, messagePump);
             return application;
-		}
+        }
 
         private Application LoadDesignModeApplication()
-		{
-            Application application = new Application(new MemoryMessageQueue(), new MemoryMessagePump());
+        {
+            var messageQueue = new MemoryMessageQueue();
+            var messagePump = new MemoryMessagePump();
+            var application = new Application(messageQueue, messagePump);
             CreateCard(application, "Record the demo", Column.Doing);
             CreateCard(application, "Edit the demo", Column.ToDo);
             CreateCard(application, "Publish the course", Column.ToDo);

@@ -17,7 +17,6 @@ namespace CardBoard.Messaging
 
         private async Task SendAndReceiveMessagesAsync()
         {
-            throw new NotImplementedException();
         }
     }
 }

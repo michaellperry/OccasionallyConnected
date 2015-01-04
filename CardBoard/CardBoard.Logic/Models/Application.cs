@@ -13,8 +13,6 @@ namespace CardBoard.Models
         private readonly IMessagePump _messagePump;
 
         private Board _board = new Board();
-        private Observable<bool> _busy = new Observable<bool>();
-        private Observable<string> _lastError = new Observable<string>();
 
         private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
         

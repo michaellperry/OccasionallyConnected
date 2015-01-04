@@ -94,7 +94,7 @@ namespace CardBoard.Messaging
                 string mementoToString = JsonConvert.SerializeObject(memento);
                 writer.Write(mementoToString);
             }
-            byte[] buffer = new byte[sha.GetByteLength()];
+            byte[] buffer = new byte[sha.GetDigestSize()];
             sha.DoFinal(buffer, 0);
             return buffer;
         }
