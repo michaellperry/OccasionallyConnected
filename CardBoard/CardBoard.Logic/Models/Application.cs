@@ -35,24 +35,28 @@ namespace CardBoard.Models
 
         public void Refresh()
         {
-            throw new NotImplementedException();
+            _messagePump.SendAndReceiveMessages();
         }
 
         public bool Busy
         {
-            get { return _busy; }
-            set { _busy.Value = value; }
+            get { return _messagePump.Busy; }
         }
 
         public string LastError
         {
-            get { return _lastError; }
-            set { _lastError.Value = value; }
+            get
+            {
+                return _messagePump.Exception == null
+                    ? null
+                    : _messagePump.Exception.Message;
+            }
         }
 
         public void EmitMessage(Message message)
         {
             _messageQueue.Enqueue(message);
+            _messagePump.SendAndReceiveMessages();
             HandleMessage(message);
         }
 

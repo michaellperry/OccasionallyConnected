@@ -10,6 +10,7 @@ namespace CardBoard.Tasks
     public class Process
     {
         private AsyncSemaphore _lock = new AsyncSemaphore();
+        private Observable<bool> _busy = new Observable<bool>();
         private Observable<Exception> _exception = new Observable<Exception>();
 
         public Exception Exception
@@ -23,21 +24,36 @@ namespace CardBoard.Tasks
             }
         }
 
+        public bool Busy
+        {
+            get
+            {
+                lock (_busy)
+                {
+                    return _busy;
+                }
+            }
+        }
+
         public Task JoinAsync()
         {
             TaskCompletionSource<bool> completion = new TaskCompletionSource<bool>();
-            Enqueue(async delegate
+            Perform(async delegate
             {
                 completion.SetResult(true);
             });
             return completion.Task;
         }
 
-        protected async void Enqueue(Func<Task> request)
+        protected async void Perform(Func<Task> request)
         {
             await _lock.WaitAsync();
             try
             {
+                lock (_busy)
+                {
+                    _busy.Value = true;
+                }
                 await request();
                 lock (_exception)
                 {
@@ -54,12 +70,16 @@ namespace CardBoard.Tasks
             finally
             {
                 _lock.Release();
+                lock (_busy)
+                {
+                    _busy.Value = false;
+                }
             }
         }
 
-        protected void Enqueue(Action request)
+        protected void Perform(Action request)
         {
-            Enqueue(() => Task.Run(request));
+            Perform(() => Task.Run(request));
         }
     }
 }

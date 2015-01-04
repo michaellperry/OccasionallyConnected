@@ -7,5 +7,18 @@ namespace CardBoard.Messaging
 {
     public class MemoryMessagePump : IMessagePump
     {
+        public void SendAndReceiveMessages()
+        {
+        }
+
+        public bool Busy
+        {
+            get { return false; }
+        }
+
+        public Exception Exception
+        {
+            get { return null; }
+        }
     }
 }
