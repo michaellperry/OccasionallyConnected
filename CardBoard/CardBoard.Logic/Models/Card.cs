@@ -31,9 +31,19 @@ namespace CardBoard.Models
             get { return _text.Candidates; }
         }
 
+        public Message SetText(string text)
+        {
+            return _text.CreateMessage("CardTextChanged", _cardId, text);
+        }
+
         public IEnumerable<Candidate<Column>> Column
         {
             get { return _column.Candidates; }
+        }
+
+        public Message MoveTo(Column column)
+        {
+            return _column.CreateMessage("CardMoved", _cardId, column);
         }
 
         public Guid GetObjectId()
