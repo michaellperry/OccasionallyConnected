@@ -23,5 +23,17 @@ namespace CardBoard.ViewModels
         {
             get { return new BoardViewModel(_application, _application.Board); }
         }
+
+        public void NewCard()
+        {
+            DialogManager.ShowCardDetail(new CardDetailModel(), detail =>
+            {
+                var cardId = Guid.NewGuid();
+                _application.HandleMessage(_application.Board.CreateCard(cardId));
+                var card = _application.Board.Cards.Single(c => c.CardId == cardId);
+                _application.HandleMessage(card.SetText(detail.Text));
+                _application.HandleMessage(card.MoveTo(Column.ToDo));
+            });
+        }
     }
 }
