@@ -26,6 +26,26 @@ namespace CardBoard.ViewModels
             get { return new BoardViewModel(_application, _application.Board, _selection); }
         }
 
+        public bool CanEditCard
+        {
+            get { return _selection.SelectedCard != null; }
+        }
+
+        public void EditCard()
+        {
+            DialogManager.ShowCardDetail(new CardDetailModel
+            {
+                Text = _selection.SelectedCard.Text
+                    .OrderBy(c => c.MessageHash)
+                    .Select(c => c.Value)
+                    .FirstOrDefault()
+            }, detail =>
+            {
+                _application.HandleMessage(
+                    _selection.SelectedCard.SetText(detail.Text));
+            });
+        }
+
         public void NewCard()
         {
             DialogManager.ShowCardDetail(new CardDetailModel(), detail =>

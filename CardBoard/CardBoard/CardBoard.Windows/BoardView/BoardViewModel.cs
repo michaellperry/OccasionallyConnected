@@ -24,14 +24,32 @@ namespace CardBoard.BoardView
             get { return CardsIn(Column.ToDo); }
         }
 
+        public CardViewModel SelectedToDoCard
+        {
+            get { return SelectedCardIn(Column.ToDo); }
+            set { SetSelectedCard(value); }
+        }
+
         public IEnumerable<CardViewModel> DoingCards
         {
             get { return CardsIn(Column.Doing); }
         }
 
+        public CardViewModel SelectedDoingCard
+        {
+            get { return SelectedCardIn(Column.Doing); }
+            set { SetSelectedCard(value); }
+        }
+
         public IEnumerable<CardViewModel> DoneCards
         {
             get { return CardsIn(Column.Done); }
+        }
+
+        public CardViewModel SelectedDoneCard
+        {
+            get { return SelectedCardIn(Column.Done); }
+            set { SetSelectedCard(value); }
         }
 
         private IEnumerable<CardViewModel> CardsIn(Column column)
