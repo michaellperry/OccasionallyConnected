@@ -22,6 +22,28 @@ namespace CardBoard.BoardView
             get { return _card; }
         }
 
+        public string Text
+        {
+            get
+            {
+                return _card.Text
+                    .OrderBy(c => c.MessageHash)
+                    .Select(c => c.Value)
+                    .FirstOrDefault();
+            }
+        }
+
+        public bool Conflict
+        {
+            get
+            {
+                return _card.Column
+                    .Select(c => c.Value)
+                    .Distinct()
+                    .Count() > 1;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
