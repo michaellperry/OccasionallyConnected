@@ -52,6 +52,24 @@ namespace CardBoard.BoardView
             set { SetSelectedCard(value); }
         }
 
+        public static Uri UriOfCard(Card card)
+        {
+            return new Uri(
+                String.Format("cardboard://card/{0}",
+                    card.CardId),
+                UriKind.Absolute);
+        }
+
+        public void MoveCard(Uri uri, Column column)
+        {
+            var cards = _board.Cards;
+            var card = cards.FirstOrDefault(c => UriOfCard(c) == uri);
+            if (card == null)
+                return;
+
+            _application.HandleMessage(card.MoveTo(column));
+        }
+
         private IEnumerable<CardViewModel> CardsIn(Column column)
         {
             return

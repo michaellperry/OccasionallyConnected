@@ -26,6 +26,17 @@ namespace CardBoard.ViewModels
             get { return new BoardViewModel(_application, _application.Board, _selection); }
         }
 
+        public bool CanDeleteCard
+        {
+            get { return _selection.SelectedCard != null; }
+        }
+
+        public void DeleteCard()
+        {
+            _application.HandleMessage(_application.Board.DeleteCard(
+                _selection.SelectedCard.CardId));
+        }
+
         public bool CanEditCard
         {
             get { return _selection.SelectedCard != null; }
