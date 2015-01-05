@@ -1,17 +1,20 @@
 ﻿using CardBoard.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CardBoard.Models
 {
     public class Card : IMessageHandler
     {
         private static MessageDispatcher<Card> _dispatcher = new MessageDispatcher<Card>()
-            .On("CardTextChanged", (o, m) => HandleCardTextChangedMessage(m))
-            .On("CardMoved", (o, m) => HandleCardTextMovedMessage(m));
+            .On("CardTextChanged", (o, m) => o.HandleCardTextChangedMessage(m))
+            .On("CardMoved", (o, m) => o.HandleCardTextMovedMessage(m));
+
         private readonly Guid _cardId;
 
-        private List<Candidate<string>> _text = new List<Candidate<string>>();
+        private Mutable<string> _text = new Mutable<string>();
+        private Mutable<Column> _column = new Mutable<Column>();
 
         public Card(Guid cardId)
         {
@@ -25,10 +28,13 @@ namespace CardBoard.Models
 
         public IEnumerable<Candidate<string>> Text
         {
-            get { return _text; }
+            get { return _text.Candidates; }
         }
 
-        public Column Column { get; set; }
+        public IEnumerable<Candidate<Column>> Column
+        {
+            get { return _column.Candidates; }
+        }
 
         public Guid GetObjectId()
         {
@@ -40,14 +46,14 @@ namespace CardBoard.Models
             _dispatcher.Dispatch(this, message);
         }
 
-        private static void HandleCardTextChangedMessage(Message message)
+        private void HandleCardTextChangedMessage(Message message)
         {
-            throw new NotImplementedException();
+            _text.HandleMessage(message);
         }
 
-        private static void HandleCardTextMovedMessage(Message message)
+        private void HandleCardTextMovedMessage(Message message)
         {
-            throw new NotImplementedException();
+            _column.HandleMessage(message);
         }
     }
 }
