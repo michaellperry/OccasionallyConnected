@@ -10,18 +10,20 @@ namespace CardBoard.ViewModels
     public class ViewModelLocator : ViewModelLocatorBase
     {
         private Application _application;
-
+        private SelectionModel _selection;
+        
         public ViewModelLocator()
         {
 			if (DesignMode)
                 _application = LoadDesignModeApplication();
 			else
                 _application = LoadApplication();
+            _selection = new SelectionModel();
         }
 
         public object Main
         {
-            get { return ViewModel(() => new MainViewModel(_application)); }
+            get { return ViewModel(() => new MainViewModel(_application, _selection)); }
         }
 
         private Application LoadApplication()

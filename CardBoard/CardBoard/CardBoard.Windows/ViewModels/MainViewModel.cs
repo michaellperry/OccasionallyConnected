@@ -8,10 +8,12 @@ namespace CardBoard.ViewModels
     public class MainViewModel
     {
         private readonly Application _application;
+        private readonly SelectionModel _selection;
         
-        public MainViewModel(Application application)
+        public MainViewModel(Application application, SelectionModel selection)
         {
             _application = application;
+            _selection = selection;
         }
 
         public string BoardName
@@ -21,7 +23,7 @@ namespace CardBoard.ViewModels
 
         public BoardViewModel BoardDetail
         {
-            get { return new BoardViewModel(_application, _application.Board); }
+            get { return new BoardViewModel(_application, _application.Board, _selection); }
         }
 
         public void NewCard()
