@@ -28,7 +28,8 @@ namespace CardBoard.ViewModels
 
         private Application LoadApplication()
         {
-            var application = new Application();
+            var application = new Application(
+                new FileMessageStore("CardBoard"));
             return application;
         }
 

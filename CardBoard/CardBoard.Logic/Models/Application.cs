@@ -3,17 +3,23 @@ using CardBoard.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CardBoard.Models
 {
     public class Application
     {
+        private readonly IMessageStore _messageStore;
+
         private Board _board = new Board();
         private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
-
-        public Application()
+        
+        public Application(IMessageStore messageStore = null)
         {
+            if (messageStore == null)
+                messageStore = new NoOpMessageStore();
+
+            _messageStore = messageStore;
+
             _messageHandlers = new ComputedDictionary<Guid, IMessageHandler>(() =>
                 new List <IMessageHandler> { _board }.Union(_board.Cards)
                     .ToDictionary(m => m.GetObjectId()));
@@ -26,6 +32,7 @@ namespace CardBoard.Models
 
         public void EmitMessage(Message message)
         {
+            _messageStore.Save(message);
             HandleMessage(message);
         }
 

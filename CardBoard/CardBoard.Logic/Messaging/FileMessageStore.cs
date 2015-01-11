@@ -11,7 +11,7 @@ using Windows.Storage;
 
 namespace CardBoard.Messaging
 {
-    public class FileMessageStore : Process
+    public class FileMessageStore : Process, IMessageStore
     {
         private static readonly Regex Punctuation = new Regex(@"[{}-]");
 
@@ -22,6 +22,19 @@ namespace CardBoard.Messaging
         public FileMessageStore(string folderName)
         {
             _folderName = folderName;
+        }
+
+        public void Save(Message message)
+        {
+            Perform(() => SaveInternalAsync(message));
+        }
+
+        private async Task SaveInternalAsync(Message message)
+        {
+            var file = await CreateFileAsync(message.ObjectId);
+            var messages = await ReadMessagesAsync(file);
+            messages.Add(message.GetMemento());
+            await WriteMessagesAsync(file, messages);
         }
 
         private async Task<StorageFile> CreateFileAsync(Guid objectId)
