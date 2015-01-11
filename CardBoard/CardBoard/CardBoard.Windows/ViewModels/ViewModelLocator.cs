@@ -44,10 +44,10 @@ namespace CardBoard.ViewModels
         private static void CreateCard(Application application, string text, Column column)
         {
             var cardId = Guid.NewGuid();
-            application.HandleMessage(application.Board.CreateCard(cardId));
+            application.EmitMessage(application.Board.CreateCard(cardId));
             var card = application.Board.Cards.Single(c => c.CardId == cardId);
-            application.HandleMessage(card.SetText(text));
-            application.HandleMessage(card.MoveTo(column));
+            application.EmitMessage(card.SetText(text));
+            application.EmitMessage(card.MoveTo(column));
         }
     }
 }

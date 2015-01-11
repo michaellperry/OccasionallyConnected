@@ -67,7 +67,7 @@ namespace CardBoard.BoardView
             if (card == null)
                 return;
 
-            _application.HandleMessage(card.MoveTo(column));
+            _application.EmitMessage(card.MoveTo(column));
         }
 
         private IEnumerable<CardViewModel> CardsIn(Column column)

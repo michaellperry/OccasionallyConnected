@@ -3,6 +3,7 @@ using CardBoard.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CardBoard.Models
 {
@@ -23,7 +24,12 @@ namespace CardBoard.Models
             get { return _board; }
         }
 
-        public void HandleMessage(Message message)
+        public void EmitMessage(Message message)
+        {
+            HandleMessage(message);
+        }
+
+        private void HandleMessage(Message message)
         {
             IMessageHandler messageHandler;
             if (_messageHandlers.TryGetValue(message.ObjectId, out messageHandler))

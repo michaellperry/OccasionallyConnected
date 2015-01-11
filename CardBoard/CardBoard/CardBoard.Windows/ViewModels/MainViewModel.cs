@@ -33,7 +33,7 @@ namespace CardBoard.ViewModels
 
         public void DeleteCard()
         {
-            _application.HandleMessage(_application.Board.DeleteCard(
+            _application.EmitMessage(_application.Board.DeleteCard(
                 _selection.SelectedCard.CardId));
         }
 
@@ -52,7 +52,7 @@ namespace CardBoard.ViewModels
                     .FirstOrDefault()
             }, detail =>
             {
-                _application.HandleMessage(
+                _application.EmitMessage(
                     _selection.SelectedCard.SetText(detail.Text));
             });
         }
@@ -62,10 +62,10 @@ namespace CardBoard.ViewModels
             DialogManager.ShowCardDetail(new CardDetailModel(), detail =>
             {
                 var cardId = Guid.NewGuid();
-                _application.HandleMessage(_application.Board.CreateCard(cardId));
+                _application.EmitMessage(_application.Board.CreateCard(cardId));
                 var card = _application.Board.Cards.Single(c => c.CardId == cardId);
-                _application.HandleMessage(card.SetText(detail.Text));
-                _application.HandleMessage(card.MoveTo(Column.ToDo));
+                _application.EmitMessage(card.SetText(detail.Text));
+                _application.EmitMessage(card.MoveTo(Column.ToDo));
             });
         }
     }
