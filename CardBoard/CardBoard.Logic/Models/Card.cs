@@ -56,6 +56,14 @@ namespace CardBoard.Models
             _dispatcher.Dispatch(this, message);
         }
 
+        public void HandleAllMessages(IEnumerable<Message> messages)
+        {
+            _text.HandleAllMessages(messages
+                .Where(m => m.Type == "CardTextChanged"));
+            _column.HandleAllMessages(messages
+                .Where(m => m.Type == "CardMoved"));
+        }
+
         private void HandleCardTextChangedMessage(Message message)
         {
             _text.HandleMessage(message);

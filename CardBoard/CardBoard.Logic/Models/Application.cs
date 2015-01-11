@@ -1,4 +1,5 @@
 ﻿using Assisticant.Collections;
+using Assisticant.Fields;
 using CardBoard.Messaging;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace CardBoard.Models
 
         private Board _board = new Board();
         private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
+
+        private Observable<Exception> _exception = new Observable<Exception>();
         
         public Application(IMessageStore messageStore = null)
         {
@@ -23,6 +26,24 @@ namespace CardBoard.Models
             _messageHandlers = new ComputedDictionary<Guid, IMessageHandler>(() =>
                 new List <IMessageHandler> { _board }.Union(_board.Cards)
                     .ToDictionary(m => m.GetObjectId()));
+        }
+
+        public async void Load()
+        {
+            try
+            {
+                var boardMessages = await _messageStore.LoadAsync(_board.GetObjectId());
+                _board.HandleAllMessages(boardMessages);
+                foreach (var card in _board.Cards)
+                {
+                    var cardMessages = await _messageStore.LoadAsync(card.GetObjectId());
+                    card.HandleAllMessages(cardMessages);
+                }
+            }
+            catch (Exception ex)
+            {
+                _exception.Value = ex;
+            }
         }
 
         public Board Board

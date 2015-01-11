@@ -1,9 +1,9 @@
 using Assisticant;
 using CardBoard.BoardView;
+using CardBoard.Messaging;
 using CardBoard.Models;
 using System;
 using System.Linq;
-using CardBoard.Messaging;
 
 namespace CardBoard.ViewModels
 {
@@ -30,6 +30,7 @@ namespace CardBoard.ViewModels
         {
             var application = new Application(
                 new FileMessageStore("CardBoard"));
+            application.Load();
             return application;
         }
 

@@ -1,8 +1,8 @@
 ﻿using Assisticant.Collections;
 using Assisticant.Fields;
-using System.Collections.Generic;
 using CardBoard.Messaging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CardBoard.Models
@@ -20,6 +20,21 @@ namespace CardBoard.Models
         public void HandleMessage(Message message)
         {
             _dispatcher.Dispatch(this, message);
+        }
+
+        public void HandleAllMessages(IEnumerable<Message> messages)
+        {
+            var cardsDeleted = messages
+                .Where(m => m.Type == "CardDeleted")
+                .Select(m => Guid.Parse(m.Body.CardId))
+                .ToLookup(g => g);
+            var cardsCreated = messages
+                .Where(m => m.Type == "CardCreated")
+                .Select(m => Guid.Parse(m.Body.CardId))
+                .Where(g => !cardsDeleted.Contains(g))
+                .Select(g => new Card(g));
+
+            _cards.AddRange(cardsCreated);
         }
 
         public string Name

@@ -24,9 +24,33 @@ namespace CardBoard.Messaging
             _folderName = folderName;
         }
 
+        public Task<ImmutableList<Message>> LoadAsync(Guid objectId)
+        {
+            var completion = new TaskCompletionSource<ImmutableList<Message>>();
+            Perform(() => LoadInternalAsync(objectId, completion));
+            return completion.Task;
+        }
+
         public void Save(Message message)
         {
             Perform(() => SaveInternalAsync(message));
+        }
+
+        private async Task LoadInternalAsync(Guid objectId, TaskCompletionSource<ImmutableList<Message>> completion)
+        {
+            try
+            {
+                var file = await CreateFileAsync(objectId);
+                var messages = await ReadMessagesAsync(file);
+                var result = messages
+                    .Select(m => Message.FromMemento(m))
+                    .ToImmutableList();
+                completion.SetResult(result);
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
         }
 
         private async Task SaveInternalAsync(Message message)
