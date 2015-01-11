@@ -56,7 +56,7 @@ namespace CardBoard.Messaging
         {
             get { return _hash; }
         }
-
+		
         public static Message CreateMessage(
             string messageType,
             Guid objectId,
@@ -105,6 +105,32 @@ namespace CardBoard.Messaging
             byte[] buffer = new byte[sha.GetDigestSize()];
             sha.DoFinal(buffer, 0);
             return buffer;
+        }
+
+        public MessageMemento GetMemento()
+        {
+            return new MessageMemento()
+            {
+                Hash = Hash.ToString(),
+                MessageType = Type,
+                Predecessors = Predecessors
+                    .Select(p => p.ToString())
+                    .ToList(),
+                ObjectId = ObjectId,
+                Body = Body
+            };
+        }
+
+        public static Message FromMemento(MessageMemento memento)
+        {
+            return new Message(
+                memento.MessageType,
+                memento.Predecessors
+                    .Select(h => MessageHash.Parse(h))
+                    .ToImmutableList(),
+                memento.ObjectId,
+                memento.Body,
+                MessageHash.Parse(memento.Hash));
         }
     }
 }
