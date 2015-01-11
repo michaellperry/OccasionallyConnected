@@ -83,7 +83,7 @@ namespace CardBoard.BoardView
             if (_selection.SelectedCard == null)
                 return null;
 
-            if (_selection.SelectedCard.Column.Any(c => c.Value == column))
+            if (!_selection.SelectedCard.Column.Any(c => c.Value == column))
                 return null;
 
             return new CardViewModel(_selection.SelectedCard, column);
