@@ -45,9 +45,7 @@
             AllowDrop="True"
             ItemsSource="{Binding ToDoCards}"
             SelectedItem="{Binding SelectedToDoCard, Mode=TwoWay}"
-            ItemTemplate="{StaticResource CardItemTemplate}"
-            DragItemsStarting="CardList_DragItemsStarting"
-            Drop="CardList_Drop">
+            ItemTemplate="{StaticResource CardItemTemplate}">
         </ListView>
 
         <TextBlock
@@ -67,9 +65,7 @@
             AllowDrop="True"
             ItemsSource="{Binding DoingCards}"
             SelectedItem="{Binding SelectedDoingCard, Mode=TwoWay}"
-            ItemTemplate="{StaticResource CardItemTemplate}"
-            DragItemsStarting="CardList_DragItemsStarting"
-            Drop="CardList_Drop">
+            ItemTemplate="{StaticResource CardItemTemplate}">
         </ListView>
         <TextBlock
             Grid.Column="2"
@@ -88,9 +84,7 @@
             AllowDrop="True"
             ItemsSource="{Binding DoneCards}"
             SelectedItem="{Binding SelectedDoneCard, Mode=TwoWay}"
-            ItemTemplate="{StaticResource CardItemTemplate}"
-            DragItemsStarting="CardList_DragItemsStarting"
-            Drop="CardList_Drop">
+            ItemTemplate="{StaticResource CardItemTemplate}">
         </ListView>
 
     </Grid>
