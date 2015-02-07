@@ -45,8 +45,20 @@ namespace CardBoard.Messaging
 
         public void Confirm(Message message)
         {
-            throw new NotImplementedException();
+            Perform(() => ConfirmInternalAsync(message));
         }
+
+        private async Task ConfirmInternalAsync(Message message)
+        {
+            await CreateFileAsync();
+            var messageList = await ReadMessagesAsync();
+
+            string hash = message.Hash.ToString();
+            messageList.RemoveAll(o => o.Hash == hash);
+
+            await WriteMessagesAsync(messageList);
+        }
+
 
 
 
@@ -65,8 +77,42 @@ namespace CardBoard.Messaging
 
         public Task<ImmutableList<Message>> LoadAsync()
         {
-            throw new NotImplementedException();
+            var completion = new TaskCompletionSource<ImmutableList<Message>>();
+            Perform(() => LoadInternalAsync(completion));
+            return completion.Task;
         }
+
+        private async Task LoadInternalAsync(TaskCompletionSource<ImmutableList<Message>> completion)
+        {
+            try
+            {
+                await CreateFileAsync();
+                var messages = await ReadMessagesAsync();
+                var result = messages
+                    .Select(m => Message.FromMemento(m))
+                    .ToImmutableList();
+                completion.SetResult(result);
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private async Task CreateFileAsync()
         {

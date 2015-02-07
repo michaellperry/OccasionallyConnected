@@ -23,9 +23,35 @@ namespace CardBoard.Messaging
 
         public void SendAllMessages(ImmutableList<Message> messages)
         {
-            throw new NotImplementedException();
+            lock (this)
+            {
+                foreach (var message in messages)
+                    _queue = _queue.Enqueue(message);
+            }
+            Perform(() => SendAndReceiveMessagesInternalAsync());
         }
 
+        private async Task SendAndReceiveMessagesInternalAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                while (true)
+                {
+                    var queue = _queue;
+                    if (queue.IsEmpty)
+                        return;
+                    var message = queue.Peek();
+
+                    await SendMessageAsync(client, message);
+
+                    lock (this)
+                    {
+                        _queue = _queue.Dequeue();
+                    }
+                    _messageQueue.Confirm(message);
+                }
+            }
+        }
 
 
 

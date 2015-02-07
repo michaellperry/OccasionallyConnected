@@ -50,6 +50,9 @@ namespace CardBoard.Models
                     var cardMessages = await _messageStore.LoadAsync(card.GetObjectId());
                     card.HandleAllMessages(cardMessages);
                 }
+
+                var queueMessages = await _messageQueue.LoadAsync();
+                _messagePump.SendAllMessages(queueMessages);
             }
             catch (Exception ex)
             {
@@ -66,7 +69,6 @@ namespace CardBoard.Models
         {
             _messageStore.Save(message);
             _messageQueue.Enqueue(message);
-            _messagePump.Enqueue(message);
             HandleMessage(message);
         }
 
