@@ -10,18 +10,29 @@ namespace CardBoard.Models
     public class Application
     {
         private readonly IMessageStore _messageStore;
+        private readonly IMessageQueue _messageQueue;
+        private readonly IMessagePump _messagePump;
 
         private Board _board = new Board();
         private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
 
         private Observable<Exception> _exception = new Observable<Exception>();
         
-        public Application(IMessageStore messageStore = null)
+        public Application(
+            IMessageStore messageStore = null,
+            IMessageQueue messageQueue = null,
+            IMessagePump messagePump = null)
         {
             if (messageStore == null)
                 messageStore = new NoOpMessageStore();
+            if (messageQueue == null)
+                messageQueue = new NoOpMessageQueue();
+            if (messagePump == null)
+                messagePump = new NoOpMessagePump();
 
             _messageStore = messageStore;
+            _messageQueue = messageQueue;
+            _messagePump = messagePump;
 
             _messageHandlers = new ComputedDictionary<Guid, IMessageHandler>(() =>
                 new List <IMessageHandler> { _board }.Union(_board.Cards)
