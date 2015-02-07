@@ -22,15 +22,46 @@ namespace CardBoard.Messaging
             _folderName = folderName;
         }
 
+
+
+
         public void Enqueue(Message message)
         {
-            throw new NotImplementedException();
+            Perform(() => EnqueueInternalAsync(message));
         }
+
+        private async Task EnqueueInternalAsync(Message message)
+        {
+            await CreateFileAsync();
+            var messageList = await ReadMessagesAsync();
+
+            var memento = message.GetMemento();
+            messageList.Add(memento);
+
+            await WriteMessagesAsync(messageList);
+        }
+
+
 
         public void Confirm(Message message)
         {
             throw new NotImplementedException();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public Task<ImmutableList<Message>> LoadAsync()
         {
@@ -65,6 +96,7 @@ namespace CardBoard.Messaging
         private async Task WriteMessagesAsync(List<MessageMemento> messageList)
         {
             var outputStream = await _messageQueueFile.OpenStreamForWriteAsync();
+            outputStream.SetLength(0);
             using (JsonWriter writer = new JsonTextWriter(new StreamWriter(outputStream)))
             {
                 _serializer.Serialize(writer, messageList);

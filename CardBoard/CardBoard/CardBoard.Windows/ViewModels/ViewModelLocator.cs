@@ -28,8 +28,12 @@ namespace CardBoard.ViewModels
 
         private Application LoadApplication()
         {
-            var application = new Application(
-                new FileMessageStore("CardBoard"));
+            var store = new FileMessageStore("CardBoard");
+            var queue = new FileMessageQueue("CardBoard");
+            var pump = new HttpMessagePump(
+                new Uri("http://cardboard.azurewebsites.com/distributor", UriKind.Absolute),
+                queue);
+            var application = new Application(store, queue, pump);
             application.Load();
             return application;
         }

@@ -21,9 +21,65 @@ namespace CardBoard.Messaging
             _messageQueue = messageQueue;
         }
 
+        public void Enqueue(Message message)
+        {
+            lock (this)
+            {
+                _queue = _queue.Enqueue(message);
+            }
+            Perform(() => SendAndReceiveMessagesInternalAsync());
+        }
+
+        private async Task SendAndReceiveMessagesInternalAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                while (true)
+                {
+                    var queue = _queue;
+                    if (queue.IsEmpty)
+                        return;
+                    var message = queue.Peek();
+
+                    await SendMessageAsync(client, message);
+
+                    lock (this)
+                    {
+                        _queue = _queue.Dequeue();
+                    }
+                    _messageQueue.Confirm(message);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void SendAndReceiveMessages()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendAllMessages(ImmutableList<Message> messages)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task SendMessageAsync(HttpClient client, Message message)
         {
             // TODO
+            throw new CommunicationException("Simulated communication error.");
         }
     }
 }

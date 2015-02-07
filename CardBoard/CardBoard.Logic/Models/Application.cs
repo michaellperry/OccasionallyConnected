@@ -65,6 +65,8 @@ namespace CardBoard.Models
         public void EmitMessage(Message message)
         {
             _messageStore.Save(message);
+            _messageQueue.Enqueue(message);
+            _messagePump.Enqueue(message);
             HandleMessage(message);
         }
 
