@@ -31,6 +31,15 @@ namespace CardBoard.Messaging
             Perform(() => SendAndReceiveMessagesInternalAsync());
         }
 
+        public void Enqueue(Message message)
+        {
+            lock (this)
+            {
+                _queue = _queue.Enqueue(message);
+            }
+            Perform(() => SendAndReceiveMessagesInternalAsync());
+        }
+
         private async Task SendAndReceiveMessagesInternalAsync()
         {
             using (HttpClient client = new HttpClient())
@@ -51,11 +60,6 @@ namespace CardBoard.Messaging
                     _messageQueue.Confirm(message);
                 }
             }
-        }
-
-        public void Enqueue(Message message)
-        {
-            throw new NotImplementedException();
         }
 
         public void SendAndReceiveMessages()

@@ -69,6 +69,7 @@ namespace CardBoard.Models
         {
             _messageStore.Save(message);
             _messageQueue.Enqueue(message);
+            _messagePump.Enqueue(message);
             HandleMessage(message);
         }
 
