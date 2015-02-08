@@ -22,9 +22,6 @@ namespace CardBoard.Messaging
             _folderName = folderName;
         }
 
-
-
-
         public void Enqueue(Message message)
         {
             Perform(() => EnqueueInternalAsync(message));
@@ -41,8 +38,6 @@ namespace CardBoard.Messaging
             await WriteMessagesAsync(messageList);
         }
 
-
-
         public void Confirm(Message message)
         {
             Perform(() => ConfirmInternalAsync(message));
@@ -58,22 +53,6 @@ namespace CardBoard.Messaging
 
             await WriteMessagesAsync(messageList);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public Task<ImmutableList<Message>> LoadAsync()
         {
@@ -98,21 +77,6 @@ namespace CardBoard.Messaging
                 completion.SetException(ex);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private async Task CreateFileAsync()
         {

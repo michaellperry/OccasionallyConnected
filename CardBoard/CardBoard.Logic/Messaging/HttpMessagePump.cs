@@ -53,21 +53,6 @@ namespace CardBoard.Messaging
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public void Enqueue(Message message)
         {
             throw new NotImplementedException();
