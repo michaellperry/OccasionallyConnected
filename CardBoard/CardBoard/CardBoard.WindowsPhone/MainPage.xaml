@@ -5,21 +5,25 @@
     xmlns:views="using:CardBoard.BoardView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ValueConverters="using:CardBoard.ValueConverters"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    Unloaded="Page_Unloaded">
+    Unloaded="Page_Unloaded"
+    DataContext="{Binding Main, Source={StaticResource Locator}}" >
 
     <Page.Resources>
         <DataTemplate x:Key="CardItemTemplate">
             <views:CardControl />
         </DataTemplate>
+        <ValueConverters:VisibleWhenTrueValueConverter x:Key="VisibleWhenTrue"/>
     </Page.Resources>
     <Page.Background>
         <StaticResource ResourceKey="AppBackgroundBrush"/>
     </Page.Background>
 
-    <Grid DataContext="{Binding ProjectDetail}">
-        <Pivot Title="{Binding Name}">
+    <Grid>
+        <Grid DataContext="{Binding BoardDetail}">
+            <Pivot Title="{Binding Name}">
             <PivotItem Header="To Do">
                 <ListView
                     x:Name="ToDo"
@@ -45,6 +49,17 @@
                 </ListView>
             </PivotItem>
         </Pivot>
+        </Grid>
+        <Ellipse
+            Fill="{StaticResource ErrorFillBrush}"
+            Visibility="{Binding HasError, Converter={StaticResource VisibleWhenTrue}}"
+            Width="30"
+            Height="30"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="10"
+            Tapped="Ellipse_Tapped"
+            />
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
@@ -52,7 +67,6 @@
                 <AppBarButton Label="New Card" Icon="Add" Click="NewCard_Click" />
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Manage Projects" Click="ManageProjects_Click" />
                 <AppBarButton Label="Refresh" Command="{Binding Refresh}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>

@@ -1,4 +1,5 @@
-﻿using CardBoard.Tasks;
+﻿using CardBoard.Protocol;
+using CardBoard.Tasks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

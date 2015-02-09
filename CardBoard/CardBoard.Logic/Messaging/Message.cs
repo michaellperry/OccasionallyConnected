@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CardBoard.Protocol;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.IO;
 using System;
@@ -12,6 +13,7 @@ namespace CardBoard.Messaging
 {
     public class Message
     {
+        private readonly string _topic;
         private readonly string _type;
         private readonly ImmutableList<MessageHash> _predecessors;
         private readonly Guid _objectId;
@@ -19,17 +21,24 @@ namespace CardBoard.Messaging
         private readonly MessageHash _hash;
 
         private Message(
+            string topic,
             string type,
             ImmutableList<MessageHash> predecessors,
             Guid objectId,
             ExpandoObject body,
             MessageHash hash)
         {
+            _topic = topic;
             _type = type;
             _predecessors = predecessors;
             _objectId = objectId;
             _body = body;
             _hash = hash;
+        }
+
+        public string Topic
+        {
+            get { return _topic; }
         }
 
         public string Type
@@ -56,16 +65,23 @@ namespace CardBoard.Messaging
         {
             get { return _hash; }
         }
-		
+
         public static Message CreateMessage(
+            string topic,
             string messageType,
             Guid objectId,
             object body)
         {
-            return CreateMessage(messageType, new List<MessageHash>(), objectId, body);
+            return CreateMessage(
+                topic,
+                messageType,
+                new List<MessageHash>(),
+                objectId,
+                body);
         }
 
         public static Message CreateMessage(
+            string topic,
             string messageType,
             IEnumerable<MessageHash> predecessors,
             Guid objectId,
@@ -86,6 +102,7 @@ namespace CardBoard.Messaging
             var messageHash = new MessageHash(ComputeHash(document));
 
             return new Message(
+                topic,
                 messageType,
                 predecessors.ToImmutableList(),
                 objectId,
@@ -111,6 +128,7 @@ namespace CardBoard.Messaging
         {
             return new MessageMemento()
             {
+                Topic = Topic,
                 Hash = Hash.ToString(),
                 MessageType = Type,
                 Predecessors = Predecessors
@@ -124,6 +142,7 @@ namespace CardBoard.Messaging
         public static Message FromMemento(MessageMemento memento)
         {
             return new Message(
+                memento.Topic,
                 memento.MessageType,
                 memento.Predecessors
                     .Select(h => MessageHash.Parse(h))

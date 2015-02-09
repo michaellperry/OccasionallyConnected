@@ -1,8 +1,7 @@
-﻿using System;
+﻿using CardBoard.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CardBoard.Models;
 
 namespace CardBoard.BoardView
 {

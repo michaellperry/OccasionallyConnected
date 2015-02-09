@@ -18,18 +18,18 @@ namespace CardBoard.Models
 
         private Observable<Exception> _exception = new Observable<Exception>();
         
-        public Application(
-            IMessageStore messageStore = null,
-            IMessageQueue messageQueue = null,
-            IMessagePump messagePump = null)
+        public Application() : this(
+            new NoOpMessageStore(),
+            new NoOpMessageQueue(),
+            new NoOpMessagePump())
         {
-            if (messageStore == null)
-                messageStore = new NoOpMessageStore();
-            if (messageQueue == null)
-                messageQueue = new NoOpMessageQueue();
-            if (messagePump == null)
-                messagePump = new NoOpMessagePump();
+        }
 
+        public Application(
+            IMessageStore messageStore,
+            IMessageQueue messageQueue,
+            IMessagePump messagePump)
+        {
             _messageStore = messageStore;
             _messageQueue = messageQueue;
             _messagePump = messagePump;
@@ -63,6 +63,17 @@ namespace CardBoard.Models
         public Board Board
         {
             get { return _board; }
+        }
+
+        public Exception Exception
+        {
+            get
+            {
+                return
+                    _exception.Value ??
+                    _messageQueue.Exception ??
+                    _messagePump.Exception;
+            }
         }
 
         public void EmitMessage(Message message)

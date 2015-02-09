@@ -1,11 +1,11 @@
-﻿using CardBoard.Tasks;
+﻿using CardBoard.Protocol;
+using CardBoard.Tasks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -13,8 +13,6 @@ namespace CardBoard.Messaging
 {
     public class FileMessageStore : Process, IMessageStore
     {
-        private static readonly Regex Punctuation = new Regex(@"[{}-]");
-
         private readonly string _folderName;
 
         private JsonSerializer _serializer = new JsonSerializer();
@@ -66,7 +64,7 @@ namespace CardBoard.Messaging
             var cardBoardFolder = await ApplicationData.Current.LocalFolder
                 .CreateFolderAsync(_folderName, CreationCollisionOption.OpenIfExists);
             string fileName = String.Format("obj_{0}.json",
-                Punctuation.Replace(objectId.ToString(), "").ToLower());
+                objectId.ToCanonicalString());
             var objectFile = await cardBoardFolder
                 .CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
             return objectFile;

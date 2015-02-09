@@ -68,5 +68,19 @@ namespace CardBoard.ViewModels
                 _application.EmitMessage(card.MoveTo(Column.ToDo));
             });
         }
+
+        public bool HasError
+        {
+            get { return _application.Exception != null; }
+        }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return _application.Exception == null ? null :
+                    _application.Exception.Message;
+            }
+        }
     }
 }

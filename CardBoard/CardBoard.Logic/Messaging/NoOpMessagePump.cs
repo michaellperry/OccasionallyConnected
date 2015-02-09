@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.Immutable;
 
 namespace CardBoard.Messaging
 {
@@ -15,7 +13,7 @@ namespace CardBoard.Messaging
         {
         }
 
-        public void SendAllMessages(System.Collections.Immutable.ImmutableList<Message> messages)
+        public void SendAllMessages(ImmutableList<Message> messages)
         {
         }
 

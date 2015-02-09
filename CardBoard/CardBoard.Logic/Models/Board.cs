@@ -3,6 +3,7 @@ using Assisticant.Fields;
 using CardBoard.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace CardBoard.Models
@@ -32,6 +33,7 @@ namespace CardBoard.Models
                 .Where(m => m.Type == "CardCreated")
                 .Select(m => Guid.Parse(m.Body.CardId))
                 .Where(g => !cardsDeleted.Contains(g))
+                .Distinct()
                 .Select(g => new Card(g));
 
             _cards.AddRange(cardsCreated);
@@ -50,6 +52,7 @@ namespace CardBoard.Models
         public Message CreateCard(Guid cardId)
         {
             return Message.CreateMessage(
+                GetObjectId().ToCanonicalString(),
                 "CardCreated",
                 Guid.Empty,
                 new
@@ -61,6 +64,7 @@ namespace CardBoard.Models
         public Message DeleteCard(Guid cardId)
         {
             return Message.CreateMessage(
+                GetObjectId().ToCanonicalString(),
                 "CardDeleted",
                 Guid.Empty,
                 new

@@ -271,4 +271,5 @@
     </Style>
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFEDED60"/>
     <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FF113C4B"/>
+    <SolidColorBrush x:Key="ErrorFillBrush" Color="#922323"/>
 </ResourceDictionary>

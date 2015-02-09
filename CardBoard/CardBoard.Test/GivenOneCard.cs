@@ -108,19 +108,27 @@ namespace CardBoard.Test
         private Message CardTextChanged(string text, params MessageHash[] predecessors)
         {
             return Message.CreateMessage(
+                "topic",
                 "CardTextChanged",
                 predecessors,
                 _card.CardId,
-                new { Value = text });
+                new
+                {
+                    Value = text
+                });
         }
 
         private Message CardMoved(Column column, params MessageHash[] predecessors)
         {
             return Message.CreateMessage(
+                "topic",
                 "CardMoved",
                 predecessors,
                 _card.CardId,
-                new { Value = column });
+                new
+                {
+                    Value = column
+                });
         }
     }
 }

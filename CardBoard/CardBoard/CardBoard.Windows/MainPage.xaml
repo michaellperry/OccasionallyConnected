@@ -3,11 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:local="using:CardBoard" 
+    xmlns:ValueConverters="using:CardBoard.ValueConverters"
     xmlns:views="using:CardBoard.BoardView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}" >
+    
+    <Page.Resources>
+        <ValueConverters:VisibleWhenTrueValueConverter x:Key="VisibleWhenTrue"/>
+    </Page.Resources>
 
     <Grid
         Background="#114253">
@@ -50,6 +55,16 @@
                 FontSize="18.667"
                 Foreground="#FFEA8E8E"
                 TextAlignment="Right" />
+            <Ellipse
+                Fill="{StaticResource ErrorFillBrush}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="60"
+                Height="60"
+                Grid.Column="2"
+                Visibility="{Binding HasError, Converter={StaticResource VisibleWhenTrue}}"
+                Tapped="Ellipse_Tapped"
+                />
             <ProgressRing
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

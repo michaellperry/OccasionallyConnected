@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Assisticant;
+using Assisticant.Fields;
+using CardBoard.BoardView;
+using CardBoard.Models;
+using CardBoard.ViewModels;
 using Windows.Phone.UI.Input;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -8,6 +13,8 @@ namespace CardBoard
 {
     public sealed partial class MainPage : Page
     {
+        private ComputedSubscription _selectedCardSubscription;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -18,60 +25,45 @@ namespace CardBoard
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //WithViewModel(vm =>
-            //{
-            //    vm.ClearSelection();
-            //});
+            ForView.Unwrap<MainViewModel>(DataContext, vm =>
+            {
+                vm.ClearSelection();
+            });
         }
 
         private void NewCard_Click(object sender, RoutedEventArgs e)
         {
-            //WithViewModel(vm =>
-            //{
-            //    vm.PrepareNewCard();
-            //    Frame.Navigate(typeof(CardDetailPage));
-            //});
+            ForView.Unwrap<MainViewModel>(DataContext, vm =>
+            {
+                vm.PrepareNewCard();
+                Frame.Navigate(typeof(CardDetailPage));
+            });
         }
 
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //WithViewModel(vm =>
-            //{
-            //    vm.CardSelected += CardSelected;
-            //});
+            ForView.Unwrap<MainViewModel>(DataContext, vm =>
+            {
+                var computed = new Computed<Card>(() => vm.SelectedCard);
+                _selectedCardSubscription = computed.Subscribe(c => CardSelected(c));
+            });
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            //WithViewModel(vm =>
-            //{
-            //    vm.CardSelected -= CardSelected;
-            //});
+            if (_selectedCardSubscription != null)
+                _selectedCardSubscription.Unsubscribe();
         }
 
-        //private void CardSelected(CardBoard.Model.Card card)
-        //{
-        //    if (card != null)
-        //    {
-        //        WithViewModel(vm =>
-        //            vm.PrepareEditCard(card));
-        //        Frame.Navigate(typeof(CardDetailPage));
-        //    }
-        //}
-
-        //private void WithViewModel(Action<BoardViewModel> action)
-        //{
-        //    var viewModel = ForView.Unwrap<BoardViewModel>(DataContext);
-        //    if (viewModel != null)
-        //    {
-        //        action(viewModel);
-        //    }
-        //}
-
-        private void ManageProjects_Click(object sender, RoutedEventArgs e)
+        private void CardSelected(Card card)
         {
-            //Frame.Navigate(typeof(ProjectsPage));
+            if (card != null)
+            {
+                ForView.Unwrap<MainViewModel>(DataContext, vm =>
+                    vm.PrepareEditCard(card));
+                Frame.Navigate(typeof(CardDetailPage));
+            }
         }
 
         void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
@@ -81,6 +73,15 @@ namespace CardBoard
                 e.Handled = true;
                 Frame.GoBack();
             }
+        }
+
+        private void Ellipse_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            ForView.Unwrap<MainViewModel>(DataContext, vm =>
+            {
+                var dialog = new MessageDialog(vm.ErrorMessage);
+                dialog.ShowAsync();
+            });
         }
     }
 }

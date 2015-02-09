@@ -177,8 +177,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Assisticant">
-      <HintPath>..\..\packages\Assisticant.1.1.4\lib\win81\Assisticant.dll</HintPath>
+    <Reference Include="Assisticant, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Assisticant.1.1.4.1\lib\win81\Assisticant.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

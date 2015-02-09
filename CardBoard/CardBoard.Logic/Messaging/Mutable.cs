@@ -1,6 +1,7 @@
 ﻿using Assisticant.Collections;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace CardBoard.Messaging
@@ -21,10 +22,14 @@ namespace CardBoard.Messaging
             T value)
         {
             return Message.CreateMessage(
+                "topic",
                 messageType,
                 _candidates.Select(t => t.MessageHash),
                 objectId,
-                new { Value = value });
+                new
+                {
+                    Value = value
+                });
         }
 
         public void HandleMessage(Message message)
