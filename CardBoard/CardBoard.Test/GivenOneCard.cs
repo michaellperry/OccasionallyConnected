@@ -27,8 +27,9 @@ namespace CardBoard.Test
         {
             _application.HandleMessage(CardTextChanged("Initial Text"));
 
-            _card.Text.Count().Should().Be(1);
-            _card.Text.Single().Value.Should().Be("Initial Text");
+            Assert.Fail();
+            //_card.Text.Count().Should().Be(1);
+            //_card.Text.Single().Value.Should().Be("Initial Text");
         }
 
         [TestMethod]
@@ -39,8 +40,9 @@ namespace CardBoard.Test
             _application.HandleMessage(predecessor);
             _application.HandleMessage(successor);
 
-            _card.Text.Count().Should().Be(1);
-            _card.Text.Single().Value.Should().Be("Updated Text");
+            Assert.Fail();
+            //_card.Text.Count().Should().Be(1);
+            //_card.Text.Single().Value.Should().Be("Updated Text");
         }
 
         [TestMethod]
@@ -51,9 +53,10 @@ namespace CardBoard.Test
             _application.HandleMessage(first);
             _application.HandleMessage(second);
 
-            _card.Text.Count().Should().Be(2);
-            _card.Text.Select(c => c.Value).Should().Contain("First Text");
-            _card.Text.Select(c => c.Value).Should().Contain("Second Text");
+            Assert.Fail();
+            //_card.Text.Count().Should().Be(2);
+            //_card.Text.Select(c => c.Value).Should().Contain("First Text");
+            //_card.Text.Select(c => c.Value).Should().Contain("Second Text");
         }
 
         [TestMethod]
@@ -67,8 +70,9 @@ namespace CardBoard.Test
             _application.HandleMessage(second);
             _application.HandleMessage(resolution);
 
-            _card.Text.Count().Should().Be(1);
-            _card.Text.Select(c => c.Value).Should().Contain("Resolved Text");
+            Assert.Fail();
+            //_card.Text.Count().Should().Be(1);
+            //_card.Text.Select(c => c.Value).Should().Contain("Resolved Text");
         }
 
         [TestMethod]
@@ -80,8 +84,9 @@ namespace CardBoard.Test
             _application.HandleMessage(successor);
             _application.HandleMessage(predecessor);
 
-            _card.Text.Count().Should().Be(1);
-            _card.Text.Single().Value.Should().Be("Updated Text");
+            Assert.Fail();
+            //_card.Text.Count().Should().Be(1);
+            //_card.Text.Single().Value.Should().Be("Updated Text");
         }
 
         [TestMethod]
@@ -89,8 +94,9 @@ namespace CardBoard.Test
         {
             _application.HandleMessage(CardMoved(Column.ToDo));
 
-            _card.Column.Count().Should().Be(1);
-            _card.Column.Single().Value.Should().Be(Column.ToDo);
+            Assert.Fail();
+            //_card.Column.Count().Should().Be(1);
+            //_card.Column.Single().Value.Should().Be(Column.ToDo);
         }
 
         [TestMethod]
@@ -101,8 +107,9 @@ namespace CardBoard.Test
             _application.HandleMessage(predecessor);
             _application.HandleMessage(successor);
 
-            _card.Column.Count().Should().Be(1);
-            _card.Column.Single().Value.Should().Be(Column.Doing);
+            Assert.Fail();
+            //_card.Column.Count().Should().Be(1);
+            //_card.Column.Single().Value.Should().Be(Column.Doing);
         }
 
         private Message CardTextChanged(string text, params MessageHash[] predecessors)
