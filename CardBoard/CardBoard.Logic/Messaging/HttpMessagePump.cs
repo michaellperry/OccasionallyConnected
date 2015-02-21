@@ -83,7 +83,16 @@ namespace CardBoard.Messaging
 
         private async Task SendMessageAsync(HttpClient client, Message message)
         {
-            throw new NotImplementedException();
+            var json = JsonConvert.SerializeObject(message.GetMemento());
+            using (var content = new HttpStringContent(
+		        json,
+		        Windows.Storage.Streams.UnicodeEncoding.Utf8,
+		        "application/json"))
+            {
+                var resourceUri = new Uri(_uri, message.Topic);
+                var response = await client.PostAsync(resourceUri, content);
+                response.EnsureSuccessStatusCode();
+            }
         }
     }
 }
