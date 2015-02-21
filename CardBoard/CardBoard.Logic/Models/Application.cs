@@ -76,6 +76,11 @@ namespace CardBoard.Models
             }
         }
 
+        public void SendAndReceiveMessages()
+        {
+            _messagePump.SendAndReceiveMessages();
+        }
+
         public void EmitMessage(Message message)
         {
             _messageStore.Save(message);

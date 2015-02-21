@@ -47,6 +47,11 @@ namespace CardBoard.ViewModels
             _cardDetail.FromCard(card);
         }
 
+        public void Refresh()
+        {
+            _application.SendAndReceiveMessages();
+        }
+
         public bool HasError
         {
             get { return _application.Exception != null; }

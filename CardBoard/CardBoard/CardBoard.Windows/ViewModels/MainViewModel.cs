@@ -69,6 +69,11 @@ namespace CardBoard.ViewModels
             });
         }
 
+        public void Refresh()
+        {
+            _application.SendAndReceiveMessages();
+        }
+
         public bool HasError
         {
             get { return _application.Exception != null; }
