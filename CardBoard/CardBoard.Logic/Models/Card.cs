@@ -13,12 +13,14 @@ namespace CardBoard.Models
 
         private readonly Guid _cardId;
 
-        private Mutable<string> _text = new Mutable<string>();
-        private Mutable<Column> _column = new Mutable<Column>();
+        private Mutable<string> _text;
+        private Mutable<Column> _column;
 
-        public Card(Guid cardId)
+        public Card(Guid cardId, string topic)
         {
             _cardId = cardId;
+            _text = new Mutable<string>(topic);
+            _column = new Mutable<Column>(topic);
         }
 
         public Guid CardId

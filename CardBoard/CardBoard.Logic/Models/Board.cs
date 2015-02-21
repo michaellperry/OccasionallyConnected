@@ -34,7 +34,7 @@ namespace CardBoard.Models
                 .Select(m => Guid.Parse(m.Body.CardId))
                 .Where(g => !cardsDeleted.Contains(g))
                 .Distinct()
-                .Select(g => new Card(g));
+                .Select(g => new Card(g, GetObjectId().ToCanonicalString()));
 
             _cards.AddRange(cardsCreated);
         }
@@ -77,7 +77,7 @@ namespace CardBoard.Models
         {
             Guid cardId = Guid.Parse(message.Body.CardId);
             if (!_cards.Any(c => c.CardId == cardId))
-                _cards.Add(new Card(cardId));
+                _cards.Add(new Card(cardId, GetObjectId().ToCanonicalString()));
         }
 
         private void HandleCardDeletedMessage(Message message)

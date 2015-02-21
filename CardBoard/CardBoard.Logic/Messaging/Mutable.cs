@@ -8,8 +8,15 @@ namespace CardBoard.Messaging
 {
     public class Mutable<T>
     {
+        private readonly string _topic;
+
         private HashSet<MessageHash> _predecessors = new HashSet<MessageHash>();
         private ObservableList<Candidate<T>> _candidates = new ObservableList<Candidate<T>>();
+        
+        public Mutable(string topic)
+        {
+            _topic = topic;
+        }
         
         public IEnumerable<Candidate<T>> Candidates
         {
@@ -22,7 +29,7 @@ namespace CardBoard.Messaging
             T value)
         {
             return Message.CreateMessage(
-                "topic",
+                _topic,
                 messageType,
                 _candidates.Select(t => t.MessageHash),
                 objectId,
