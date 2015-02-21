@@ -55,8 +55,11 @@ namespace CardBoard.Messaging
         {
             var file = await CreateFileAsync(message.ObjectId);
             var messages = await ReadMessagesAsync(file);
-            messages.Add(message.GetMemento());
-            await WriteMessagesAsync(file, messages);
+            if (!messages.Any(m => m.Hash == message.Hash.ToString()))
+            {
+                messages.Add(message.GetMemento());
+                await WriteMessagesAsync(file, messages);
+            }
         }
 
         private async Task<StorageFile> CreateFileAsync(Guid objectId)

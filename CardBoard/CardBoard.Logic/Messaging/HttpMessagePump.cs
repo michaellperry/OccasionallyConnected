@@ -23,6 +23,7 @@ namespace CardBoard.Messaging
         private ImmutableQueue<Message> _queue = ImmutableQueue<Message>.Empty;
 
         private List<string> _topics = new List<string>();
+        private Dictionary<string, string> _bookmarkByTopic = new Dictionary<string, string>();
         
         public HttpMessagePump(
             Uri uri,
@@ -109,7 +110,9 @@ namespace CardBoard.Messaging
 
         private async Task ReceiveMessagesInternalAsync(HttpClient client, string topic)
         {
-            string bookmark = string.Empty;
+            string bookmark;
+            if (!_bookmarkByTopic.TryGetValue(topic, out bookmark))
+                bookmark = await _bookmarkStore.LoadBookmarkAsync(topic);
 
             while (true)
             {
@@ -127,6 +130,8 @@ namespace CardBoard.Messaging
                         MessageReceived(Message.FromMemento(message));
 
                 bookmark = page.Bookmark;
+                _bookmarkByTopic[topic] = bookmark;
+                await _bookmarkStore.SaveBookmarkAsync(topic, bookmark);
             }
         }
     }
