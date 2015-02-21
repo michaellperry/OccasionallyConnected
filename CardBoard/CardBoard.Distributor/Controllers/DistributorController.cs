@@ -21,7 +21,7 @@ namespace CardBoard.Distributor.Controllers
 
         public PageMemento Get(string topic, string bookmark)
         {
-            throw new NotImplementedException();
+            return _storage.ReadMessages(topic, bookmark);
         }
     }
 }
