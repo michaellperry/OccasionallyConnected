@@ -16,7 +16,8 @@ namespace CardBoard.Models
             .On("CardDeleted", (o, m) => o.HandleCardDeletedMessage(m));
 
         private Observable<string> _name = new Observable<string>("Pluralsight");
-        private ObservableList<Card> _cards = new ObservableList<Card>();
+        private Observable<ImmutableList<Card>> _cards =
+            new Observable<ImmutableList<Card>>(ImmutableList<Card>.Empty);
 
         public void HandleMessage(Message message)
         {
@@ -36,7 +37,10 @@ namespace CardBoard.Models
                 .Distinct()
                 .Select(g => new Card(g, GetObjectId().ToCanonicalString()));
 
-            _cards.AddRange(cardsCreated);
+            lock (this)
+            {
+                _cards.Value = _cards.Value.AddRange(cardsCreated);
+            }
         }
 
         public string Name
@@ -46,7 +50,7 @@ namespace CardBoard.Models
 
         public IEnumerable<Card> Cards
         {
-            get { return _cards; }
+            get { return _cards.Value; }
         }
 
         public Message CreateCard(Guid cardId)
@@ -76,14 +80,21 @@ namespace CardBoard.Models
         private void HandleCardCreatedMessage(Message message)
         {
             Guid cardId = Guid.Parse(message.Body.CardId);
-            if (!_cards.Any(c => c.CardId == cardId))
-                _cards.Add(new Card(cardId, GetObjectId().ToCanonicalString()));
+            lock (this)
+            {
+                var cards = _cards.Value;
+                if (!cards.Any(c => c.CardId == cardId))
+                    _cards.Value = cards.Add(new Card(cardId, GetObjectId().ToCanonicalString()));
+            }
         }
 
         private void HandleCardDeletedMessage(Message message)
         {
             Guid cardId = Guid.Parse(message.Body.CardId);
-            _cards.RemoveAll(c => c.CardId == cardId);
+            lock (this)
+            {
+                _cards.Value = _cards.Value.RemoveAll(c => c.CardId == cardId);
+            }
         }
 
         public Guid GetObjectId()

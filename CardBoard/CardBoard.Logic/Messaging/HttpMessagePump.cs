@@ -14,11 +14,15 @@ namespace CardBoard.Messaging
 {
     public class HttpMessagePump : Process, IMessagePump
     {
+        public event MessageReceivedHandler MessageReceived;
+
         private readonly Uri _uri;
         private readonly IMessageQueue _messageQueue;
         private readonly IBookmarkStore _bookmarkStore;
 
         private ImmutableQueue<Message> _queue = ImmutableQueue<Message>.Empty;
+
+        private List<string> _topics = new List<string>();
         
         public HttpMessagePump(
             Uri uri,
@@ -28,6 +32,11 @@ namespace CardBoard.Messaging
             _uri = uri;
             _messageQueue = messageQueue;
             _bookmarkStore = bookmarkStore;
+        }
+
+        public void Subscribe(string topic)
+        {
+            _topics.Add(topic);
         }
 
         public void SendAllMessages(ImmutableList<Message> messages)
@@ -59,6 +68,9 @@ namespace CardBoard.Messaging
             using (HttpClient client = new HttpClient())
             {
                 await SendMessagesInternalAsync(client);
+
+                foreach (var topic in _topics)
+                    await ReceiveMessagesInternalAsync(client, topic);
             }
         }
 
@@ -92,6 +104,29 @@ namespace CardBoard.Messaging
                 var resourceUri = new Uri(_uri, message.Topic);
                 var response = await client.PostAsync(resourceUri, content);
                 response.EnsureSuccessStatusCode();
+            }
+        }
+
+        private async Task ReceiveMessagesInternalAsync(HttpClient client, string topic)
+        {
+            string bookmark = string.Empty;
+
+            while (true)
+            {
+                Uri resourceUri = new Uri(_uri, String.Format("{0}?bookmark={1}", topic, bookmark));
+                var response = await client.GetAsync(resourceUri);
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var page = JsonConvert.DeserializeObject<PageMemento>(jsonString);
+                if (page.Messages.Count == 0)
+                    return;
+
+                if (MessageReceived != null)
+                    foreach (var message in page.Messages)
+                        MessageReceived(Message.FromMemento(message));
+
+                bookmark = page.Bookmark;
             }
         }
     }

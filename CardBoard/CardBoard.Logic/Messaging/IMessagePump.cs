@@ -3,8 +3,13 @@ using System.Collections.Immutable;
 
 namespace CardBoard.Messaging
 {
+    public delegate void MessageReceivedHandler(Message message);
+
     public interface IMessagePump
     {
+        event MessageReceivedHandler MessageReceived;
+
+        void Subscribe(string topic);
         void Enqueue(Message message);
         void SendAndReceiveMessages();
         void SendAllMessages(ImmutableList<Message> messages);

@@ -1,4 +1,5 @@
 ﻿using Assisticant.Collections;
+using Assisticant.Fields;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,7 +12,8 @@ namespace CardBoard.Messaging
         private readonly string _topic;
 
         private HashSet<MessageHash> _predecessors = new HashSet<MessageHash>();
-        private ObservableList<Candidate<T>> _candidates = new ObservableList<Candidate<T>>();
+        private Observable<ImmutableList<Candidate<T>>> _candidates =
+            new Observable<ImmutableList<Candidate<T>>>(ImmutableList<Candidate<T>>.Empty);
         
         public Mutable(string topic)
         {
@@ -20,7 +22,7 @@ namespace CardBoard.Messaging
         
         public IEnumerable<Candidate<T>> Candidates
         {
-            get { return _candidates; }
+            get { return _candidates.Value; }
         }
 
         public Message CreateMessage(
@@ -31,7 +33,7 @@ namespace CardBoard.Messaging
             return Message.CreateMessage(
                 _topic,
                 messageType,
-                _candidates.Select(t => t.MessageHash),
+                Candidates.Select(t => t.MessageHash),
                 objectId,
                 new
                 {
@@ -45,16 +47,21 @@ namespace CardBoard.Messaging
             T value = (T)message.Body.Value;
             var predecessors = message.Predecessors;
 
-            if (!_predecessors.Contains(messageHash))
+            lock (this)
             {
-                _candidates.Add(new Candidate<T>(messageHash, value));
+                var candidates = _candidates.Value;
+                if (!_predecessors.Contains(messageHash))
+                {
+                    candidates = candidates.Add(new Candidate<T>(messageHash, value));
+                }
+
+                var newPredecessors = predecessors.Except(_predecessors);
+                candidates = candidates.RemoveAll(c => newPredecessors.Contains(c.MessageHash));
+
+                foreach (var predecessor in newPredecessors)
+                    _predecessors.Add(predecessor);
+                _candidates.Value = candidates;
             }
-
-            var newPredecessors = predecessors.Except(_predecessors);
-            _candidates.RemoveAll(c => newPredecessors.Contains(c.MessageHash));
-
-            foreach (var predecessor in newPredecessors)
-                _predecessors.Add(predecessor);
         }
 
         public void HandleAllMessages(IEnumerable<Message> messages)
@@ -62,14 +69,19 @@ namespace CardBoard.Messaging
             var predecessors = messages
                 .SelectMany(m => m.Predecessors)
                 .ToLookup(h => h);
-            var candidates = messages
+            var newCandidates = messages
                 .Where(m => !predecessors.Contains(m.Hash))
                 .Select(m => new Candidate<T>(m.Hash, (T)m.Body.Value));
 
-            _candidates.RemoveAll(c => predecessors.Contains(c.MessageHash));
-            foreach (var pair in predecessors)
-                _predecessors.Add(pair.Key);
-            _candidates.AddRange(candidates);
+            lock (this)
+            {
+                var candidates = _candidates.Value;
+                candidates = candidates.RemoveAll(c => predecessors.Contains(c.MessageHash));
+                foreach (var pair in predecessors)
+                    _predecessors.Add(pair.Key);
+                candidates = candidates.AddRange(newCandidates);
+                _candidates.Value = candidates;
+            }
         }
     }
 }

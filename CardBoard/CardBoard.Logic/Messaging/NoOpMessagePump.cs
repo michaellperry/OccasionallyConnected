@@ -5,6 +5,12 @@ namespace CardBoard.Messaging
 {
     public class NoOpMessagePump : IMessagePump
     {
+        public event MessageReceivedHandler MessageReceived;
+
+        public void Subscribe(string topic)
+        {
+        }
+
         public void Enqueue(Message message)
         {
         }

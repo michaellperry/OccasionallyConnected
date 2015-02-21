@@ -34,6 +34,8 @@ namespace CardBoard.Models
             _messageQueue = messageQueue;
             _messagePump = messagePump;
 
+            _messagePump.MessageReceived += MessageReceived;
+
             _messageHandlers = new ComputedDictionary<Guid, IMessageHandler>(() =>
                 new List <IMessageHandler> { _board }.Union(_board.Cards)
                     .ToDictionary(m => m.GetObjectId()));
@@ -43,6 +45,8 @@ namespace CardBoard.Models
         {
             try
             {
+                _messagePump.Subscribe(_board.GetObjectId().ToCanonicalString());
+
                 var boardMessages = await _messageStore.LoadAsync(_board.GetObjectId());
                 _board.HandleAllMessages(boardMessages);
                 foreach (var card in _board.Cards)
@@ -86,6 +90,12 @@ namespace CardBoard.Models
             _messageStore.Save(message);
             _messageQueue.Enqueue(message);
             _messagePump.Enqueue(message);
+            HandleMessage(message);
+        }
+
+        private void MessageReceived(Message message)
+        {
+            _messageStore.Save(message);
             HandleMessage(message);
         }
 
