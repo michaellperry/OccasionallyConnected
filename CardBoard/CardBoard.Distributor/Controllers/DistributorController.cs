@@ -16,7 +16,7 @@ namespace CardBoard.Distributor.Controllers
 
         public void Post(string topic, [FromBody]MessageMemento message)
         {
-            throw new NotImplementedException();
+            _storage.WriteMessage(topic, message);
         }
 
         public PageMemento Get(string topic, string bookmark)
