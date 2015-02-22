@@ -16,13 +16,20 @@ namespace CardBoard.Notification
 
         public async Task Subscribe(string topic)
         {
-            var channel = await PushNotificationChannelManager
-                .CreatePushNotificationChannelForApplicationAsync();
-            channel.PushNotificationReceived += channel_PushNotificationReceived;
+            try
+            {
+                var channel = await PushNotificationChannelManager
+                    .CreatePushNotificationChannelForApplicationAsync();
+                channel.PushNotificationReceived += channel_PushNotificationReceived;
 
-            var hub = new NotificationHub("occdist", "Endpoint=sb://occdist-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=+unDBkvenHMZKDwK8ZFZywiemEbFTC5Q64Op1J0TqZw=");
-            await hub.RegisterNativeAsync(channel.Uri,
-                new string[] { topic });
+                var hub = new NotificationHub("occdist", "Endpoint=sb://occdist-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=+unDBkvenHMZKDwK8ZFZywiemEbFTC5Q64Op1J0TqZw=");
+                await hub.RegisterNativeAsync(channel.Uri,
+                    new string[] { topic });
+            }
+            catch (Exception ex)
+            {
+                // Ignore. Continue without push notifications.
+            }
         }
 
         void channel_PushNotificationReceived(PushNotificationChannel sender, PushNotificationReceivedEventArgs args)
