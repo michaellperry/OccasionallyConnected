@@ -1,6 +1,7 @@
 using Assisticant;
 using CardBoard.BoardView;
 using CardBoard.Models;
+using CardBoard.Notification;
 
 namespace CardBoard.ViewModels
 {
@@ -15,7 +16,8 @@ namespace CardBoard.ViewModels
             if (DesignMode)
                 _application = Initializer.LoadDesignModeApplication();
             else
-                _application = Initializer.LoadApplication();
+                _application = Initializer.LoadApplication(
+                    new PushNotificationSubscription());
             _selection = new SelectionModel();
             _cardDetail = new CardDetailModel();
         }

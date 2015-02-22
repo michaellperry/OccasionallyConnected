@@ -12,6 +12,7 @@ namespace CardBoard.Models
         private readonly IMessageStore _messageStore;
         private readonly IMessageQueue _messageQueue;
         private readonly IMessagePump _messagePump;
+        private readonly IPushNotificationSubscription _pushNotificationSubscription;
 
         private Board _board = new Board();
         private ComputedDictionary<Guid, IMessageHandler> _messageHandlers;
@@ -21,20 +22,24 @@ namespace CardBoard.Models
         public Application() : this(
             new NoOpMessageStore(),
             new NoOpMessageQueue(),
-            new NoOpMessagePump())
+            new NoOpMessagePump(),
+            new NoOpPushNotificationSubscription())
         {
         }
 
         public Application(
             IMessageStore messageStore,
             IMessageQueue messageQueue,
-            IMessagePump messagePump)
+            IMessagePump messagePump,
+            IPushNotificationSubscription pushNotificationSubscription)
         {
             _messageStore = messageStore;
             _messageQueue = messageQueue;
             _messagePump = messagePump;
+            _pushNotificationSubscription = pushNotificationSubscription;
 
             _messagePump.MessageReceived += MessageReceived;
+            _pushNotificationSubscription.MessageReceived += NotificationReceived;
 
             _messageHandlers = new ComputedDictionary<Guid, IMessageHandler>(() =>
                 new List <IMessageHandler> { _board }.Union(_board.Cards)
@@ -46,6 +51,8 @@ namespace CardBoard.Models
             try
             {
                 _messagePump.Subscribe(_board.GetObjectId().ToCanonicalString());
+                await _pushNotificationSubscription.Subscribe(
+                    _board.GetObjectId().ToCanonicalString());
 
                 var boardMessages = await _messageStore.LoadAsync(_board.GetObjectId());
                 _board.HandleAllMessages(boardMessages);
@@ -97,6 +104,13 @@ namespace CardBoard.Models
         {
             _messageStore.Save(message);
             HandleMessage(message);
+        }
+
+        private void NotificationReceived(Message message)
+        {
+            _messageStore.Save(message);
+            HandleMessage(message);
+            _messagePump.SendAndReceiveMessages();
         }
 
         private void HandleMessage(Message message)

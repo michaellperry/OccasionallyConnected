@@ -6,7 +6,7 @@ namespace CardBoard.Models
 {
     public class Initializer
     {
-        public static Application LoadApplication()
+        public static Application LoadApplication(IPushNotificationSubscription pushNotificationSubscription)
         {
             string folderName = "CardBoard";
             var store = new FileMessageStore(folderName);
@@ -16,7 +16,7 @@ namespace CardBoard.Models
                 new Uri("http://localhost:15871/api/distributor/", UriKind.Absolute),
                 queue,
                 bookmarkStore);
-            var application = new Application(store, queue, pump);
+            var application = new Application(store, queue, pump, pushNotificationSubscription);
             application.Load();
             return application;
         }

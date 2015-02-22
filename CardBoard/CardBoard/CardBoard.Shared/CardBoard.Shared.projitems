@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Notification\PushNotificationSubscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueConverters\ConflictValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueConverters\VisibleWhenTrueValueConverter.cs" />
   </ItemGroup>

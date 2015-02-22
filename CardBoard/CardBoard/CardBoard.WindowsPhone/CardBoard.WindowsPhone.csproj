@@ -85,6 +85,10 @@
       <Project>{1dd4f123-7657-49a2-885e-dcf8609d79f4}</Project>
       <Name>CardBoard.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CardBoard.Protocol\CardBoard.Protocol.csproj">
+      <Project>{3340bed6-d694-4802-a497-bd00a098415d}</Project>
+      <Name>CardBoard.Protocol</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoardView\BoardViewModel.cs" />
@@ -146,6 +150,10 @@
     <Reference Include="Assisticant, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Assisticant.1.1.4.1\lib\wpa81\Assisticant.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Messaging.Managed, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\WindowsAzure.Messaging.Managed.0.1.7.9\lib\wpa81\Microsoft.WindowsAzure.Messaging.Managed.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
