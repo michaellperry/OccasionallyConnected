@@ -121,6 +121,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="FieldService.UnitTest_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\UnitTestLogo.scale-100.png">
@@ -141,6 +142,17 @@
       <Project>{b30fbe0a-5590-40eb-b198-fd1c40b3ef0e}</Project>
       <Name>FieldService.Logic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assisticant">
+      <HintPath>..\packages\Assisticant.1.1.4.1\lib\win81\Assisticant.dll</HintPath>
+    </Reference>
+    <Reference Include="RoverMob">
+      <HintPath>..\packages\RoverMob.0.1.2\lib\portable-wpa81+win81\RoverMob.dll</HintPath>
+    </Reference>
+    <Reference Include="RoverMob.Protocol">
+      <HintPath>..\packages\RoverMob.0.1.2\lib\portable-wpa81+win81\RoverMob.Protocol.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
