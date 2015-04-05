@@ -33,22 +33,48 @@ namespace FieldService
             var application = new Application<Technician>();
             var technician = new Technician(Guid.NewGuid());
             application.Load(technician);
-            var visit = InitializeVisit(application, technician);
+            var visit = InitializeVisit(
+                application,
+                technician,
+                "121B Baker Street",
+                "Garbage disposal clogged");
+
             return application;
         }
 
-        private static Visit InitializeVisit(Application<Technician> application, Technician technician)
+        private static Visit InitializeVisit(Application<Technician> application, Technician technician, string homeAddress, string incidentDescription)
         {
+            var homeId = Guid.NewGuid();
+            application.EmitMessage(Message.CreateMessage(
+                homeId.ToCanonicalString(),
+                "HomeAddress",
+                homeId,
+                new
+                {
+                    Value = homeAddress
+                }));
+
+            var incidentId = Guid.NewGuid();
+            application.EmitMessage(Message.CreateMessage(
+                incidentId.ToCanonicalString(),
+                "IncidentDescription",
+                incidentId,
+                new
+                {
+                    Value = incidentDescription
+                }));
+
             var visitId = Guid.NewGuid();
-            var message = Message.CreateMessage(
+            application.EmitMessage(Message.CreateMessage(
                 technician.GetObjectId().ToCanonicalString(),
                 "Visit",
                 technician.GetObjectId(),
                 new
                 {
-                    VisitId = visitId
-                });
-            application.EmitMessage(message);
+                    VisitId = visitId,
+                    IncidentId = incidentId,
+                    HomeId = homeId
+                }));
             return technician.Visits.Single(v => v.GetObjectId() == visitId);
         }
     }
