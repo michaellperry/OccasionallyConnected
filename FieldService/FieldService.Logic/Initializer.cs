@@ -31,8 +31,25 @@ namespace FieldService
         public static Application<Technician> LoadDesignModeApplication()
         {
             var application = new Application<Technician>();
-            application.Load(new Technician(Guid.NewGuid()));
+            var technician = new Technician(Guid.NewGuid());
+            application.Load(technician);
+            var visit = InitializeVisit(application, technician);
             return application;
+        }
+
+        private static Visit InitializeVisit(Application<Technician> application, Technician technician)
+        {
+            var visitId = Guid.NewGuid();
+            var message = Message.CreateMessage(
+                technician.GetObjectId().ToCanonicalString(),
+                "Visit",
+                technician.GetObjectId(),
+                new
+                {
+                    VisitId = visitId
+                });
+            application.EmitMessage(message);
+            return technician.Visits.Single(v => v.GetObjectId() == visitId);
         }
     }
 }
