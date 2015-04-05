@@ -34,10 +34,14 @@ namespace FieldService.Models
 
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
+            _address.HandleAllMessages(messages
+                .Where(m => m.Type == "HomeAddress"));
         }
 
         public void HandleMessage(Message message)
         {
+            if (message.Type == "HomeAddress")
+                _address.HandleMessage(message);
         }
     }
 }

@@ -45,6 +45,20 @@ namespace FieldService.UnitTest
             visit.Incident.Description.Single().Value.Should().Be("Garbage disposal clogged");
         }
 
+        [TestMethod]
+        public void VisitLoadsHome()
+        {
+            Guid technicianId = GivenTechnician();
+            Guid homeId = GivenHome();
+            GivenHomeAddress(homeId, "121B Baker Street");
+            Guid incidentId = GivenIncident(homeId);
+            Guid visitId = GivenVisit(technicianId, homeId, incidentId);
+
+            var visit = _technician.Visits.Single(v => v.GetObjectId() == visitId);
+            visit.Incident.Home.Address.Count().Should().Be(1);
+            visit.Incident.Home.Address.Single().Value.Should().Be("121B Baker Street");
+        }
+
         private Guid GivenTechnician()
         {
             _application = new Application<Technician>();
@@ -58,6 +72,18 @@ namespace FieldService.UnitTest
         {
             var homeId = Guid.NewGuid();
             return homeId;
+        }
+
+        private void GivenHomeAddress(Guid homeId, string value)
+        {
+            _application.EmitMessage(Message.CreateMessage(
+                homeId.ToCanonicalString(),
+                "HomeAddress",
+                homeId,
+                new
+                {
+                    Value = value
+                }));
         }
 
         private Guid GivenIncident(Guid homeId)
