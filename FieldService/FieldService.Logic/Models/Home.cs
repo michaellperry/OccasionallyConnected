@@ -8,13 +8,13 @@ namespace FieldService.Models
 {
     public class Home : IMessageHandler
     {
-        private readonly Guid _guid;
+        private readonly Guid _homeId;
 
         private Mutable<string> _address = new Mutable<string>(string.Empty);
 
-        public Home(Guid guid)
+        public Home(Guid homeId)
         {
-            _guid = guid;            
+            _homeId = homeId;            
         }
 
         public IEnumerable<Candidate<string>> Address
@@ -24,22 +24,20 @@ namespace FieldService.Models
 
         public IEnumerable<IMessageHandler> Children
         {
-            get { throw new NotImplementedException(); }
+            get { return Enumerable.Empty<IMessageHandler>(); }
         }
 
         public Guid GetObjectId()
         {
-            throw new NotImplementedException();
+            return _homeId;
         }
 
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
-            throw new NotImplementedException();
         }
 
         public void HandleMessage(Message message)
         {
-            throw new NotImplementedException();
         }
     }
 }

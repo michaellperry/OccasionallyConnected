@@ -31,22 +31,24 @@ namespace FieldService.Models
 
         public IEnumerable<IMessageHandler> Children
         {
-            get { throw new NotImplementedException(); }
+            get { return new List<IMessageHandler> { _home }; }
         }
 
         public Guid GetObjectId()
         {
-            throw new NotImplementedException();
+            return _incidentId;
         }
 
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
-            throw new NotImplementedException();
+            _description.HandleAllMessages(messages
+                .Where(m => m.Type == "IncidentDescription"));
         }
 
         public void HandleMessage(Message message)
         {
-            throw new NotImplementedException();
+            if (message.Type == "IncidentDescription")
+                _description.HandleMessage(message);
         }
     }
 }

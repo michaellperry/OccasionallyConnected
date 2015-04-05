@@ -32,7 +32,7 @@ namespace FieldService.Models
 
         public IEnumerable<IMessageHandler> Children
         {
-            get { return Enumerable.Empty<IMessageHandler>(); }
+            get { return _visits.Value; }
         }
 
         public void HandleMessage(Message message)

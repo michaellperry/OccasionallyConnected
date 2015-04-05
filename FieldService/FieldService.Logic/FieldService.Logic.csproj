@@ -53,13 +53,13 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob">
-      <HintPath>..\packages\RoverMob.0.1.5\lib\portable-wpa81+win81\RoverMob.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.1.9\lib\portable-wpa81+win81\RoverMob.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Platform">
-      <HintPath>..\packages\RoverMob.0.1.5\lib\portable-wpa81+win81\RoverMob.Platform.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.1.9\lib\portable-wpa81+win81\RoverMob.Platform.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Protocol">
-      <HintPath>..\packages\RoverMob.0.1.5\lib\portable-wpa81+win81\RoverMob.Protocol.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.1.9\lib\portable-wpa81+win81\RoverMob.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>

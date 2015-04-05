@@ -26,7 +26,7 @@ namespace FieldService.Models
 
         public IEnumerable<IMessageHandler> Children
         {
-            get { throw new NotImplementedException(); }
+            get { return new List<IMessageHandler>() { _incident }; }
         }
 
         public Guid GetObjectId()
@@ -36,12 +36,10 @@ namespace FieldService.Models
 
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
-            throw new NotImplementedException();
         }
 
         public void HandleMessage(Message message)
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -13,20 +13,81 @@ namespace FieldService.UnitTest
     [TestClass]
     public class ModelTest
     {
+        private Application<Technician> _application;
+        private Technician _technician;
+
         [TestMethod]
         public void TechnicianHasOneVisit()
         {
-            var technician = GivenTechnician();
-            var application = new Application<Technician>();
-            application.Load(technician);
+            Guid technicianId = GivenTechnician();
+            Guid homeId = GivenHome();
+            Guid incidentId = GivenIncident(homeId);
+            Guid visitId = GivenVisit(technicianId, homeId, incidentId);
 
+            _technician.Visits.Count().Should().Be(1);
+            var visit = _technician.Visits.Single();
+            visit.GetObjectId().Should().Be(visitId);
+            visit.Incident.Description.Count().Should().Be(0);
+            visit.Incident.Home.Address.Count().Should().Be(0);
+        }
+
+        [TestMethod]
+        public void VisitLoadsIncident()
+        {
+            Guid technicianId = GivenTechnician();
+            Guid homeId = GivenHome();
+            Guid incidentId = GivenIncident(homeId);
+            GivenIncidentDescription(incidentId, "Garbage disposal clogged");
+            Guid visitId = GivenVisit(technicianId, homeId, incidentId);
+
+            var visit = _technician.Visits.Single(v => v.GetObjectId() == visitId);
+            visit.Incident.Description.Count().Should().Be(1);
+            visit.Incident.Description.Single().Value.Should().Be("Garbage disposal clogged");
+        }
+
+        private Guid GivenTechnician()
+        {
+            _application = new Application<Technician>();
+            var technicianId = Guid.NewGuid();
+            _technician = new Technician(technicianId);
+            _application.Load(_technician);
+            return technicianId;
+        }
+
+        private static Guid GivenHome()
+        {
             var homeId = Guid.NewGuid();
+            return homeId;
+        }
+
+        private Guid GivenIncident(Guid homeId)
+        {
             var incidentId = Guid.NewGuid();
+            return incidentId;
+        }
+
+        private void GivenIncidentDescription(Guid incidentId, string value)
+        {
+            _application.EmitMessage(Message.CreateMessage(
+                incidentId.ToCanonicalString(),
+                "IncidentDescription",
+                incidentId,
+                new
+                {
+                    Value = value
+                }));
+
+            if (_application.Exception != null)
+                throw _application.Exception;
+        }
+
+        private Guid GivenVisit(Guid technicianId, Guid homeId, Guid incidentId)
+        {
             var visitId = Guid.NewGuid();
-            application.EmitMessage(Message.CreateMessage(
-                technician.GetObjectId().ToCanonicalString(),
+            _application.EmitMessage(Message.CreateMessage(
+                technicianId.ToCanonicalString(),
                 "Visit",
-                technician.GetObjectId(),
+                technicianId,
                 new
                 {
                     VisitId = visitId,
@@ -34,16 +95,10 @@ namespace FieldService.UnitTest
                     HomeId = homeId
                 }));
 
-            technician.Visits.Count().Should().Be(1);
-            var visit = technician.Visits.Single();
-            visit.GetObjectId().Should().Be(visitId);
-            visit.Incident.Description.Count().Should().Be(0);
-            visit.Incident.Home.Address.Count().Should().Be(0);
-        }
+            if (_application.Exception != null)
+                throw _application.Exception;
 
-        private static Technician GivenTechnician()
-        {
-            return new Technician(Guid.NewGuid());
+            return visitId;
         }
     }
 }
