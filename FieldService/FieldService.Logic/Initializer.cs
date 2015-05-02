@@ -34,6 +34,13 @@ namespace FieldService
             var technician = new Technician(Guid.NewGuid());
             application.Load(technician);
 
+            application.EmitMessage(technician.CreateVisit(
+                new DateTime(2015, 5, 1, 9, 0, 0),
+                new DateTime(2015, 5, 1, 12, 0, 0)));
+            application.EmitMessage(technician.CreateVisit(
+                new DateTime(2015, 5, 1, 13, 0, 0),
+                new DateTime(2015, 5, 1, 16, 0, 0)));
+
             return application;
         }
     }

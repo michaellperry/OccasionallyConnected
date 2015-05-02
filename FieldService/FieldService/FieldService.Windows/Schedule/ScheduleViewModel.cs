@@ -21,5 +21,15 @@ namespace FieldService.Schedule
         {
             get { return "Michael"; }
         }
+
+        public IEnumerable<VisitHeaderViewModel> Visits
+        {
+            get
+            {
+                return
+                    from v in _application.Root.Visits
+                    select new VisitHeaderViewModel(v);
+            }
+        }
     }
 }

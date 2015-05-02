@@ -115,6 +115,7 @@
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Schedule\ScheduleViewModel.cs" />
+    <Compile Include="Schedule\VisitHeaderViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>

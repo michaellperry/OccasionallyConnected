@@ -17,5 +17,15 @@ namespace FieldService.Models
             _startTime = startTime;
             _endTime = endTime;
         }
+
+        public DateTime StartTime
+        {
+            get { return _startTime; }
+        }
+
+        public DateTime EndTime
+        {
+            get { return _endTime; }
+        }
     }
 }
