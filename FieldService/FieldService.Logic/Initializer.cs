@@ -41,6 +41,9 @@ namespace FieldService
                 new DateTime(2015, 5, 1, 13, 0, 0),
                 new DateTime(2015, 5, 1, 16, 0, 0)));
 
+            var visit = technician.Visits.ElementAt(1);
+            application.EmitMessage(visit.CreateOutcome());
+
             return application;
         }
     }
