@@ -37,12 +37,20 @@ namespace FieldService
                 application,
                 technician,
                 "121B Baker Street",
-                "Garbage disposal clogged");
+                "Garbage disposal clogged",
+                new DateTime(2015, 5, 1, 9, 0, 0),
+                new DateTime(2015, 5, 1, 12, 0, 0));
 
             return application;
         }
 
-        private static Visit InitializeVisit(Application<Technician> application, Technician technician, string homeAddress, string incidentDescription)
+        private static Visit InitializeVisit(
+            Application<Technician> application,
+            Technician technician,
+            string homeAddress,
+            string incidentDescription,
+            DateTime startTime,
+            DateTime endTime)
         {
             var homeId = Guid.NewGuid();
             application.EmitMessage(Message.CreateMessage(
@@ -73,7 +81,9 @@ namespace FieldService
                 {
                     VisitId = visitId,
                     IncidentId = incidentId,
-                    HomeId = homeId
+                    HomeId = homeId,
+                    StartTime = startTime,
+                    EndTime = endTime
                 }));
             return technician.Visits.Single(v => v.GetObjectId() == visitId);
         }

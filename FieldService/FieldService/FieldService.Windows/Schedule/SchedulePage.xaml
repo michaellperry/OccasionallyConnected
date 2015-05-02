@@ -68,8 +68,9 @@
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
                             <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                         </Border>
-                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                            <TextBlock Text="{Binding Address}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" MaxHeight="40"/>
+                        <StackPanel Grid.Column="1" Margin="10,-5,0,0">
+                            <TextBlock Text="{Binding Time}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" MaxHeight="40"/>
+                            <TextBlock Text="{Binding Address}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" MaxHeight="20"/>
                             <TextBlock Text="{Binding Incident}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"/>
                         </StackPanel>
                     </Grid>

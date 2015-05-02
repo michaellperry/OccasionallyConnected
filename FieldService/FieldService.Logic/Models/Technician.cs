@@ -46,7 +46,13 @@ namespace FieldService.Models
                 var incident = new Incident(Guid.Parse(incidentId), home);
 
                 string visitId = message.Body.VisitId;
-                var visit = new Visit(Guid.Parse(visitId), incident);
+                DateTime startTime = message.Body.StartTime;
+                DateTime endTime = message.Body.EndTime;
+                var visit = new Visit(
+                    Guid.Parse(visitId),
+                    startTime,
+                    endTime,
+                    incident);
 
                 _visits.Value = _visits.Value.Add(visit);
             }

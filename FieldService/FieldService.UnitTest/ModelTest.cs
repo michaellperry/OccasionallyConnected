@@ -22,7 +22,12 @@ namespace FieldService.UnitTest
             Guid technicianId = GivenTechnician();
             Guid homeId = GivenHome();
             Guid incidentId = GivenIncident(homeId);
-            Guid visitId = GivenVisit(technicianId, homeId, incidentId);
+            Guid visitId = GivenVisit(
+                technicianId,
+                homeId,
+                incidentId,
+                new DateTime(2015, 5, 1, 9, 0, 0),
+                new DateTime(2015, 5, 1, 12, 0, 0));
 
             _technician.Visits.Count().Should().Be(1);
             var visit = _technician.Visits.Single();
@@ -38,7 +43,12 @@ namespace FieldService.UnitTest
             Guid homeId = GivenHome();
             Guid incidentId = GivenIncident(homeId);
             GivenIncidentDescription(incidentId, "Garbage disposal clogged");
-            Guid visitId = GivenVisit(technicianId, homeId, incidentId);
+            Guid visitId = GivenVisit(
+                technicianId,
+                homeId,
+                incidentId,
+                new DateTime(2015, 5, 1, 9, 0, 0),
+                new DateTime(2015, 5, 1, 12, 0, 0));
 
             var visit = _technician.Visits.Single(v => v.GetObjectId() == visitId);
             visit.Incident.Description.Count().Should().Be(1);
@@ -52,7 +62,12 @@ namespace FieldService.UnitTest
             Guid homeId = GivenHome();
             GivenHomeAddress(homeId, "121B Baker Street");
             Guid incidentId = GivenIncident(homeId);
-            Guid visitId = GivenVisit(technicianId, homeId, incidentId);
+            Guid visitId = GivenVisit(
+                technicianId,
+                homeId,
+                incidentId,
+                new DateTime(2015, 5, 1, 9, 0, 0),
+                new DateTime(2015, 5, 1, 12, 0, 0));
 
             var visit = _technician.Visits.Single(v => v.GetObjectId() == visitId);
             visit.Incident.Home.Address.Count().Should().Be(1);
@@ -107,7 +122,12 @@ namespace FieldService.UnitTest
                 throw _application.Exception;
         }
 
-        private Guid GivenVisit(Guid technicianId, Guid homeId, Guid incidentId)
+        private Guid GivenVisit(
+            Guid technicianId,
+            Guid homeId,
+            Guid incidentId,
+            DateTime startTime,
+            DateTime endTime)
         {
             var visitId = Guid.NewGuid();
             _application.EmitMessage(Message.CreateMessage(
@@ -118,7 +138,9 @@ namespace FieldService.UnitTest
                 {
                     VisitId = visitId,
                     IncidentId = incidentId,
-                    HomeId = homeId
+                    HomeId = homeId,
+                    StartTime = startTime,
+                    EndTime = endTime
                 }));
 
             if (_application.Exception != null)

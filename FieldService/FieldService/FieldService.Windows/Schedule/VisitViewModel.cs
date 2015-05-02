@@ -15,6 +15,14 @@ namespace FieldService.Schedule
             _visit = visit;            
         }
 
+        public string Time
+        {
+            get
+            {
+                return String.Format("{0:t} - {1:t}", _visit.StartTime, _visit.EndTime);
+            }
+        }
+
         public string Address
         {
             get
