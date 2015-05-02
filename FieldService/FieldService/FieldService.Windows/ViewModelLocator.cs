@@ -24,7 +24,11 @@ namespace FieldService
 
         public object Schedule
         {
-            get { return ViewModel(() => new ScheduleViewModel(_application)); }
+            get
+            {
+                return ViewModel(() => new ScheduleViewModel(
+                    _application));
+            }
         }
     }
 }
