@@ -28,6 +28,21 @@ namespace FieldService.UnitTest
             _technician.Visits.Count().Should().Be(1);
         }
 
+        [TestMethod]
+        public void CanRemoveVisit()
+        {
+            Message createVisit = _technician.CreateVisit(
+                new DateTime(2015, 5, 1, 9, 0, 0),
+                new DateTime(2015, 5, 1, 12, 0, 0));
+            _application.EmitMessage(createVisit);
+
+            var visit = _technician.Visits.Single();
+
+            _application.EmitMessage(visit.CreateOutcome());
+
+            _technician.Visits.Count().Should().Be(0);
+        }
+
         [TestInitialize]
         public void Initialize()
         {

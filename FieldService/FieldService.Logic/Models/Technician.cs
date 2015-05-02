@@ -13,7 +13,8 @@ namespace FieldService.Models
     {
         private static MessageDispatcher<Technician> _dispatcher =
             new MessageDispatcher<Technician>()
-                .On("Visit", (t,m) => t.HandleVisit(m));
+                .On("Visit", (t,m) => t.HandleVisit(m))
+                .On("Outcome", (t,m) => t.HandleOutcome(m));
 
         private Observable<ImmutableList<Visit>> _visits =
             new Observable<ImmutableList<Visit>>(
@@ -74,7 +75,19 @@ namespace FieldService.Models
             DateTime endTime = message.Body.EndTime;
 
             _visits.Value = _visits.Value.Add(
-                new Visit(visitId, startTime, endTime));
+                new Visit(
+                    this,
+                    message.Hash,
+                    Guid.Parse(visitId),
+                    startTime,
+                    endTime));
+        }
+
+        public void HandleOutcome(Message message)
+        {
+            var predecessors = message.GetPredecessors("visit");
+            _visits.Value = _visits.Value.RemoveAll(v =>
+                predecessors.Contains(v.VisitHash));
         }
     }
 }
