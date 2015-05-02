@@ -113,7 +113,6 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,11 +160,11 @@
     </Reference>
     <Reference Include="RoverMob, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.0.2.2\lib\win81\RoverMob.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.2.4\lib\win81\RoverMob.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.0.2.2\lib\win81\RoverMob.Platform.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.2.4\lib\win81\RoverMob.Platform.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>

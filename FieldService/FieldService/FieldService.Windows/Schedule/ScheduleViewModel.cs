@@ -21,15 +21,5 @@ namespace FieldService.Schedule
         {
             get { return "Michael"; }
         }
-
-        public IEnumerable<VisitViewModel> Visits
-        {
-            get
-            {
-                return
-                    from visit in _application.Root.Visits
-                    select new VisitViewModel(visit);
-            }
-        }
     }
 }
