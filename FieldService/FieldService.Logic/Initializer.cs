@@ -24,7 +24,9 @@ namespace FieldService
             var push = new NoOpPushNotificationSubscription();
             var application = new Application<Technician>(
                 store, queue, pump, push);
-            application.Load(new Technician(Guid.NewGuid()));
+            Guid technicianId = Guid.Parse("{EF491CEC-DEEA-46F8-A303-80B6CE468AE1}");
+            application.Load(new Technician(technicianId));
+
             return application;
         }
 
@@ -34,6 +36,29 @@ namespace FieldService
             var technician = new Technician(Guid.NewGuid());
             application.Load(technician);
 
+            Schedule(application,
+                "221B Baker Street", "Garbage disposal jammed", 9, 12);
+            Visit visit = Schedule(application,
+                "1314 Main", "Wall switch malfunction", 13, 16);
+            application.EmitMessage(visit.CreateOutcome());
+
+            return application;
+        }
+
+        private static Visit Schedule(Application<Technician> application, string address, string description, int startHour, int endHour)
+        {
+            Guid homeId = CreateHome(application, address);
+            Guid incidentId = CreateIncident(application,
+                homeId, description);
+            var visit = CreateVisit(application,
+                homeId, incidentId, startHour, endHour);
+            return visit;
+        }
+
+        private static Guid CreateHome(
+            Application<Technician> application,
+            string address)
+        {
             Guid homeId = Guid.NewGuid();
             application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -49,9 +74,16 @@ namespace FieldService
                 homeId,
                 new
                 {
-                    Value = "221B Baker Street"
+                    Value = address
                 }));
+            return homeId;
+        }
 
+        private static Guid CreateIncident(
+            Application<Technician> application,
+            Guid homeId,
+            string description)
+        {
             var incidentId = Guid.NewGuid();
             application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -68,24 +100,27 @@ namespace FieldService
                 incidentId,
                 new
                 {
-                    Value = "Garbage disposal jammed"
+                    Value = description
                 }));
+            return incidentId;
+        }
 
-            application.EmitMessage(technician.CreateVisit(
+        private static Visit CreateVisit(
+            Application<Technician> application,
+            Guid homeId,
+            Guid incidentId,
+            int startHour,
+            int endHour)
+        {
+            Message createVisitMessage = application.Root.CreateVisit(
                 incidentId,
                 homeId,
-                new DateTime(2015, 5, 1, 9, 0, 0),
-                new DateTime(2015, 5, 1, 12, 0, 0)));
-            application.EmitMessage(technician.CreateVisit(
-                incidentId,
-                homeId,
-                new DateTime(2015, 5, 1, 13, 0, 0),
-                new DateTime(2015, 5, 1, 16, 0, 0)));
+                new DateTime(2015, 5, 1, startHour, 0, 0),
+                new DateTime(2015, 5, 1, endHour, 0, 0));
+            application.EmitMessage(createVisitMessage);
 
-            var visit = technician.Visits.ElementAt(1);
-            application.EmitMessage(visit.CreateOutcome());
-
-            return application;
+            return application.Root.Visits.Single(v =>
+                v.VisitHash == createVisitMessage.Hash);
         }
     }
 }
