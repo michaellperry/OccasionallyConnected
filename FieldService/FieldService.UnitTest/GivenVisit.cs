@@ -43,6 +43,17 @@ namespace FieldService.UnitTest
             partsOrders.Count().Should().Be(1);
             string description = partsOrders.Single().Description;
             description.Should().Be("2 inch PVC");
+
+            partsOrders.Single().OrderReceived.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void PartsAreReceived()
+        {
+            var partsOrder = _visit.Incident.PartsOrders.Single();
+
+            _application.EmitMessage(partsOrder.Receive());
+            partsOrder.OrderReceived.Should().BeTrue();
         }
 
         [TestInitialize]
@@ -52,6 +63,16 @@ namespace FieldService.UnitTest
             var technician = new Technician(Guid.NewGuid());
             _application.Load(technician);
 
+            Guid homeId = CreateHome();
+            Guid incidentId = CreateIncident(homeId);
+            CreateVisit(technician, homeId, incidentId);
+
+            _application.EmitMessage(
+                _visit.Incident.CreatePartsOrder("2 inch PVC"));
+        }
+
+        private Guid CreateHome()
+        {
             Guid homeId = Guid.NewGuid();
             _application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -69,7 +90,11 @@ namespace FieldService.UnitTest
                 {
                     Value = "221B Baker Street"
                 }));
+            return homeId;
+        }
 
+        private Guid CreateIncident(Guid homeId)
+        {
             Guid incidentId = Guid.NewGuid();
             _application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -88,6 +113,14 @@ namespace FieldService.UnitTest
                 {
                     Value = "Garbage disposal jammed"
                 }));
+            return incidentId;
+        }
+
+        private void CreateVisit(
+            Technician technician,
+            Guid homeId,
+            Guid incidentId)
+        {
             _application.EmitMessage(technician.CreateVisit(
                 incidentId,
                 homeId,
@@ -95,9 +128,6 @@ namespace FieldService.UnitTest
                 new DateTime(2015, 5, 1, 12, 0, 0)));
 
             _visit = technician.Visits.Single();
-
-            _application.EmitMessage(
-                _visit.Incident.CreatePartsOrder("2 inch PVC"));
         }
     }
 }

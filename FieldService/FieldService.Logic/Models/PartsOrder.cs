@@ -9,10 +9,13 @@ namespace FieldService.Models
     public class PartsOrder : IMessageHandler
     {
         private static MessageDispatcher<PartsOrder> _dispatcher =
-            new MessageDispatcher<PartsOrder>();
+            new MessageDispatcher<PartsOrder>()
+                .On("OrderReceived", (po,m) => po.HandleOrderReceived(m));
 
         private readonly Guid _partsOrderId;
         private readonly string _description;
+
+        private bool _orderReceived = false;
         
         public PartsOrder(Guid partsOrderId, string description)
         {
@@ -23,6 +26,23 @@ namespace FieldService.Models
         public string Description
         {
             get { return _description; }
+        }
+
+        public bool OrderReceived
+        {
+            get
+            {
+                return _orderReceived;
+            }
+        }
+
+        public Message Receive()
+        {
+            return Message.CreateMessage(
+                string.Empty,
+                "OrderReceived",
+                _partsOrderId,
+                new { });
         }
 
         public IEnumerable<IMessageHandler> Children
@@ -37,11 +57,18 @@ namespace FieldService.Models
 
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
+            if (messages.Any(m => m.Type == "OrderReceived"))
+                _orderReceived = true;
         }
 
         public void HandleMessage(Message message)
         {
             _dispatcher.Dispatch(this, message);
+        }
+
+        public void HandleOrderReceived(Message message)
+        {
+            _orderReceived = true;
         }
     }
 }
