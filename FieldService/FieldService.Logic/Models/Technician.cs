@@ -27,7 +27,10 @@ namespace FieldService.Models
                 "Outcome", "visit");
         }
 
-        public Message CreateVisit(DateTime startTime, DateTime endTime)
+        public Message CreateVisit(
+            Guid incidentId,
+            DateTime startTime,
+            DateTime endTime)
         {
             return Message.CreateMessage(
                 _id.ToCanonicalString(),
@@ -35,6 +38,7 @@ namespace FieldService.Models
                 _id,
                 new
                 {
+                    IncidentId = incidentId,
                     VisitId = Guid.NewGuid(),
                     StartTime = startTime,
                     EndTime = endTime
@@ -53,7 +57,7 @@ namespace FieldService.Models
 
         public IEnumerable<IMessageHandler> Children
         {
-            get { yield break; }
+            get { return _visits.Items; }
         }
 
         public void HandleMessage(Message message)
@@ -69,6 +73,7 @@ namespace FieldService.Models
 
         private Visit CreateVisitFromMessage(Message message)
         {
+            string incidentId = message.Body.IncidentId;
             string visitId = message.Body.VisitId;
             DateTime startTime = message.Body.StartTime;
             DateTime endTime = message.Body.EndTime;
@@ -77,6 +82,7 @@ namespace FieldService.Models
                 this,
                 message.Hash,
                 Guid.Parse(visitId),
+                Guid.Parse(incidentId),
                 startTime,
                 endTime);
         }

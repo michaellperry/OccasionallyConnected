@@ -7,18 +7,21 @@ using RoverMob;
 
 namespace FieldService.Models
 {
-    public class Visit
+    public class Visit : IMessageHandler
     {
         private readonly Technician _technician;
         private readonly MessageHash _visitHash;
         private readonly Guid _visitId;
         private readonly DateTime _startTime;
         private readonly DateTime _endTime;
+
+        private readonly Incident _incident;
         
         public Visit(
             Technician technician,
             MessageHash visitHash,
             Guid visitId,
+            Guid incidentId,
             DateTime startTime,
             DateTime endTime)
         {
@@ -27,6 +30,8 @@ namespace FieldService.Models
             _visitId = visitId;
             _startTime = startTime;
             _endTime = endTime;
+
+            _incident = new Incident(incidentId);
         }
 
         public MessageHash VisitHash
@@ -44,6 +49,11 @@ namespace FieldService.Models
             get { return _endTime; }
         }
 
+        public Incident Incident
+        {
+            get { return _incident; }
+        }
+
         public Message CreateOutcome()
         {
             return Message.CreateMessage(
@@ -55,6 +65,24 @@ namespace FieldService.Models
                 {
 
                 });
+        }
+
+        public IEnumerable<IMessageHandler> Children
+        {
+            get { yield return _incident; }
+        }
+
+        public Guid GetObjectId()
+        {
+            return _visitId;
+        }
+
+        public void HandleAllMessages(IEnumerable<Message> messages)
+        {
+        }
+
+        public void HandleMessage(Message message)
+        {
         }
     }
 }

@@ -35,9 +35,11 @@ namespace FieldService
             application.Load(technician);
 
             application.EmitMessage(technician.CreateVisit(
+                Guid.Empty,
                 new DateTime(2015, 5, 1, 9, 0, 0),
                 new DateTime(2015, 5, 1, 12, 0, 0)));
             application.EmitMessage(technician.CreateVisit(
+                Guid.Empty,
                 new DateTime(2015, 5, 1, 13, 0, 0),
                 new DateTime(2015, 5, 1, 16, 0, 0)));
 

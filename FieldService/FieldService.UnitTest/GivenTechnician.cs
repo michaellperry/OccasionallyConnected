@@ -21,6 +21,7 @@ namespace FieldService.UnitTest
         public void CanAddVisit()
         {
             Message createVisit = _technician.CreateVisit(
+                Guid.Empty,
                 new DateTime(2015, 5, 1, 9, 0, 0),
                 new DateTime(2015, 5, 1, 12, 0, 0));
             _application.EmitMessage(createVisit);
@@ -32,6 +33,7 @@ namespace FieldService.UnitTest
         public void CanRemoveVisit()
         {
             Message createVisit = _technician.CreateVisit(
+                Guid.Empty,
                 new DateTime(2015, 5, 1, 9, 0, 0),
                 new DateTime(2015, 5, 1, 12, 0, 0));
             _application.EmitMessage(createVisit);
