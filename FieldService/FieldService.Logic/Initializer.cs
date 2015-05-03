@@ -34,6 +34,24 @@ namespace FieldService
             var technician = new Technician(Guid.NewGuid());
             application.Load(technician);
 
+            Guid homeId = Guid.NewGuid();
+            application.EmitMessage(Message.CreateMessage(
+                string.Empty,
+                "Home",
+                Guid.Empty,
+                new
+                {
+                    HomeId = homeId
+                }));
+            application.EmitMessage(Message.CreateMessage(
+                string.Empty,
+                "HomeAddress",
+                homeId,
+                new
+                {
+                    Value = "221B Baker Street"
+                }));
+
             var incidentId = Guid.NewGuid();
             application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -41,7 +59,8 @@ namespace FieldService
                 Guid.Empty,
                 new
                 {
-                    IncidentId = incidentId
+                    IncidentId = incidentId,
+                    HomeId = homeId
                 }));
             application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -54,12 +73,12 @@ namespace FieldService
 
             application.EmitMessage(technician.CreateVisit(
                 incidentId,
-                Guid.Empty,
+                homeId,
                 new DateTime(2015, 5, 1, 9, 0, 0),
                 new DateTime(2015, 5, 1, 12, 0, 0)));
             application.EmitMessage(technician.CreateVisit(
                 incidentId,
-                Guid.Empty,
+                homeId,
                 new DateTime(2015, 5, 1, 13, 0, 0),
                 new DateTime(2015, 5, 1, 16, 0, 0)));
 

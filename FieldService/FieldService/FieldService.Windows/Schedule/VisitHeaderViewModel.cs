@@ -25,6 +25,17 @@ namespace FieldService.Schedule
             }
         }
 
+        public string Address
+        {
+            get
+            {
+                return _visit.Incident.Home.Address
+                    .OrderBy(d => d.MessageHash)
+                    .Select(d => d.Value)
+                    .FirstOrDefault();
+            }
+        }
+
         public string Incident
         {
             get
