@@ -52,6 +52,12 @@ namespace FieldService
                 homeId, description);
             var visit = CreateVisit(application,
                 homeId, incidentId, startHour, endHour);
+
+            application.EmitMessage(visit.Incident.CreatePartsOrder(
+                "Flange"));
+            application.EmitMessage(visit.Incident.CreatePartsOrder(
+                "2\" PVC"));
+
             return visit;
         }
 

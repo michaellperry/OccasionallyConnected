@@ -45,5 +45,15 @@ namespace FieldService.Schedule
                     .FirstOrDefault();
             }
         }
+
+        public IEnumerable<PartsOrderHeaderViewModel> PartsOrders
+        {
+            get
+            {
+                return
+                    from p in _visit.Incident.PartsOrders
+                    select new PartsOrderHeaderViewModel(p);
+            }
+        }
     }
 }

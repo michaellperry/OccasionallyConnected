@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Models\VisitSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule\PartsOrderHeaderViewModel.cs" />
     <Compile Include="Schedule\SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
