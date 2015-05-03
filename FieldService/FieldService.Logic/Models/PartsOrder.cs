@@ -1,3 +1,4 @@
+using Assisticant.Fields;
 using RoverMob.Messaging;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ namespace FieldService.Models
         private readonly Guid _partsOrderId;
         private readonly string _description;
 
-        private bool _orderReceived = false;
+        private Observable<bool> _orderReceived =
+            new Observable<bool>(false);
         
         public PartsOrder(Guid partsOrderId, string description)
         {
@@ -58,7 +60,7 @@ namespace FieldService.Models
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
             if (messages.Any(m => m.Type == "OrderReceived"))
-                _orderReceived = true;
+                _orderReceived.Value = true;
         }
 
         public void HandleMessage(Message message)
@@ -68,7 +70,7 @@ namespace FieldService.Models
 
         public void HandleOrderReceived(Message message)
         {
-            _orderReceived = true;
+            _orderReceived.Value = true;
         }
     }
 }

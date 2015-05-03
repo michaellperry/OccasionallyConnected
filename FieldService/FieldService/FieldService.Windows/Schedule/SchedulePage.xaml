@@ -7,8 +7,13 @@
     xmlns:common="using:FieldService.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:b="using:FieldService.Behaviors"
     mc:Ignorable="d"
     DataContext="{Binding Schedule, Source={StaticResource Locator}}">
+    
+    <Page.Resources>
+        <b:VisibleWhenTrueConverter x:Key="VisibleWhenTrueConverter" />
+    </Page.Resources>
 
     <!--
         This grid acts as a root panel for the page that defines two rows:
@@ -122,6 +127,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="5" Height="5" Fill="White" Margin="0,0,5,0"/>
                                     <TextBlock Text="{Binding Description}" />
+                                    <TextBlock Text="(received)" Visibility="{Binding Received, Converter={StaticResource VisibleWhenTrueConverter}}" Margin="5,0,0,0" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

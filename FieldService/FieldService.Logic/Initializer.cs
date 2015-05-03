@@ -58,6 +58,9 @@ namespace FieldService
             application.EmitMessage(visit.Incident.CreatePartsOrder(
                 "2\" PVC"));
 
+            var partsOrder = visit.Incident.PartsOrders.First();
+            application.EmitMessage(partsOrder.Receive());
+
             return visit;
         }
 

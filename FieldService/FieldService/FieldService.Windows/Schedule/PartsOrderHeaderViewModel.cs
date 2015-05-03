@@ -20,6 +20,11 @@ namespace FieldService.Schedule
             get { return _partsOrder.Description; }
         }
 
+        public bool Received
+        {
+            get { return _partsOrder.OrderReceived; }
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
