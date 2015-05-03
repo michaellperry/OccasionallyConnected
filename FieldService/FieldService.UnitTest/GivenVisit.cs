@@ -35,6 +35,16 @@ namespace FieldService.UnitTest
             address.Should().Be("221B Baker Street");
         }
 
+        [TestMethod]
+        public void IncidentHasPartsOrders()
+        {
+            var partsOrders = _visit.Incident.PartsOrders;
+
+            partsOrders.Count().Should().Be(1);
+            string description = partsOrders.Single().Description;
+            description.Should().Be("2 inch PVC");
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -85,6 +95,9 @@ namespace FieldService.UnitTest
                 new DateTime(2015, 5, 1, 12, 0, 0)));
 
             _visit = technician.Visits.Single();
+
+            _application.EmitMessage(
+                _visit.Incident.CreatePartsOrder("2 inch PVC"));
         }
     }
 }

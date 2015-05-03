@@ -12,6 +12,7 @@ namespace FieldService.Models
         private readonly Home _home;
 
         private Mutable<string> _description;
+        private SuccessorCollection<PartsOrder> _partsOrders;
 
         public Incident(Guid incidentId, Guid homeId)
         {
@@ -19,6 +20,9 @@ namespace FieldService.Models
             _home = new Home(homeId);
 
             _description = new Mutable<string>(String.Empty);
+            _partsOrders = new SuccessorCollection<PartsOrder>(
+                "PartsOrder", CreatePartsOrderFromMessage,
+                "PartsOrderCancelled", "partsOrder");
         }
 
         public Home Home
@@ -31,9 +35,31 @@ namespace FieldService.Models
             get { return _description.Candidates; }
         }
 
+        public IEnumerable<PartsOrder> PartsOrders
+        {
+            get { return _partsOrders.Items; }
+        }
+
+        public Message CreatePartsOrder(string description)
+        {
+            return Message.CreateMessage(
+                string.Empty,
+                "PartsOrder",
+                _incidentId,
+                new
+                {
+                    PartsOrderId = Guid.NewGuid(),
+                    Description = description
+                });
+        }
+
         public IEnumerable<IMessageHandler> Children
         {
-            get { yield return _home; }
+            get
+            {
+                return new List<IMessageHandler>() { _home }
+                    .Concat(_partsOrders.Items);
+            }
         }
 
         public Guid GetObjectId()
@@ -45,12 +71,22 @@ namespace FieldService.Models
         {
             _description.HandleAllMessages(messages
                 .Where(m => m.Type == "IncidentDescription"));
+            _partsOrders.HandleAllMessages(messages);
         }
 
         public void HandleMessage(Message message)
         {
             if (message.Type == "IncidentDescription")
                 _description.HandleMessage(message);
+            _partsOrders.HandleMessage(message);
+        }
+
+        private PartsOrder CreatePartsOrderFromMessage(Message message)
+        {
+            string partsOrderId = message.Body.PartsOrderId;
+            string description = message.Body.Description;
+
+            return new PartsOrder(Guid.Parse(partsOrderId), description);
         }
     }
 }

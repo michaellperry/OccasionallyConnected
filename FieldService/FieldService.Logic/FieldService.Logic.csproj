@@ -41,6 +41,7 @@
     <Compile Include="Initializer.cs" />
     <Compile Include="Models\Home.cs" />
     <Compile Include="Models\Incident.cs" />
+    <Compile Include="Models\PartsOrder.cs" />
     <Compile Include="Models\Technician.cs" />
     <Compile Include="Models\Visit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
