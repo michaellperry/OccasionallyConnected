@@ -12,19 +12,19 @@ namespace FieldService.Models
     public class Technician : IMessageHandler
     {
         private static MessageDispatcher<Technician> _dispatcher =
-            new MessageDispatcher<Technician>()
-                .On("Visit", (t,m) => t.HandleVisit(m))
-                .On("Outcome", (t,m) => t.HandleOutcome(m));
+            new MessageDispatcher<Technician>();
 
-        private Observable<ImmutableList<Visit>> _visits =
-            new Observable<ImmutableList<Visit>>(
-                ImmutableList<Visit>.Empty);
+        private SuccessorCollection<Visit> _visits;
 
         private readonly Guid _id;
 
         public Technician(Guid id)
         {
             _id = id;
+
+            _visits = new SuccessorCollection<Visit>(
+                "Visit", CreateVisitFromMessage,
+                "Outcome", "visit");
         }
 
         public Message CreateVisit(DateTime startTime, DateTime endTime)
@@ -43,10 +43,7 @@ namespace FieldService.Models
 
         public IEnumerable<Visit> Visits
         {
-            get
-            {
-                return _visits.Value;
-            }
+            get { return _visits.Items; }
         }
 
         public Guid GetObjectId()
@@ -62,32 +59,26 @@ namespace FieldService.Models
         public void HandleMessage(Message message)
         {
             _dispatcher.Dispatch(this, message);
+            _visits.HandleMessage(message);
         }
 
         public void HandleAllMessages(IEnumerable<Message> messages)
         {
+            _visits.HandleAllMessages(messages);
         }
 
-        private void HandleVisit(Message message)
+        private Visit CreateVisitFromMessage(Message message)
         {
             string visitId = message.Body.VisitId;
             DateTime startTime = message.Body.StartTime;
             DateTime endTime = message.Body.EndTime;
 
-            _visits.Value = _visits.Value.Add(
-                new Visit(
-                    this,
-                    message.Hash,
-                    Guid.Parse(visitId),
-                    startTime,
-                    endTime));
-        }
-
-        public void HandleOutcome(Message message)
-        {
-            var predecessors = message.GetPredecessors("visit");
-            _visits.Value = _visits.Value.RemoveAll(v =>
-                predecessors.Contains(v.VisitHash));
+            return new Visit(
+                this,
+                message.Hash,
+                Guid.Parse(visitId),
+                startTime,
+                endTime);
         }
     }
 }
