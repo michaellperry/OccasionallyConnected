@@ -25,6 +25,17 @@ namespace FieldService.Schedule
             }
         }
 
+        public string Incident
+        {
+            get
+            {
+                return _visit.Incident.Description
+                    .OrderBy(d => d.MessageHash)
+                    .Select(d => d.Value)
+                    .FirstOrDefault();
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
