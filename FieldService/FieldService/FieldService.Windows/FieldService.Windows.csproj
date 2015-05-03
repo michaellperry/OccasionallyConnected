@@ -110,11 +110,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\VisitSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule\SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Schedule\ScheduleViewModel.cs" />
+    <Compile Include="Schedule\VisitDetailViewModel.cs" />
     <Compile Include="Schedule\VisitHeaderViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>

@@ -15,6 +15,11 @@ namespace FieldService.Schedule
             _visit = visit;
         }
 
+        public Visit Visit
+        {
+            get { return _visit; }
+        }
+
         public string Time
         {
             get

@@ -11,10 +11,14 @@ namespace FieldService.Schedule
     class ScheduleViewModel
     {
         private readonly Application<Technician> _application;
-
-        public ScheduleViewModel(Application<Technician> application)
+        private readonly VisitSelection _selection;
+        
+        public ScheduleViewModel(
+            Application<Technician> application,
+            VisitSelection selection)
         {
             _application = application;
+            _selection = selection;
         }
 
         public string Technician
@@ -29,6 +33,37 @@ namespace FieldService.Schedule
                 return
                     from v in _application.Root.Visits
                     select new VisitHeaderViewModel(v);
+            }
+        }
+
+        public VisitHeaderViewModel SelectedVisit
+        {
+            get
+            {
+                if (_selection.SelectedVisit == null)
+                    return null;
+                else
+                    return new VisitHeaderViewModel(
+                        _selection.SelectedVisit);
+            }
+            set
+            {
+                if (value == null)
+                    _selection.SelectedVisit = null;
+                else
+                    _selection.SelectedVisit = value.Visit;
+            }
+        }
+
+        public VisitDetailViewModel VisitDetail
+        {
+            get
+            {
+                if (_selection.SelectedVisit == null)
+                    return null;
+                else
+                    return new VisitDetailViewModel(
+                        _selection.SelectedVisit);
             }
         }
     }

@@ -13,6 +13,7 @@ namespace FieldService
     class ViewModelLocator : ViewModelLocatorBase
     {
         private Application<Technician> _application;
+        private VisitSelection _selection;
 
         public ViewModelLocator()
         {
@@ -20,6 +21,9 @@ namespace FieldService
                 _application = Initializer.LoadDesignModeApplication();
             else
                 _application = Initializer.LoadApplication();
+
+            _selection = new VisitSelection();
+            _selection.SelectedVisit = _application.Root.Visits.FirstOrDefault();
         }
 
         public object Schedule
@@ -27,7 +31,8 @@ namespace FieldService
             get
             {
                 return ViewModel(() => new ScheduleViewModel(
-                    _application));
+                    _application,
+                    _selection));
             }
         }
     }
