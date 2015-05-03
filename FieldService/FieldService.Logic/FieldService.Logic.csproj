@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Initializer.cs" />
+    <Compile Include="Models\Home.cs" />
     <Compile Include="Models\Incident.cs" />
     <Compile Include="Models\Technician.cs" />
     <Compile Include="Models\Visit.cs" />

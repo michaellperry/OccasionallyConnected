@@ -29,6 +29,7 @@ namespace FieldService.Models
 
         public Message CreateVisit(
             Guid incidentId,
+            Guid homeId,
             DateTime startTime,
             DateTime endTime)
         {
@@ -40,6 +41,7 @@ namespace FieldService.Models
                 {
                     IncidentId = incidentId,
                     VisitId = Guid.NewGuid(),
+                    HomeId = homeId,
                     StartTime = startTime,
                     EndTime = endTime
                 });
@@ -75,6 +77,7 @@ namespace FieldService.Models
         {
             string incidentId = message.Body.IncidentId;
             string visitId = message.Body.VisitId;
+            string homeId = message.Body.HomeId;
             DateTime startTime = message.Body.StartTime;
             DateTime endTime = message.Body.EndTime;
 
@@ -83,6 +86,7 @@ namespace FieldService.Models
                 message.Hash,
                 Guid.Parse(visitId),
                 Guid.Parse(incidentId),
+                Guid.Parse(homeId),
                 startTime,
                 endTime);
         }

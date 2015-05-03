@@ -9,14 +9,21 @@ namespace FieldService.Models
     public class Incident : IMessageHandler
     {
         private readonly Guid _incidentId;
+        private readonly Home _home;
 
         private Mutable<string> _description;
 
-        public Incident(Guid incidentId)
+        public Incident(Guid incidentId, Guid homeId)
         {
             _incidentId = incidentId;
+            _home = new Home(homeId);
 
             _description = new Mutable<string>(String.Empty);
+        }
+
+        public Home Home
+        {
+            get { return _home; }
         }
 
         public IEnumerable<Candidate<string>> Description
@@ -26,7 +33,7 @@ namespace FieldService.Models
 
         public IEnumerable<IMessageHandler> Children
         {
-            get { yield break; }
+            get { yield return _home; }
         }
 
         public Guid GetObjectId()

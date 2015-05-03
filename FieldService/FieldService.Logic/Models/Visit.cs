@@ -22,6 +22,7 @@ namespace FieldService.Models
             MessageHash visitHash,
             Guid visitId,
             Guid incidentId,
+            Guid homeId,
             DateTime startTime,
             DateTime endTime)
         {
@@ -31,7 +32,7 @@ namespace FieldService.Models
             _startTime = startTime;
             _endTime = endTime;
 
-            _incident = new Incident(incidentId);
+            _incident = new Incident(incidentId, homeId);
         }
 
         public MessageHash VisitHash

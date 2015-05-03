@@ -26,12 +26,40 @@ namespace FieldService.UnitTest
             description.Should().Be("Garbage disposal jammed");
         }
 
+        [TestMethod]
+        public void IncidentHasAHome()
+        {
+            Home home = _visit.Incident.Home;
+
+            string address = home.Address.Single().Value;
+            address.Should().Be("221B Baker Street");
+        }
+
         [TestInitialize]
         public void Initialize()
         {
             _application = new Application<Technician>();
             var technician = new Technician(Guid.NewGuid());
             _application.Load(technician);
+
+            Guid homeId = Guid.NewGuid();
+            _application.EmitMessage(Message.CreateMessage(
+                string.Empty,
+                "Home",
+                Guid.Empty,
+                new
+                {
+                    HomeId = homeId
+                }));
+            _application.EmitMessage(Message.CreateMessage(
+                string.Empty,
+                "HomeAddress",
+                homeId,
+                new
+                {
+                    Value = "221B Baker Street"
+                }));
+
             Guid incidentId = Guid.NewGuid();
             _application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -39,7 +67,8 @@ namespace FieldService.UnitTest
                 Guid.Empty,
                 new
                 {
-                    IncidentId = incidentId
+                    IncidentId = incidentId,
+                    HomeId = homeId
                 }));
             _application.EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -51,6 +80,7 @@ namespace FieldService.UnitTest
                 }));
             _application.EmitMessage(technician.CreateVisit(
                 incidentId,
+                homeId,
                 new DateTime(2015, 5, 1, 9, 0, 0),
                 new DateTime(2015, 5, 1, 12, 0, 0)));
 
