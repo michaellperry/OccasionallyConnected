@@ -1,26 +1,28 @@
-﻿using CardBoard.Messaging;
+﻿using Assisticant.Fields;
+using CardBoard.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace CardBoard.Models
 {
     public class Card : IMessageHandler
     {
+        #region Ignore this
+
         private static MessageDispatcher<Card> _dispatcher = new MessageDispatcher<Card>()
             .On("CardTextChanged", (o, m) => o.HandleCardTextChangedMessage(m))
-            .On("CardMoved", (o, m) => o.HandleCardTextMovedMessage(m));
+            .On("CardMoved", (o, m) => o.HandleCardMovedMessage(m));
 
         private readonly Guid _cardId;
 
         private Mutable<string> _text;
-        private Mutable<Column> _column;
 
         public Card(Guid cardId, string topic)
         {
             _cardId = cardId;
             _text = new Mutable<string>(topic);
-            _column = new Mutable<Column>(topic);
         }
 
         public Guid CardId
@@ -38,16 +40,6 @@ namespace CardBoard.Models
             return _text.CreateMessage("CardTextChanged", _cardId, text);
         }
 
-        public IEnumerable<Candidate<Column>> Column
-        {
-            get { return _column.Candidates; }
-        }
-
-        public Message MoveTo(Column column)
-        {
-            return _column.CreateMessage("CardMoved", _cardId, column);
-        }
-
         public Guid GetObjectId()
         {
             return _cardId;
@@ -62,8 +54,6 @@ namespace CardBoard.Models
         {
             _text.HandleAllMessages(messages
                 .Where(m => m.Type == "CardTextChanged"));
-            _column.HandleAllMessages(messages
-                .Where(m => m.Type == "CardMoved"));
         }
 
         private void HandleCardTextChangedMessage(Message message)
@@ -71,9 +61,32 @@ namespace CardBoard.Models
             _text.HandleMessage(message);
         }
 
-        private void HandleCardTextMovedMessage(Message message)
+        #endregion
+
+        private HashSet<MessageHash> _predecessors = new HashSet<MessageHash>();
+        private Observable<ImmutableList<Candidate<Column>>> _candidates =
+            new Observable<ImmutableList<Candidate<Column>>>(ImmutableList<Candidate<Column>>.Empty);
+
+        public IEnumerable<Candidate<Column>> Column
         {
-            _column.HandleMessage(message);
+            get { return _candidates.Value; }
+        }
+
+        public Message MoveTo(Column column)
+        {
+            return Message.CreateMessage(
+                "topic",
+                "CardMoved",
+                _candidates.Value.Select(t => t.MessageHash),
+                _cardId,
+                new
+                {
+                    Value = column
+                });
+        }
+
+        private void HandleCardMovedMessage(Message message)
+        {
         }
     }
 }
