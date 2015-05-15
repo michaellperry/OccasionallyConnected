@@ -23,7 +23,7 @@
 
     <Grid>
         <Grid DataContext="{Binding BoardDetail}">
-            <Pivot Title="{Binding Name}">
+            <Pivot Title="Card Board">
             <PivotItem Header="To Do">
                 <ListView
                     x:Name="ToDo"

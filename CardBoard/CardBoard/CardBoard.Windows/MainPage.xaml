@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
             <TextBlock
                 TextWrapping="Wrap"
-                Text="{Binding BoardName}"
+                Text="Card Board"
                 Style="{StaticResource HeaderTextStyle}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
