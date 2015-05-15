@@ -63,13 +63,14 @@ namespace CardBoard.Models
 
         #endregion
 
-        private HashSet<MessageHash> _predecessors = new HashSet<MessageHash>();
-        private Observable<ImmutableList<Candidate<Column>>> _candidates =
-            new Observable<ImmutableList<Candidate<Column>>>(ImmutableList<Candidate<Column>>.Empty);
+        private HashSet<MessageHash> _predecessors =
+            new HashSet<MessageHash>();
+        private List<Candidate<Column>> _candidates =
+            new List<Candidate<Column>>();
 
         public IEnumerable<Candidate<Column>> Column
         {
-            get { return _candidates.Value; }
+            get { return _candidates; }
         }
 
         public Message MoveTo(Column column)
@@ -77,7 +78,7 @@ namespace CardBoard.Models
             return Message.CreateMessage(
                 "topic",
                 "CardMoved",
-                _candidates.Value.Select(t => t.MessageHash),
+                _candidates.Select(t => t.MessageHash),
                 _cardId,
                 new
                 {
