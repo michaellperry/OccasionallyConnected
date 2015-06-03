@@ -15,6 +15,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.Logic", "Field
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.UnitTest", "FieldService.UnitTest\FieldService.UnitTest.csproj", "{D7D591C8-4979-4813-9E3F-619CC607BB84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.Distributor", "FieldService.Distributor\FieldService.Distributor.csproj", "{41FCB31F-F493-4046-889A-8A9D09144E20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{1093D05D-176C-4D68-9672-B35757915123}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{F49703F3-2B36-4834-B460-29A00247C6B9}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\FieldServiceDistributor-WAWS-dev.json = PublishScripts\Configurations\FieldServiceDistributor-WAWS-dev.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		FieldService\FieldService.Shared\FieldService.Shared.projitems*{bb65e912-10e9-4947-9e4b-3e951f594025}*SharedItemsImports = 13
@@ -110,6 +123,16 @@ Global
 		{D7D591C8-4979-4813-9E3F-619CC607BB84}.Release|x86.ActiveCfg = Release|x86
 		{D7D591C8-4979-4813-9E3F-619CC607BB84}.Release|x86.Build.0 = Release|x86
 		{D7D591C8-4979-4813-9E3F-619CC607BB84}.Release|x86.Deploy.0 = Release|x86
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|ARM.ActiveCfg = Release|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|x64.ActiveCfg = Release|Any CPU
+		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,5 +141,6 @@ Global
 		{BB65E912-10E9-4947-9E4B-3E951F594025} = {B3ABAA30-6F9E-483B-84FE-7E8FD9369AEB}
 		{08BD18E9-F1FC-492B-A55C-86D726861AD5} = {B3ABAA30-6F9E-483B-84FE-7E8FD9369AEB}
 		{0FEE923F-F552-4738-9984-D1461186DCDC} = {B3ABAA30-6F9E-483B-84FE-7E8FD9369AEB}
+		{F49703F3-2B36-4834-B460-29A00247C6B9} = {1093D05D-176C-4D68-9672-B35757915123}
 	EndGlobalSection
 EndGlobal
