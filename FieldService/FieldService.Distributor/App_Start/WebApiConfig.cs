@@ -21,6 +21,12 @@ namespace FieldService.Distributor
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "Distributor",
+                routeTemplate: "api/distributor/{topic}",
+                defaults: new { controller = "Distributor" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
