@@ -1,4 +1,5 @@
-﻿using FieldService.Common;
+﻿using Assisticant;
+using FieldService.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -232,6 +233,10 @@ namespace FieldService.Schedule
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+
+            ForView.Unwrap<ScheduleViewModel>(
+                DataContext,
+                vm => vm.Begin());
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

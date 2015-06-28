@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FieldService.Common;
 
 namespace FieldService.Schedule
 {
@@ -12,13 +13,21 @@ namespace FieldService.Schedule
     {
         private readonly Application<Technician> _application;
         private readonly VisitSelection _selection;
+        private readonly AuthenticationManager _authenticationManager;
         
         public ScheduleViewModel(
             Application<Technician> application,
-            VisitSelection selection)
+            VisitSelection selection,
+            AuthenticationManager authenticationManager)
         {
             _application = application;
             _selection = selection;
+            _authenticationManager = authenticationManager;
+        }
+
+        public void Begin()
+        {
+            _authenticationManager.Authenticate();
         }
 
         public string Technician
@@ -64,6 +73,23 @@ namespace FieldService.Schedule
                 else
                     return new VisitDetailViewModel(
                         _selection.SelectedVisit);
+            }
+        }
+
+        public bool Busy
+        {
+            get { return _authenticationManager.Busy; }
+        }
+
+        public string LastException
+        {
+            get
+            {
+                Exception exception = _authenticationManager.Exception;
+                if (exception == null)
+                    return null;
+                else
+                    return exception.Message;
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RoverMob;
+using FieldService.Common;
 
 namespace FieldService
 {
@@ -14,6 +15,7 @@ namespace FieldService
     {
         private Application<Technician> _application;
         private VisitSelection _selection;
+        private AuthenticationManager _authenticationManager;
 
         public ViewModelLocator()
         {
@@ -24,6 +26,8 @@ namespace FieldService
 
             _selection = new VisitSelection();
             _selection.SelectedVisit = _application.Root.Visits.FirstOrDefault();
+
+            _authenticationManager = new AuthenticationManager();
         }
 
         public object Schedule
@@ -32,7 +36,8 @@ namespace FieldService
             {
                 return ViewModel(() => new ScheduleViewModel(
                     _application,
-                    _selection));
+                    _selection,
+                    _authenticationManager));
             }
         }
     }
