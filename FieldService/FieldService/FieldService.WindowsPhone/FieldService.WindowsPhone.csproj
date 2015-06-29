@@ -112,6 +112,9 @@
     <Reference Include="Assisticant">
       <HintPath>..\..\packages\Assisticant.1.1.4.1\lib\wpa81\Assisticant.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.18.206251556\lib\wpa\Microsoft.IdentityModel.Clients.ActiveDirectory.winmd</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Messaging.Managed">
       <HintPath>..\..\packages\WindowsAzure.Messaging.Managed.0.1.7.9\lib\wpa81\Microsoft.WindowsAzure.Messaging.Managed.dll</HintPath>
     </Reference>
