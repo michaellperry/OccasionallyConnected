@@ -11,7 +11,8 @@ namespace FieldService
 {
     public static class Initializer
     {
-        public static Application<Technician> LoadApplication()
+        public static Application<Technician> LoadApplication(
+            IAccessTokenProvider accessTokenProvider)
         {
             string folderName = "FieldService";
             var store = new FileMessageStore(folderName);
@@ -20,7 +21,8 @@ namespace FieldService
             var pump = new HttpMessagePump(
                 new Uri("http://host/api/distributor/", UriKind.Absolute),
                 queue,
-                bookmarkStore);
+                bookmarkStore,
+                accessTokenProvider);
             var push = new NoOpPushNotificationSubscription();
             var application = new Application<Technician>(
                 store, queue, pump, push);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json.Linq;
+using RoverMob.Messaging;
 using RoverMob.Tasks;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Windows.Security.Authentication.Web;
 
 namespace FieldService.Common
 {
-    public class AuthenticationManager : Process
+    public class AuthenticationManager : Process, IAccessTokenProvider
     {
         private string _accessToken;
         private ImmutableList<TaskCompletionSource<string>> _accessTokenCompletions =
@@ -35,6 +36,11 @@ namespace FieldService.Common
             Authenticate();
 
             return completion.Task;
+        }
+
+        public void RefreshAccessToken()
+        {
+            _accessToken = null;
         }
 
         public void Authenticate()
