@@ -85,7 +85,8 @@ namespace FieldService.Schedule
         {
             get
             {
-                Exception exception = _authenticationManager.Exception;
+                Exception exception = _authenticationManager.Exception ??
+                    _application.Exception;
                 if (exception == null)
                     return null;
                 else

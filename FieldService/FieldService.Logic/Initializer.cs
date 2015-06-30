@@ -19,7 +19,7 @@ namespace FieldService
             var queue = new FileMessageQueue(folderName);
             var bookmarkStore = new FileBookmarkStore(folderName);
             var pump = new HttpMessagePump(
-                new Uri("http://host/api/distributor/", UriKind.Absolute),
+                new Uri("http://localhost:20624/api/distributor/", UriKind.Absolute),
                 queue,
                 bookmarkStore,
                 accessTokenProvider);
