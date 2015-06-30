@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
+using System.Threading.Tasks;
 
 namespace FieldService.Distributor.Controllers
 {
@@ -14,6 +15,15 @@ namespace FieldService.Distributor.Controllers
         {
             
         }
-        
+
+        protected override async Task<bool> AuthorizeUserForGet(string topic, string userId)
+        {
+            return true;
+        }
+
+        protected override async Task<bool> AuthorizeUserForPost(string topic, string userId)
+        {
+            return true;
+        }
     }
 }

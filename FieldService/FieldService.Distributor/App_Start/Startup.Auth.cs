@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using FieldService.Distributor.Providers;
 using FieldService.Distributor.Models;
+using Microsoft.Owin.Security.ActiveDirectory;
 
 namespace FieldService.Distributor
 {
@@ -63,6 +64,16 @@ namespace FieldService.Distributor
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+
+            app.UseWindowsAzureActiveDirectoryBearerAuthentication(
+                new WindowsAzureActiveDirectoryBearerAuthenticationOptions
+                {
+                    TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidAudience = "https://mperryfacetedworlds.onmicrosoft.com/fieldservicedistributor"
+                    },
+                    Tenant = "mperryfacetedworlds.onmicrosoft.com"
+                });
         }
     }
 }
