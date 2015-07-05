@@ -28,6 +28,11 @@ namespace FieldService
                 store, queue, pump, push);
             Guid technicianId = Guid.Parse("{EF491CEC-DEEA-46F8-A303-80B6CE468AE1}");
             application.Load(new Technician(technicianId));
+            pump.Subscribe(() => technicianId.ToCanonicalString());
+            pump.Subscribe(() => application.Root.Visits.Select(v =>
+                v.Incident.GetObjectId().ToCanonicalString()));
+            pump.Subscribe(() => application.Root.Visits.Select(v =>
+                v.Incident.Home.GetObjectId().ToCanonicalString()));
 
             return application;
         }
