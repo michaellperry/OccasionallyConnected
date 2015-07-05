@@ -20,15 +20,16 @@ namespace FieldService
         public ViewModelLocator()
         {
             _authenticationManager = new AuthenticationManager();
+            _selection = new VisitSelection();
 
             if (DesignMode)
+            {
                 _application = Initializer.LoadDesignModeApplication();
+                _selection.SelectedVisit = _application.Root.Visits.FirstOrDefault();
+            }
             else
                 _application = Initializer.LoadApplication(
                     _authenticationManager);
-
-            _selection = new VisitSelection();
-            _selection.SelectedVisit = _application.Root.Visits.FirstOrDefault();
         }
 
         public object Schedule

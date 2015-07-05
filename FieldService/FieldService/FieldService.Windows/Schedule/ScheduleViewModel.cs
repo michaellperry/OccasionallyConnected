@@ -39,9 +39,12 @@ namespace FieldService.Schedule
         {
             get
             {
-                return
-                    from v in _application.Root.Visits
-                    select new VisitHeaderViewModel(v);
+                if (_application.Root != null)
+                    return
+                        from v in _application.Root.Visits
+                        select new VisitHeaderViewModel(v);
+                else
+                    return new List<VisitHeaderViewModel>();
             }
         }
 

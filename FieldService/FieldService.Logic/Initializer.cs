@@ -24,15 +24,19 @@ namespace FieldService
                 bookmarkStore,
                 accessTokenProvider);
             var push = new NoOpPushNotificationSubscription();
+            var proxy = new HttpUserProxy(
+                new Uri("http://localhost:20624/api/useridentifier", UriKind.Absolute),
+                accessTokenProvider);
             var application = new Application<Technician>(
-                store, queue, pump, push);
-            Guid technicianId = Guid.Parse("{EF491CEC-DEEA-46F8-A303-80B6CE468AE1}");
-            application.Load(new Technician(technicianId));
-            pump.Subscribe(() => technicianId.ToCanonicalString());
+                store, queue, pump, push, proxy);
+            pump.Subscribe(() => application.Root.GetObjectId().ToCanonicalString());
             pump.Subscribe(() => application.Root.Visits.Select(v =>
                 v.Incident.GetObjectId().ToCanonicalString()));
             pump.Subscribe(() => application.Root.Visits.Select(v =>
                 v.Incident.Home.GetObjectId().ToCanonicalString()));
+
+            application.GetUserIdentifier("Technician", technicianId =>
+                application.Load(new Technician(technicianId)));
 
             return application;
         }
