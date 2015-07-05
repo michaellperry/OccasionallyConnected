@@ -83,11 +83,11 @@
     </Reference>
     <Reference Include="RoverMob.Distributor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.Distributor.0.2.2\lib\net45\RoverMob.Distributor.dll</HintPath>
+      <HintPath>..\packages\RoverMob.Distributor.0.2.4\lib\net45\RoverMob.Distributor.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.Distributor.0.2.2\lib\net45\RoverMob.Protocol.dll</HintPath>
+      <HintPath>..\packages\RoverMob.Distributor.0.2.4\lib\net45\RoverMob.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -245,6 +245,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DistributorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TechnicianIdentifierController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

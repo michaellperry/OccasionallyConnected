@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Threading.Tasks;
+using RoverMob.Protocol;
+using RoverMob.Distributor;
 
 namespace FieldService.Distributor.Controllers
 {
@@ -18,12 +20,24 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForGet(string topic, string userId)
         {
-            return true;
+            return VisitsWithNoOutcome(userId)
+                .Any(m => m.VisitId == topic || m.HomeId == topic);
         }
 
         protected override async Task<bool> AuthorizeUserForPost(string topic, string userId)
         {
-            return true;
+            return VisitsWithNoOutcome(userId)
+                .Any(m => m.VisitId == topic);
+        }
+
+        private IEnumerable<dynamic> VisitsWithNoOutcome(string userId)
+        {
+            Guid technicianId = GetUserIdentifier("Technician", userId);
+            return GetMessagesInTopic(
+                technicianId.ToCanonicalString(),
+                "Visit",
+                "Outcome",
+                "visit");
         }
     }
 }
