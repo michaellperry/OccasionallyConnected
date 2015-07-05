@@ -83,11 +83,11 @@
     </Reference>
     <Reference Include="RoverMob.Distributor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.Distributor.0.2.5\lib\net45\RoverMob.Distributor.dll</HintPath>
+      <HintPath>..\packages\RoverMob.Distributor.0.2.6\lib\net45\RoverMob.Distributor.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.Distributor.0.2.5\lib\net45\RoverMob.Protocol.dll</HintPath>
+      <HintPath>..\packages\RoverMob.Distributor.0.2.6\lib\net45\RoverMob.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
