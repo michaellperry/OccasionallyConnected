@@ -25,7 +25,7 @@ namespace FieldService
                 accessTokenProvider);
             var push = new NoOpPushNotificationSubscription();
             var proxy = new HttpUserProxy(
-                new Uri("http://localhost:20624/api/useridentifier", UriKind.Absolute),
+                new Uri("http://localhost:20624/api/technicianidentifier", UriKind.Absolute),
                 accessTokenProvider);
             var application = new Application<Technician>(
                 store, queue, pump, push, proxy);
