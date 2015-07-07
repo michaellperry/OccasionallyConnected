@@ -20,7 +20,8 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForGet(string topic, string userId)
         {
-            return VisitsWithNoOutcome(userId)
+            Guid technicianId = GetUserIdentifier("Technician", userId);
+            return topic == technicianId.ToCanonicalString() || VisitsWithNoOutcome(userId)
                 .Any(m => m.VisitId == topic || m.HomeId == topic);
         }
 
