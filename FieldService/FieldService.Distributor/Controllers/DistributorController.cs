@@ -20,25 +20,42 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForGet(string topic, string userId)
         {
-            Guid technicianId = GetUserIdentifier("Technician", userId);
-            return topic == technicianId.ToCanonicalString() || VisitsWithNoOutcome(userId)
-                .Any(m => m.VisitId == topic || m.HomeId == topic);
+            var technicianId = GetUserIdentifier("Technician", userId)
+                .ToCanonicalString();
+
+            if (topic == technicianId)
+                return true;
+
+            var visits = GetMessagesInTopic(
+                technicianId,
+                "Visit",
+                "Outcome",
+                "visit");
+
+            if (visits.Any(v =>
+                v.IncidentId == topic ||
+                v.HomeId == topic))
+                return true;
+
+            return false;
         }
 
         protected override async Task<bool> AuthorizeUserForPost(string topic, string userId)
         {
-            return VisitsWithNoOutcome(userId)
-                .Any(m => m.VisitId == topic);
-        }
+            var technicianId = GetUserIdentifier("Technician", userId)
+                .ToCanonicalString();
 
-        private IEnumerable<dynamic> VisitsWithNoOutcome(string userId)
-        {
-            Guid technicianId = GetUserIdentifier("Technician", userId);
-            return GetMessagesInTopic(
-                technicianId.ToCanonicalString(),
+            var visits = GetMessagesInTopic(
+                technicianId,
                 "Visit",
                 "Outcome",
                 "visit");
+
+            if (visits.Any(v =>
+                v.IncidentId == topic))
+                return true;
+
+            return false;
         }
     }
 }

@@ -24,19 +24,26 @@ namespace FieldService
                 bookmarkStore,
                 accessTokenProvider);
             var push = new NoOpPushNotificationSubscription();
+
+
             IUserProxy proxy = new HttpUserProxy(
                 new Uri("http://localhost:20624/api/technicianidentifier", UriKind.Absolute),
                 accessTokenProvider);
             var application = new Application<Technician>(
                 store, queue, pump, push, proxy);
-            pump.Subscribe(() => application.Root.GetObjectId().ToCanonicalString());
-            pump.Subscribe(() => application.Root.Visits.Select(v =>
-                v.Incident.GetObjectId().ToCanonicalString()));
-            pump.Subscribe(() => application.Root.Visits.Select(v =>
-                v.Incident.Home.GetObjectId().ToCanonicalString()));
+
 
             application.GetUserIdentifier("Technician", technicianId =>
                 application.Load(new Technician(technicianId)));
+
+
+            pump.Subscribe(() => application.Root
+                .GetObjectId().ToCanonicalString());
+            pump.Subscribe(() => application.Root
+                .Visits.Select(v => v.Incident.GetObjectId().ToCanonicalString()));
+            pump.Subscribe(() => application.Root
+                .Visits.Select(v => v.Incident.Home.GetObjectId().ToCanonicalString()));
+
 
             return application;
         }
