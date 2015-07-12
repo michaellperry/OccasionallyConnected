@@ -54,6 +54,9 @@ namespace FieldService.Distributor.Controllers
             var technicianId = GetUserIdentifier("Technician", userId)
                 .ToCanonicalString();
 
+            if (topic == technicianId)
+                return true;
+
             var visits = GetMessagesInTopic(
                 technicianId,
                 "Visit",
