@@ -1,4 +1,5 @@
 using FieldService.Models;
+using RoverMob;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,14 @@ namespace FieldService.Schedule
 {
     public class VisitDetailViewModel
     {
+        private readonly Application<Technician> _application;
         private readonly Visit _visit;
 
-        public VisitDetailViewModel(Visit visit)
+        public VisitDetailViewModel(
+            Application<Technician> application,
+            Visit visit)
         {
+            _application = application;
             _visit = visit;            
         }
 
@@ -54,6 +59,11 @@ namespace FieldService.Schedule
                     from p in _visit.Incident.PartsOrders
                     select new PartsOrderHeaderViewModel(p);
             }
+        }
+
+        public void CreateOutcome()
+        {
+            _application.EmitMessage(_visit.CreateOutcome());
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FieldService.Common;
+using Windows.UI.Xaml;
 
 namespace FieldService.Schedule
 {
@@ -67,6 +68,16 @@ namespace FieldService.Schedule
             }
         }
 
+        public Visibility HasVisitDetail
+        {
+            get
+            {
+                return _selection.SelectedVisit == null
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+            }
+        }
+
         public VisitDetailViewModel VisitDetail
         {
             get
@@ -75,6 +86,7 @@ namespace FieldService.Schedule
                     return null;
                 else
                     return new VisitDetailViewModel(
+                        _application,
                         _selection.SelectedVisit);
             }
         }
