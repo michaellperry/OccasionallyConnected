@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 		PublishScripts\Configurations\FieldServiceDistributor-WAWS-dev.json = PublishScripts\Configurations\FieldServiceDistributor-WAWS-dev.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.DispatcherStub", "FieldService.DispatcherStub\FieldService.DispatcherStub.csproj", "{B27EB66D-5A77-4470-8185-6B7AF18126D5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		FieldService\FieldService.Shared\FieldService.Shared.projitems*{bb65e912-10e9-4947-9e4b-3e951f594025}*SharedItemsImports = 13
@@ -133,6 +135,16 @@ Global
 		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|ARM.ActiveCfg = Release|Any CPU
 		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|x64.ActiveCfg = Release|Any CPU
 		{41FCB31F-F493-4046-889A-8A9D09144E20}.Release|x86.ActiveCfg = Release|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Release|x64.ActiveCfg = Release|Any CPU
+		{B27EB66D-5A77-4470-8185-6B7AF18126D5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

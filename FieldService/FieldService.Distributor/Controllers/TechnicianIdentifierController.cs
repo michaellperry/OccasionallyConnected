@@ -9,6 +9,7 @@ using System.Web.Configuration;
 
 namespace FieldService.Distributor.Controllers
 {
+    [Authorize]
     public class TechnicianIdentifierController : UserIdentifierController
     {
         public TechnicianIdentifierController() : base(
