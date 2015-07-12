@@ -165,19 +165,19 @@
     </Reference>
     <Reference Include="RoverMob, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.0.2.17\lib\win81\RoverMob.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.2.18\lib\win81\RoverMob.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Implementation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.0.2.17\lib\win81\RoverMob.Implementation.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.2.18\lib\win81\RoverMob.Implementation.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.0.2.17\lib\win81\RoverMob.Platform.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.2.18\lib\win81\RoverMob.Platform.dll</HintPath>
     </Reference>
     <Reference Include="RoverMob.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RoverMob.0.2.17\lib\win81\RoverMob.Protocol.dll</HintPath>
+      <HintPath>..\packages\RoverMob.0.2.18\lib\win81\RoverMob.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
