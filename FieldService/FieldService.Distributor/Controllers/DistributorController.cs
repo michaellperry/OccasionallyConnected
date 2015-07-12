@@ -39,8 +39,8 @@ namespace FieldService.Distributor.Controllers
                 "visit");
 
             if (visits.Any(v =>
-                v.IncidentId == topic ||
-                v.HomeId == topic))
+                GetCanonicalString(v.IncidentId) == topic ||
+                GetCanonicalString(v.HomeId) == topic))
                 return true;
 
             return false;
@@ -61,10 +61,15 @@ namespace FieldService.Distributor.Controllers
                 "visit");
 
             if (visits.Any(v =>
-                v.IncidentId == topic))
+                GetCanonicalString(v.IncidentId) == topic))
                 return true;
 
             return false;
+        }
+
+        private string GetCanonicalString(string id)
+        {
+            return Guid.Parse(id).ToCanonicalString();
         }
     }
 }
