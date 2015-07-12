@@ -1,4 +1,5 @@
 using Assisticant.Fields;
+using RoverMob;
 using RoverMob.Messaging;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,16 @@ namespace FieldService.Models
                 .On("OrderReceived", (po,m) => po.HandleOrderReceived(m));
 
         private readonly Guid _partsOrderId;
+        private readonly Guid _incidentId;
         private readonly string _description;
 
         private Observable<bool> _orderReceived =
             new Observable<bool>(false);
         
-        public PartsOrder(Guid partsOrderId, string description)
+        public PartsOrder(Guid partsOrderId, Guid incidentId, string description)
         {
             _partsOrderId = partsOrderId;
+            _incidentId = incidentId;
             _description = description;
         }
 
@@ -41,7 +44,7 @@ namespace FieldService.Models
         public Message Receive()
         {
             return Message.CreateMessage(
-                string.Empty,
+                _incidentId.ToCanonicalString(),
                 "OrderReceived",
                 _partsOrderId,
                 new { });

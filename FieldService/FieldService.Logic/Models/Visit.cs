@@ -58,7 +58,9 @@ namespace FieldService.Models
         public Message CreateOutcome()
         {
             return Message.CreateMessage(
-                _technician.GetObjectId().ToCanonicalString(),
+                new TopicSet()
+                    .Add(_technician.GetObjectId().ToCanonicalString())
+                    .Add(_incident.GetObjectId().ToCanonicalString()),
                 "Outcome",
                 Predecessors.Set.In("visit", _visitHash),
                 _technician.GetObjectId(),

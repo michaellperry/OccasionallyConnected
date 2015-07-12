@@ -34,8 +34,11 @@ namespace FieldService.Models
             DateTime endTime)
         {
             return Message.CreateMessage(
-                _id.ToCanonicalString(),
+                new TopicSet()
+                    .Add(_id.ToCanonicalString())
+                    .Add(incidentId.ToCanonicalString()),
                 "Visit",
+                Predecessors.Set,
                 _id,
                 new
                 {

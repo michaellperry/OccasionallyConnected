@@ -1,4 +1,5 @@
-﻿using RoverMob.Messaging;
+﻿using RoverMob;
+using RoverMob.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace FieldService.Models
         public Message CreatePartsOrder(string description)
         {
             return Message.CreateMessage(
-                string.Empty,
+                _incidentId.ToCanonicalString(),
                 "PartsOrder",
                 _incidentId,
                 new
@@ -86,7 +87,7 @@ namespace FieldService.Models
             string partsOrderId = message.Body.PartsOrderId;
             string description = message.Body.Description;
 
-            return new PartsOrder(Guid.Parse(partsOrderId), description);
+            return new PartsOrder(Guid.Parse(partsOrderId), _incidentId, description);
         }
     }
 }
