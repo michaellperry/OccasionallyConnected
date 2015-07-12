@@ -19,7 +19,7 @@ namespace FieldService
             var queue = new FileMessageQueue(folderName);
             var bookmarkStore = new FileBookmarkStore(folderName);
             var pump = new HttpMessagePump(
-                new Uri("http://localhost:20624/api/distributor/", UriKind.Absolute),
+                new Uri("http://fieldservicedistributor.azurewebsites.net/api/distributor/", UriKind.Absolute),
                 queue,
                 bookmarkStore,
                 accessTokenProvider);
@@ -27,7 +27,7 @@ namespace FieldService
 
 
             IUserProxy proxy = new HttpUserProxy(
-                new Uri("http://localhost:20624/api/technicianidentifier", UriKind.Absolute),
+                new Uri("http://fieldservicedistributor.azurewebsites.net/api/technicianidentifier/", UriKind.Absolute),
                 accessTokenProvider);
             var application = new Application<Technician>(
                 store, queue, pump, push, proxy);

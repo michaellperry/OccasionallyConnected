@@ -14,7 +14,7 @@ namespace FieldService.DispatcherStub
         static void Main(string[] args)
         {
             var pump = new HttpMessagePump(
-                new Uri("http://localhost:20624/api/distributor/", UriKind.Absolute),
+                new Uri("http://fieldservicedistributor.azurewebsites.net/api/distributor/", UriKind.Absolute),
                 new NoOpMessageQueue(),
                 new NoOpBookmarkStore());
             var application = new Application<Technician>(
