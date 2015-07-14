@@ -18,12 +18,15 @@ namespace FieldService
             var store = new FileMessageStore(folderName);
             var queue = new FileMessageQueue(folderName);
             var bookmarkStore = new FileBookmarkStore(folderName);
+            var push = new PushNotificationSubscription(
+                "occdist",
+                "Endpoint=sb://occdist-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=grDRsxydhFcdxbdGkamWlcvjUOixw76jEszctZ915co=");
             var pump = new HttpMessagePump(
                 new Uri("http://fieldservicedistributor.azurewebsites.net/api/distributor/", UriKind.Absolute),
                 queue,
                 bookmarkStore,
-                accessTokenProvider);
-            var push = new NoOpPushNotificationSubscription();
+                accessTokenProvider,
+                push);
 
 
             IUserProxy proxy = new HttpUserProxy(

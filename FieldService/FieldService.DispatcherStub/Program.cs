@@ -77,7 +77,7 @@ namespace FieldService.DispatcherStub
                     HomeId = homeId
                 }));
             application.EmitMessage(Message.CreateMessage(
-                string.Empty,
+                homeId.ToCanonicalString(),
                 "HomeAddress",
                 homeId,
                 new
@@ -103,7 +103,7 @@ namespace FieldService.DispatcherStub
                     HomeId = homeId
                 }));
             application.EmitMessage(Message.CreateMessage(
-                string.Empty,
+                incidentId.ToCanonicalString(),
                 "IncidentDescription",
                 incidentId,
                 new
