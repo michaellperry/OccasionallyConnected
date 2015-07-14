@@ -24,15 +24,26 @@ namespace FieldService.DispatcherStub
                 new NoOpPushNotificationSubscription(),
                 new NoOpUserProxy());
 
+            Random random = new Random();
+
             // This is the technician ID that was created for
             // my login.
             application.Load(new Technician(Guid.Parse(
                 "{13a5e507-6376-4c99-85d4-e04ac4bfa1b7}")));
 
+            Console.WriteLine("About to schedule a visit");
+            Console.WriteLine("Press enter...");
+            Console.ReadLine();
+
             // Schedule a visit for this technician.
             Console.WriteLine("Scheduling a visit");
+            int start = random.Next(12) + 6;
             Visit visit = Schedule(application,
-                "1314 Main", "Wall switch malfunction", 13, 16);
+                String.Format("{0} Main", random.Next(1000)),
+                String.Format("Wall switch malfunction ({0})", random.Next(1000)),
+                start, start + random.Next(2) + 1,
+                random);
+            Console.WriteLine("About to add a parts order");
 
             Console.WriteLine("Press enter...");
             Console.ReadLine();
@@ -40,13 +51,20 @@ namespace FieldService.DispatcherStub
             // Create a new parts order for the visit.
             Console.WriteLine("Adding a parts order");
             application.EmitMessage(visit.Incident.CreatePartsOrder(
-                "16' electrical cable"));
+                String.Format("16' electrical cable ({0})", random.Next(1000))));
+            Console.WriteLine("All done!");
 
             Console.WriteLine("Press enter...");
             Console.ReadLine();
         }
 
-        private static Visit Schedule(Application<Technician> application, string address, string description, int startHour, int endHour)
+        private static Visit Schedule(
+            Application<Technician> application,
+            string address,
+            string description,
+            int startHour,
+            int endHour,
+            Random random)
         {
             Guid homeId = CreateHome(application, address);
             Guid incidentId = CreateIncident(application,
@@ -55,10 +73,9 @@ namespace FieldService.DispatcherStub
                 homeId, incidentId, startHour, endHour);
 
             application.EmitMessage(visit.Incident.CreatePartsOrder(
-                "Switch box"));
+                String.Format("Switch box ({0})", random.Next(1000))));
 
             var partsOrder = visit.Incident.PartsOrders.First();
-            application.EmitMessage(partsOrder.Receive());
 
             return visit;
         }
