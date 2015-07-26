@@ -1,11 +1,11 @@
 USE FieldService
 GO
 
-IF OBJECT_ID('Visit') IS NOT NULL
-	DROP PROCEDURE Visit
+IF OBJECT_ID('VisitSP') IS NOT NULL
+	DROP PROCEDURE VisitSP
 GO
 
-CREATE PROCEDURE Visit
+CREATE PROCEDURE VisitSP
 	@IncidentId int,
 	@VisitHash varchar(50),
 	@DateOfVisit date,
