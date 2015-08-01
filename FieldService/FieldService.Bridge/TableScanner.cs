@@ -50,6 +50,8 @@ namespace FieldService.Bridge
             // Get the last Log Sequence Number.
             byte[] toLsn = await connection.ExecuteScalarAsync<byte[]>(
                 "select sys.fn_cdc_get_max_lsn()");
+            if (_lsn != null && toLsn.SequenceEqual(_lsn))
+                return;     // There are no changes if the LSN hasn't moved.
 
             // Get all changes.
             var changes = await connection.ExecuteQueryAsync(String.Format(
