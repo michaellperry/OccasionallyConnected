@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldService.Scanner
+namespace FieldService.Bridge
 {
     class Program
     {
@@ -26,6 +26,7 @@ namespace FieldService.Scanner
             var scanner = new Scanner(queueFolderPath, distributorUri);
 
             scanner.Start();
+            Console.WriteLine("Press enter to stop.");
             Console.ReadLine();
             scanner.Stop();
         }

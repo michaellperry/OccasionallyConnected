@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configura
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.DispatcherStub", "FieldService.DispatcherStub\FieldService.DispatcherStub.csproj", "{B27EB66D-5A77-4470-8185-6B7AF18126D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.Scanner", "FieldService.Scanner\FieldService.Scanner.csproj", "{CB2289D2-1809-4F19-81C9-FF2B91E9243E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldService.Bridge", "FieldService.Bridge\FieldService.Bridge.csproj", "{CB2289D2-1809-4F19-81C9-FF2B91E9243E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

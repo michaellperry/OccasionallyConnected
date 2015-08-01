@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace FieldService.Scanner
+namespace FieldService.Bridge
 {
     public abstract class AsyncProcess
     {
@@ -39,7 +39,14 @@ namespace FieldService.Scanner
 
                 while (await ShouldContinue(500))
                 {
-                    DoWork();
+                    try
+                    {
+                        DoWork();
+                    }
+                    catch (Exception x)
+                    {
+                        Console.WriteLine(x.Message);
+                    }
                 }
             }
             catch (Exception x)

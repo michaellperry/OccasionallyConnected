@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldService.Scanner
+namespace FieldService.Bridge
 {
     public class Scanner : AsyncProcess
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{CB2289D2-1809-4F19-81C9-FF2B91E9243E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FieldService.Scanner</RootNamespace>
-    <AssemblyName>FieldService.Scanner</AssemblyName>
+    <RootNamespace>FieldService.Bridge</RootNamespace>
+    <AssemblyName>FieldService.Bridge</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
