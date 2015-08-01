@@ -29,9 +29,9 @@ namespace FieldService.Distributor
             );
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                name: "TechnicianIdentifier",
+                routeTemplate: "api/technicianIdentifier/{userId}",
+                defaults: new { controller = "TechnicianIdentifier", userId = RouteParameter.Optional }
             );
         }
     }
