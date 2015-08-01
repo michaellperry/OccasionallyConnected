@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RoverMob;
 using RoverMob.Messaging;
 using System.Threading.Tasks;
 
@@ -35,6 +36,7 @@ namespace FieldService.Bridge
         private async Task OnInsertHome(HomeRecord record)
         {
             Guid homeId = Guid.NewGuid();
+
             EmitMessage(Message.CreateMessage(
                 string.Empty,
                 "Home",
@@ -45,7 +47,7 @@ namespace FieldService.Bridge
                 }));
 
             EmitMessage(Message.CreateMessage(
-                string.Empty,
+                homeId.ToCanonicalString(),
                 "HomeAddress",
                 homeId,
                 new
