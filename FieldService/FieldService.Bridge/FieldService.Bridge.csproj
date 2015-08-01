@@ -87,12 +87,15 @@
     <Compile Include="DataRow.cs" />
     <Compile Include="HomeRecord.cs" />
     <Compile Include="ITableScanner.cs" />
+    <Compile Include="MessageHashRecord.cs" />
+    <Compile Include="ObjectIdRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="AsyncProcess.cs" />
     <Compile Include="FieldServiceScanner.cs" />
     <Compile Include="TableScanner.cs" />
+    <Compile Include="MessageIdMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

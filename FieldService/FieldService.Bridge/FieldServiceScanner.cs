@@ -13,12 +13,17 @@ namespace FieldService.Bridge
         private FileMessageQueue _queue;
         private HttpMessagePump _pump;
 
+        private MessageIdMap _messageIdMap;
+
         public FieldServiceScanner(string queueFolderName, Uri distributorUri)
         {
             _queue = new FileMessageQueue(queueFolderName);
             _pump = new HttpMessagePump(distributorUri, _queue, new NoOpBookmarkStore());
 
-            AddTableScanner("Home", r => HomeRecord.FromDataRow(r), OnInsertHome);
+            _messageIdMap = new MessageIdMap();
+
+            AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
+                OnInsertHome, OnUpdateHome);
         }
 
         protected override async Task StartUp()
@@ -35,7 +40,11 @@ namespace FieldService.Bridge
 
         private async Task OnInsertHome(HomeRecord record)
         {
-            Guid homeId = Guid.NewGuid();
+            Console.WriteLine("Inserted home #{0} with address {1}.",
+                record.HomeId, record.Address);
+
+            Guid homeId = await _messageIdMap.GetOrCreateObjectId(
+                "Home", record.HomeId);
 
             EmitMessage(Message.CreateMessage(
                 string.Empty,
@@ -46,14 +55,42 @@ namespace FieldService.Bridge
                     HomeId = homeId
                 }));
 
-            EmitMessage(Message.CreateMessage(
+            Message addressMessage = Message.CreateMessage(
                 homeId.ToCanonicalString(),
                 "HomeAddress",
                 homeId,
                 new
                 {
                     Value = record.Address
-                }));
+                });
+            await _messageIdMap.SaveMessageHash(
+                "Home", "Address", record.HomeId, record.Address, addressMessage.Hash);
+            EmitMessage(addressMessage);
+        }
+
+        private async Task OnUpdateHome(HomeRecord oldValues, HomeRecord newValues)
+        {
+            Console.WriteLine("Updated home #{0} from address {1} to {2}.",
+                oldValues.HomeId, oldValues.Address, newValues.Address);
+
+            Guid homeId = await _messageIdMap.GetOrCreateObjectId(
+                "Home", newValues.HomeId);
+            MessageHash priorMessage = await _messageIdMap.GetMessageHash(
+                "Home", "Address", oldValues.HomeId, oldValues.Address);
+
+            Message message = Message.CreateMessage(
+                homeId.ToCanonicalString(),
+                "HomeAddress",
+                Predecessors.Set
+                    .In("prior", priorMessage),
+                homeId,
+                new
+                {
+                    Value = newValues.Address
+                });
+            await _messageIdMap.SaveMessageHash(
+                "Home", "Address", newValues.HomeId, newValues.Address, message.Hash);
+            EmitMessage(message);
         }
     }
 }
