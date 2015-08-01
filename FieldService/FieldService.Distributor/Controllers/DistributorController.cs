@@ -10,8 +10,7 @@ using System.Web.Http;
 
 namespace FieldService.Distributor.Controllers
 {
-    //[Authorize]
-    // Temporarily disabled so that the dispatcher stub can work.
+    [Authorize]
     public class DistributorController : RoverMob.Distributor.Controllers.DistributorController
     {
         protected DistributorController() : base(
@@ -23,7 +22,7 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForGet(string topic, string userId)
         {
-            if (userId == null)
+            if (userId == "Dispatcher")
                 return true;
 
             var technicianId = GetUserIdentifier("Technician", userId)
@@ -48,7 +47,7 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForPost(string topic, string userId)
         {
-            if (userId == null)
+            if (userId == "Dispatcher")
                 return true;
 
             var technicianId = GetUserIdentifier("Technician", userId)

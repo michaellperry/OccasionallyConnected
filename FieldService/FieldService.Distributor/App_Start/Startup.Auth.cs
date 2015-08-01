@@ -11,6 +11,7 @@ using Owin;
 using FieldService.Distributor.Providers;
 using FieldService.Distributor.Models;
 using Microsoft.Owin.Security.ActiveDirectory;
+using FieldService.Distributor.Authentication;
 
 namespace FieldService.Distributor
 {
@@ -74,6 +75,8 @@ namespace FieldService.Distributor
                     },
                     Tenant = "mperryfacetedworlds.onmicrosoft.com"
                 });
+
+            app.UseEnterpriseAuthentication();
         }
     }
 }
