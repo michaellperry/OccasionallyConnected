@@ -53,7 +53,7 @@ namespace FieldService.Bridge
 
             // Get all changes.
             var changes = await connection.ExecuteQueryAsync(String.Format(
-                "cdc.fn_cdc_get_all_changes_dbo_{0}(@p1, @p2, 'all update old')", _tableName),
+                "select * from cdc.fn_cdc_get_all_changes_dbo_{0}(@p1, @p2, 'all update old')", _tableName),
                 ReadChange,
                 fromLsn, toLsn);
 
