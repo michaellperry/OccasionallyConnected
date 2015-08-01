@@ -46,3 +46,9 @@ update Home
 set Address = '4214 Main Street'
 where HomeId = 1
 
+
+DECLARE @from_lsn binary(10), @to_lsn binary(10);
+SET @from_lsn = sys.fn_cdc_get_min_lsn('dbo_Home');
+--SET @from_lsn = sys.fn_cdc_increment_lsn(0x00000035000000F60001);
+SET @to_lsn = sys.fn_cdc_get_max_lsn();
+SELECT * from cdc.fn_cdc_get_all_changes_dbo_Home( @from_lsn, @to_lsn, 'all update old' );

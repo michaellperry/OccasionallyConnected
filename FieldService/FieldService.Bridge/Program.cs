@@ -23,12 +23,19 @@ namespace FieldService.Bridge
             if (!File.Exists(messageFile))
                 File.WriteAllText(messageFile, string.Empty);
             Uri distributorUri = new Uri("http://fieldservicedistributor.azurewebsites.net/api/distributor/", UriKind.Absolute);
-            var scanner = new Scanner(queueFolderPath, distributorUri);
+
+            var scanner = new Scanner(queueFolderPath, distributorUri)
+                .Add("Home", r => HomeRecord.FromDataRow(r), OnInsertHome);
 
             scanner.Start();
             Console.WriteLine("Press enter to stop.");
             Console.ReadLine();
             scanner.Stop();
+        }
+
+        private static Task OnInsertHome(HomeRecord record)
+        {
+            throw new NotImplementedException();
         }
     }
 }

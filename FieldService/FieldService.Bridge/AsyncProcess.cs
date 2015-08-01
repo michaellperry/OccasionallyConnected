@@ -9,7 +9,7 @@ namespace FieldService.Bridge
         protected TaskCompletionSource<bool> _stopping;
 
         protected abstract Task StartUp();
-        protected abstract void DoWork();
+        protected abstract Task DoWork();
 
         public void Start()
         {
@@ -41,7 +41,7 @@ namespace FieldService.Bridge
                 {
                     try
                     {
-                        DoWork();
+                        await DoWork();
                     }
                     catch (Exception x)
                     {
