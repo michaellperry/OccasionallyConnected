@@ -14,13 +14,14 @@ insert into Incident
 declare @IncidentId int = @@IDENTITY
 
 insert into Technician
-	default values
+	(Login)
+	values ('live.com#mperry@facetedworlds.com')
 
 declare @TechnicianId int = @@IDENTITY
 
 insert into Visit
-	(IncidentId, TechnicianId)
-	values (@IncidentId, @TechnicianId)
+	(IncidentId, TechnicianId, StartTime, EndTime)
+	values (@IncidentId, @TechnicianId, '2015-09-01 14:00', '2015-09-01 18:00')
 
 
 select *
@@ -44,7 +45,7 @@ from cdc.dbo_Visit_CT
 
 update Home
 set Address = '4214 Main Street'
-where HomeId = 1
+where HomeId = 2
 
 
 DECLARE @from_lsn binary(10), @to_lsn binary(10);
