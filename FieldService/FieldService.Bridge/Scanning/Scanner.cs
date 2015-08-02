@@ -1,6 +1,7 @@
 using FieldService.Bridge.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -13,9 +14,9 @@ namespace FieldService.Bridge.Scanning
         protected void AddTableScanner<T>(
             string tableName,
             Func<DataRow, T> read,
-            Func<T, Task> handleInsert,
-            Func<T, T, Task> handleUpdate = null,
-            Func<T, Task> handleDelete = null)
+            Func<T, DbConnection, Task> handleInsert,
+            Func<T, T, DbConnection, Task> handleUpdate = null,
+            Func<T, DbConnection, Task> handleDelete = null)
         {
             _tableScanners.Add(new TableScanner<T>(
                 tableName,

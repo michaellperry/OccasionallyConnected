@@ -83,6 +83,8 @@
   <ItemGroup>
     <Compile Include="Scanning\Change.cs" />
     <Compile Include="Scanning\ChangeOperation.cs" />
+    <Compile Include="Scanning\IncidentRecord.cs" />
+    <Compile Include="Scanning\VisitRecord.cs" />
     <Compile Include="Utility\DatabaseExtensions.cs" />
     <Compile Include="Utility\DataRow.cs" />
     <Compile Include="Scanning\HomeRecord.cs" />

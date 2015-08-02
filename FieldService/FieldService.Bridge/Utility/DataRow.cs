@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
 
 namespace FieldService.Bridge.Utility
 {
@@ -19,6 +20,11 @@ namespace FieldService.Bridge.Utility
         public string GetString(string name)
         {
             return _reader.GetString(_reader.GetOrdinal(name));
+        }
+
+        public DateTime GetDateTime(string name)
+        {
+            return _reader.GetDateTime(_reader.GetOrdinal(name));
         }
     }
 }

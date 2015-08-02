@@ -13,6 +13,7 @@ GO
 
 CREATE TABLE Technician(
 	TechnicianId INT IDENTITY(1,1) NOT NULL,
+	Login VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_Technician PRIMARY KEY (TechnicianId)
 )
 GO

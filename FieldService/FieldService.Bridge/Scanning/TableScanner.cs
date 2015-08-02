@@ -11,18 +11,18 @@ namespace FieldService.Bridge.Scanning
     {
         private readonly string _tableName;
         private readonly Func<DataRow, T> _read;
-        private readonly Func<T, Task> _handleInsert;
-        private readonly Func<T, T, Task> _handleUpdate;
-        private readonly Func<T, Task> _handleDelete;
+        private readonly Func<T, DbConnection, Task> _handleInsert;
+        private readonly Func<T, T, DbConnection, Task> _handleUpdate;
+        private readonly Func<T, DbConnection, Task> _handleDelete;
 
         private byte[] _lsn;
         
         public TableScanner(
             string tableName,
             Func<DataRow, T> read,
-            Func<T, Task> handleInsert,
-            Func<T, T, Task> handleUpdate = null,
-            Func<T, Task> handleDelete = null)
+            Func<T, DbConnection, Task> handleInsert,
+            Func<T, T, DbConnection, Task> handleUpdate = null,
+            Func<T, DbConnection, Task> handleDelete = null)
         {
             _tableName = tableName;
             _read = read;
@@ -64,11 +64,11 @@ namespace FieldService.Bridge.Scanning
             {
                 var top = changeQueue.Dequeue();
                 if (top.Operation == ChangeOperation.Delete)
-                    await HandleDelete(top.Record);
+                    await HandleDelete(top.Record, connection);
                 else if (top.Operation == ChangeOperation.Insert)
-                    await HandleInsert(top.Record);
+                    await HandleInsert(top.Record, connection);
                 else
-                    await HandleUpdate(top.Record, changeQueue.Dequeue().Record);
+                    await HandleUpdate(top.Record, changeQueue.Dequeue().Record, connection);
             }
 
             _lsn = toLsn;
@@ -89,21 +89,21 @@ namespace FieldService.Bridge.Scanning
             };
         }
 
-        private async Task HandleDelete(T record)
+        private async Task HandleDelete(T record, DbConnection connection)
         {
             if (_handleDelete != null)
-                await _handleDelete(record);
+                await _handleDelete(record, connection);
         }
 
-        private async Task HandleInsert(T record)
+        private async Task HandleInsert(T record, DbConnection connection)
         {
-            await _handleInsert(record);
+            await _handleInsert(record, connection);
         }
 
-        private async Task HandleUpdate(T oldRecord, T newRecord)
+        private async Task HandleUpdate(T oldRecord, T newRecord, DbConnection connection)
         {
             if (_handleUpdate != null)
-                await _handleUpdate(oldRecord, newRecord);
+                await _handleUpdate(oldRecord, newRecord, connection);
         }
     }
 }
