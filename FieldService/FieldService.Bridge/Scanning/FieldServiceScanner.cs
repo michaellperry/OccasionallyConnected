@@ -163,31 +163,16 @@ namespace FieldService.Bridge.Scanning
                 record.IncidentId);
 
             Guid technicianId = Guid.Empty;
+            Guid visitId    = await _messageIdMap.GetOrCreateObjectId(
+                "Visit",        record.VisitId);
             Guid incidentId = await _messageIdMap.GetOrCreateObjectId(
-                "Incident", record.IncidentId);
-            Guid homeId = await _messageIdMap.GetOrCreateObjectId(
-                "Home", homeFk);
+                "Incident",     record.IncidentId);
+            Guid homeId     = await _messageIdMap.GetOrCreateObjectId(
+                "Home",         homeFk);
             DateTime startTime = record.StartTime;
-            DateTime endTime = record.EndTime;
+            DateTime endTime   = record.EndTime;
 
-            var message = CreateVisit(
-                technicianId,
-                incidentId,
-                homeId,
-                startTime,
-                endTime);
-            EmitMessage(message);
-        }
-
-        private Message CreateVisit(
-            Guid technicianId,
-            Guid incidentId,
-            Guid homeId,
-            DateTime startTime,
-            DateTime endTime)
-        {
-            Guid visitId = Guid.NewGuid();
-            return Message.CreateMessage(
+            var message = Message.CreateMessage(
                 new TopicSet()
                     .Add(technicianId.ToCanonicalString())
                     .Add(incidentId.ToCanonicalString()),
@@ -195,13 +180,14 @@ namespace FieldService.Bridge.Scanning
                 Predecessors.Set,
                 technicianId,
                 new
-                {
-                    IncidentId = incidentId,
-                    VisitId = visitId,
-                    HomeId = homeId,
-                    StartTime = startTime,
-                    EndTime = endTime
-                });
+            {
+                IncidentId = incidentId,
+                VisitId = visitId,
+                HomeId = homeId,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+            EmitMessage(message);
         }
     }
 }
