@@ -14,10 +14,16 @@ AS
 	DELETE FROM Reported
 	WHERE Reported.IncidentId = @IncidentId
 
-	INSERT INTO Scheduled
-		(IncidentId, VisitHash, DateOfVisit)
-	VALUES
-		(@IncidentId, @VisitHash, @DateOfVisit)
+	IF NOT EXISTS (SELECT * FROM Scheduled
+		WHERE IncidentId = @IncidentId
+		  AND VisitHash = @VisitHash
+		  AND DateOfVisit = @DateOfVisit)
+	BEGIN
+		INSERT INTO Scheduled
+			(IncidentId, VisitHash, DateOfVisit)
+		VALUES
+			(@IncidentId, @VisitHash, @DateOfVisit)
+	END
 
 	DELETE FROM AwaitingFollowUp
 	WHERE AwaitingFollowUp.IncidentId = @IncidentId
