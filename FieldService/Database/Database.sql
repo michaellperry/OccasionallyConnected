@@ -18,6 +18,3 @@ go
 
 use FieldService
 go
-
-exec sp_cdc_enable_db
-go

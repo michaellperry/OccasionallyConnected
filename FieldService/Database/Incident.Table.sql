@@ -18,8 +18,3 @@ CREATE TABLE Incident (
 	CONSTRAINT FK_Incident_Home FOREIGN KEY (IncidentId) REFERENCES Incident
 )
 GO
-
-EXEC sp_cdc_enable_table
-	@source_schema='dbo',
-	@source_name='Incident',
-	@role_name=NULL
