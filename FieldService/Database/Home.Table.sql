@@ -17,3 +17,8 @@ CREATE TABLE Home(
 	CONSTRAINT PK_Home PRIMARY KEY (HomeId)
 )
 GO
+
+EXEC sp_cdc_enable_table
+	@source_schema='dbo',
+	@source_name='Home',
+	@role_name=NULL

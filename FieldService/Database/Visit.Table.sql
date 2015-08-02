@@ -20,3 +20,8 @@ CREATE TABLE Visit(
 	CONSTRAINT FK_Visit_Technician FOREIGN KEY (TechnicianId) REFERENCES Technician
 )
 GO
+
+EXEC sp_cdc_enable_table
+	@source_schema='dbo',
+	@source_name='Visit',
+	@role_name=NULL

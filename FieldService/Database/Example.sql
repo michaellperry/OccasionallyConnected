@@ -29,32 +29,6 @@ join Incident i on i.HomeId = h.HomeId
 join Visit v on v.IncidentId = i.IncidentId
 join Technician t on t.TechnicianId = v.TechnicianId
 
-exec sp_cdc_enable_db
-go
-
-EXEC sp_cdc_enable_table
-	@source_schema='dbo',
-	@source_name='Home',
-	@role_name=NULL
-go
-
-EXEC sp_cdc_enable_table
-	@source_schema='dbo',
-	@source_name='Incident',
-	@role_name=NULL
-go
-
-EXEC sp_cdc_enable_table
-	@source_schema='dbo',
-	@source_name='Technician',
-	@role_name=NULL
-go
-
-EXEC sp_cdc_enable_table
-	@source_schema='dbo',
-	@source_name='Visit',
-	@role_name=NULL
-
 select *
 from cdc.dbo_Home_CT
 

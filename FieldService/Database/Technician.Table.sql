@@ -16,3 +16,8 @@ CREATE TABLE Technician(
 	CONSTRAINT PK_Technician PRIMARY KEY (TechnicianId)
 )
 GO
+
+EXEC sp_cdc_enable_table
+	@source_schema='dbo',
+	@source_name='Technician',
+	@role_name=NULL
