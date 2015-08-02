@@ -20,7 +20,7 @@ namespace FieldService.Bridge.Identity
 
         public async Task<Guid> GetTechnicianIdentifier(string login)
         {
-            var uri = new Uri(_baseUri, login);
+            var uri = new Uri(_baseUri, Uri.EscapeDataString(login) + "/");
 
             using (var client = new HttpClient())
             {

@@ -21,6 +21,9 @@ namespace FieldService.Distributor.Controllers
 
         protected override bool AuthorizeUserForGet(string requestedUserId, string userId)
         {
+            if (userId == "Dispatcher")
+                return true;
+
             return false;
         }
     }

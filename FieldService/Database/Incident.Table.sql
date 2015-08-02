@@ -14,7 +14,7 @@ GO
 CREATE TABLE Incident (
 	IncidentId INT IDENTITY(1,1) NOT NULL,
 	HomeId INT NOT NULL,
-	Description VARCHAR(50),
+	Description VARCHAR(50) NOT NULL,
 	CONSTRAINT PK_Incident PRIMARY KEY (IncidentId),
 	CONSTRAINT FK_Incident_Home FOREIGN KEY (IncidentId) REFERENCES Incident
 )

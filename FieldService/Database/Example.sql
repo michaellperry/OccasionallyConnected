@@ -8,8 +8,8 @@ insert into Home
 declare @HomeId int = @@IDENTITY
 
 insert into Incident
-	(HomeId)
-	values (@HomeId)
+	(HomeId, Description)
+	values (@HomeId, 'Air conditioner malfunction')
 
 declare @IncidentId int = @@IDENTITY
 

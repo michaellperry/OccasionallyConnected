@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using FieldService.Bridge.Mapping;
 using FieldService.Bridge.Utility;
 using System.Data.Common;
+using FieldService.Bridge.Identity;
 
 namespace FieldService.Bridge.Scanning
 {
@@ -17,14 +18,17 @@ namespace FieldService.Bridge.Scanning
         private HttpMessagePump _pump;
 
         private MessageIdMap _messageIdMap;
-
-        public FieldServiceScanner(string queueFolderName, Uri distributorUri)
+        private IdentityServiceProxy _identityService;
+        
+        public FieldServiceScanner(string queueFolderName, Uri distributorUri, Uri identityUri)
         {
             _queue = new FileMessageQueue(queueFolderName);
             _pump = new HttpMessagePump(distributorUri, _queue, new NoOpBookmarkStore());
             _pump.ApiKey = "123456";
 
             _messageIdMap = new MessageIdMap();
+            _identityService = new IdentityServiceProxy(identityUri);
+            _identityService.ApiKey = "123456";
 
             AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
                 OnInsertHome, OnUpdateHome);
@@ -161,8 +165,12 @@ namespace FieldService.Bridge.Scanning
             int homeFk = await connection.ExecuteScalarAsync<int>(
                 "select HomeId from Incident where IncidentId = @p1",
                 record.IncidentId);
+            string technicianLogin = await connection.ExecuteScalarAsync<string>(
+                "select Login from Technician where TechnicianId = @p1",
+                record.TechnicianId);
 
-            Guid technicianId = Guid.Empty;
+            Guid technicianId = await _identityService.GetTechnicianIdentifier(
+                technicianLogin);
             Guid visitId    = await _messageIdMap.GetOrCreateObjectId(
                 "Visit",        record.VisitId);
             Guid incidentId = await _messageIdMap.GetOrCreateObjectId(

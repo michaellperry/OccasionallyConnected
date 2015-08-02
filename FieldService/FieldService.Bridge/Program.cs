@@ -19,9 +19,11 @@ namespace FieldService.Bridge
                 File.WriteAllText(messageFile, string.Empty);
             Uri distributorUri = new Uri("http://localhost.fiddler:20624/api/distributor/",
                 UriKind.Absolute);
+            Uri identityUri = new Uri("http://localhost.fiddler:20624/api/technicianIdentifier/",
+                UriKind.Absolute);
 
             var scanner = new FieldServiceScanner(
-                queueFolderPath, distributorUri);
+                queueFolderPath, distributorUri, identityUri);
 
             scanner.Start();
             Console.WriteLine("Press enter to stop.");
