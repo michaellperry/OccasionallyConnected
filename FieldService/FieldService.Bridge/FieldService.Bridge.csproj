@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Identity\IdentityServiceProxy.cs" />
     <Compile Include="Scanning\Change.cs" />
     <Compile Include="Scanning\ChangeOperation.cs" />
     <Compile Include="Scanning\IncidentRecord.cs" />
