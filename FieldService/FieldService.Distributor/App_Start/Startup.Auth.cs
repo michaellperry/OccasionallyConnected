@@ -71,6 +71,8 @@ namespace FieldService.Distributor
                     },
                     Tenant = "mperryfacetedworlds.onmicrosoft.com"
                 });
+
+            app.UseEnterpriseAuthentication();
         }
     }
 }

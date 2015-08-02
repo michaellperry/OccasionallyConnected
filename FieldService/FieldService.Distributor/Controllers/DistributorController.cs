@@ -22,6 +22,9 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForGet(string topic, string userId)
         {
+            if (userId == "Dispatcher")
+                return true;
+
             var technicianId = GetUserIdentifier("Technician", userId)
                 .ToCanonicalString();
 
@@ -44,6 +47,9 @@ namespace FieldService.Distributor.Controllers
 
         protected override async Task<bool> AuthorizeUserForPost(string topic, string userId)
         {
+            if (userId == "Dispatcher")
+                return true;
+
             var technicianId = GetUserIdentifier("Technician", userId)
                 .ToCanonicalString();
 

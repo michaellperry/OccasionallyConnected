@@ -13,6 +13,8 @@ namespace FieldService.Distributor
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(
                 OAuthDefaults.AuthenticationType));
+            config.Filters.Add(new HostAuthenticationFilter(
+                EnterpriseAuthenticationDefaults.AuthenticationType));
 
             // Web API routes
             config.MapHttpAttributeRoutes();
