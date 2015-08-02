@@ -13,12 +13,15 @@ namespace FieldService.Bridge
                 "FieldService",
                 "Scanner");
             Directory.CreateDirectory(queueFolderPath);
-            string messageFile = Path.Combine(queueFolderPath, "messageQueue.json");
+            string messageFile = Path.Combine(queueFolderPath,
+                "messageQueue.json");
             if (!File.Exists(messageFile))
                 File.WriteAllText(messageFile, string.Empty);
-            Uri distributorUri = new Uri("http://fieldservicedistributor.azurewebsites.net/api/distributor/", UriKind.Absolute);
+            Uri distributorUri = new Uri("http://localhost:20624/",
+                UriKind.Absolute);
 
-            var scanner = new FieldServiceScanner(queueFolderPath, distributorUri);
+            var scanner = new FieldServiceScanner(
+                queueFolderPath, distributorUri);
 
             scanner.Start();
             Console.WriteLine("Press enter to stop.");
