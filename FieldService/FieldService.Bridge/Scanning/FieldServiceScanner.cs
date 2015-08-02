@@ -16,19 +16,20 @@ namespace FieldService.Bridge.Scanning
     {
         private FileMessageQueue _queue;
         private HttpMessagePump _pump;
+        private readonly MessageIdMap _messageIdMap;
 
-        private MessageIdMap _messageIdMap;
         private IdentityServiceProxy _identityService;
-        
-        public FieldServiceScanner(string queueFolderName, Uri distributorUri, Uri identityUri)
+
+        public FieldServiceScanner(string queueFolderName, Uri distributorUri, Uri identityUri, MessageIdMap messageIdMap)
         {
             _queue = new FileMessageQueue(queueFolderName);
             _pump = new HttpMessagePump(distributorUri, _queue, new NoOpBookmarkStore());
             _pump.ApiKey = "123456";
 
-            _messageIdMap = new MessageIdMap();
             _identityService = new IdentityServiceProxy(identityUri);
             _identityService.ApiKey = "123456";
+
+            _messageIdMap = messageIdMap;
 
             AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
                 OnInsertHome, OnUpdateHome);

@@ -66,7 +66,7 @@ namespace FieldService.Models
                 _technician.GetObjectId(),
                 new
                 {
-
+                    IncidentId = _incident.GetObjectId()
                 });
         }
 

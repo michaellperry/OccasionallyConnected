@@ -9,6 +9,16 @@ namespace FieldService.Bridge.Utility
 {
     static class DatabaseExtensions
     {
+        public static async Task ExecuteAsync(
+            this DbConnection connection, string query, params object[] parameters)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                InitializeCommand(command, query, parameters);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
         public static async Task<T> ExecuteScalarAsync<T>(
             this DbConnection connection, string query, params object[] parameters)
         {

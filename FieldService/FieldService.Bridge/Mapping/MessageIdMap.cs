@@ -31,6 +31,18 @@ namespace FieldService.Bridge.Mapping
             return Task.FromResult(objectId);
         }
 
+        public Task<int> GetDatabaseId(string typeName, Guid id)
+        {
+            var objectIdRecord = _objectIdRecords.FirstOrDefault(r =>
+                r.TypeName == typeName &&
+                r.ObjectId == id);
+
+            if (objectIdRecord != null)
+                return Task.FromResult(objectIdRecord.Id);
+
+            return Task.FromResult(0);
+        }
+
         public Task SaveMessageHash(string typeName, string propertyName, int id, string value, MessageHash messageHash)
         {
             _messageHashRecords.Add(new MessageHashRecord
