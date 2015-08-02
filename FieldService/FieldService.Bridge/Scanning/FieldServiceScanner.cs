@@ -18,6 +18,7 @@ namespace FieldService.Bridge.Scanning
         {
             _queue = new FileMessageQueue(queueFolderName);
             _pump = new HttpMessagePump(distributorUri, _queue, new NoOpBookmarkStore());
+            _pump.ApiKey = "123456";
 
             AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
                 OnInsertHome);

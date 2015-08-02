@@ -49,17 +49,21 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RoverMob">
-      <HintPath>..\packages\RoverMob.0.2.23\lib\portable-net451+wpa81+win81\RoverMob.dll</HintPath>
+    <Reference Include="RoverMob, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RoverMob.0.2.24\lib\portable-net451+wpa81+win81\RoverMob.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RoverMob.Implementation">
-      <HintPath>..\packages\RoverMob.0.2.23\lib\portable-net451+wpa81+win81\RoverMob.Implementation.dll</HintPath>
+    <Reference Include="RoverMob.Implementation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RoverMob.0.2.24\lib\portable-net451+wpa81+win81\RoverMob.Implementation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RoverMob.Platform">
-      <HintPath>..\packages\RoverMob.0.2.23\lib\portable-net451+wpa81+win81\RoverMob.Platform.dll</HintPath>
+    <Reference Include="RoverMob.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RoverMob.0.2.24\lib\portable-net451+wpa81+win81\RoverMob.Platform.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RoverMob.Protocol">
-      <HintPath>..\packages\RoverMob.0.2.23\lib\portable-net451+wpa81+win81\RoverMob.Protocol.dll</HintPath>
+    <Reference Include="RoverMob.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RoverMob.0.2.24\lib\portable-net451+wpa81+win81\RoverMob.Protocol.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
