@@ -27,7 +27,7 @@ namespace FieldService.Bridge.Scanning
             AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
                 OnInsertHome, OnUpdateHome);
             AddTableScanner("Incident", r => IncidentRecord.FromDataRow(r),
-                OnInsertIncident);
+                OnInsertIncident, OnUpdateIncident);
             AddTableScanner("Visit", r => VisitRecord.FromDataRow(r),
                 OnInsertVisit);
         }
@@ -125,6 +125,31 @@ namespace FieldService.Bridge.Scanning
                 });
             await _messageIdMap.SaveMessageHash(
                 "Incident", "Description", record.IncidentId, record.Description,
+                message.Hash);
+            EmitMessage(message);
+        }
+
+        private async Task OnUpdateIncident(
+            IncidentRecord oldValues, IncidentRecord newValues,
+            DbConnection connection)
+        {
+            var incidentId = await _messageIdMap.GetOrCreateObjectId(
+                "Incident", newValues.IncidentId);
+
+            var priorMessageHash = await _messageIdMap.GetMessageHash(
+                "Incident", "Description", oldValues.IncidentId, oldValues.Description);
+            Message message = Message.CreateMessage(
+                incidentId.ToCanonicalString(),
+                "IncidentDescription",
+                Predecessors.Set
+                    .In("prior", priorMessageHash),
+                incidentId,
+                new
+                {
+                    Value = newValues.Description
+                });
+            await _messageIdMap.SaveMessageHash(
+                "Incident", "Description", newValues.IncidentId, newValues.Description,
                 message.Hash);
             EmitMessage(message);
         }
