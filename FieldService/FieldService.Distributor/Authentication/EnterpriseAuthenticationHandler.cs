@@ -10,14 +10,23 @@ namespace FieldService.Distributor.Authentication
     {
         protected override Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            string apiKey = Request.Headers.Get("ApiKey");
-            ClaimsIdentity identity = new ClaimsIdentity(new EnterpriseIdentity
-            {
-                Name = "Dispatcher"
-            });
             var properties = new AuthenticationProperties();
-            return Task.FromResult(new AuthenticationTicket(
-                identity, properties));
+            string apiKey = Request.Headers.Get("ApiKey");
+            if (apiKey != "123456")
+            {
+                return Task.FromResult(new AuthenticationTicket(
+                    null, properties));
+            }
+            else
+            {
+                ClaimsIdentity identity = new ClaimsIdentity(
+                    new EnterpriseIdentity
+                    {
+                        Name = "Dispatcher"
+                    });
+                return Task.FromResult(new AuthenticationTicket(
+                    identity, properties));
+            }
         }
     }
 }
