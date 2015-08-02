@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using FieldService.Bridge.Utility;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Scanning
 {
     public class HomeRecord
     {

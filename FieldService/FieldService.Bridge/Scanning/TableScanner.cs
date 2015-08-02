@@ -1,11 +1,11 @@
-﻿using System;
+﻿using FieldService.Bridge.Utility;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Scanning
 {
     public class TableScanner<T> : ITableScanner
     {

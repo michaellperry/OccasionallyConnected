@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Utility
 {
     public class DataRow
     {

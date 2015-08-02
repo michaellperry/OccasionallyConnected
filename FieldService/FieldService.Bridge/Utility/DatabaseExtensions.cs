@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Utility
 {
     static class DatabaseExtensions
     {

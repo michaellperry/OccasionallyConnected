@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RoverMob.Messaging;
-namespace FieldService.Bridge
+
+namespace FieldService.Bridge.Mapping
 {
     public class MessageHashRecord
     {

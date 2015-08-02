@@ -81,21 +81,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Change.cs" />
-    <Compile Include="ChangeOperation.cs" />
-    <Compile Include="DatabaseExtensions.cs" />
-    <Compile Include="DataRow.cs" />
-    <Compile Include="HomeRecord.cs" />
-    <Compile Include="ITableScanner.cs" />
-    <Compile Include="MessageHashRecord.cs" />
-    <Compile Include="ObjectIdRecord.cs" />
+    <Compile Include="Scanning\Change.cs" />
+    <Compile Include="Scanning\ChangeOperation.cs" />
+    <Compile Include="Utility\DatabaseExtensions.cs" />
+    <Compile Include="Utility\DataRow.cs" />
+    <Compile Include="Scanning\HomeRecord.cs" />
+    <Compile Include="Scanning\ITableScanner.cs" />
+    <Compile Include="Mapping\MessageHashRecord.cs" />
+    <Compile Include="Mapping\ObjectIdRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scanner.cs" />
-    <Compile Include="AsyncProcess.cs" />
-    <Compile Include="FieldServiceScanner.cs" />
-    <Compile Include="TableScanner.cs" />
-    <Compile Include="MessageIdMap.cs" />
+    <Compile Include="Scanning\Scanner.cs" />
+    <Compile Include="Utility\AsyncProcess.cs" />
+    <Compile Include="Scanning\FieldServiceScanner.cs" />
+    <Compile Include="Scanning\TableScanner.cs" />
+    <Compile Include="Mapping\MessageIdMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

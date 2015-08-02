@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Utility
 {
     public abstract class AsyncProcess
     {
@@ -27,6 +27,7 @@ namespace FieldService.Bridge
 
             _stopping.SetResult(true);
             _task.Wait();
+            _task.Dispose();
             _task = null;
             _stopping = null;
         }
@@ -58,7 +59,7 @@ namespace FieldService.Bridge
         private Task<bool> ShouldContinue(int timeout)
         {
             return Task.WhenAny(
-                _stopping.Task.ContinueWith(_ => false),
+                _stopping.Task     .ContinueWith(_ => false),
                 Task.Delay(timeout).ContinueWith(_ => true))
                 .ContinueWith(t => t.Result.Result);
         }

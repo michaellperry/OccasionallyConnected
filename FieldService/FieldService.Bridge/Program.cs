@@ -1,12 +1,6 @@
-﻿using FieldService.Models;
-using RoverMob;
-using RoverMob.Messaging;
+﻿using FieldService.Bridge.Scanning;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FieldService.Bridge
 {

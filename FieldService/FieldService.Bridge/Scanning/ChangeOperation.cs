@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Scanning
 {
     public enum ChangeOperation
     {

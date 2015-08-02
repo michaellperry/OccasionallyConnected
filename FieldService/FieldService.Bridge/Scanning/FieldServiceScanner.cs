@@ -5,8 +5,9 @@ using System.Text;
 using RoverMob;
 using RoverMob.Messaging;
 using System.Threading.Tasks;
+using FieldService.Bridge.Mapping;
 
-namespace FieldService.Bridge
+namespace FieldService.Bridge.Scanning
 {
     public class FieldServiceScanner : Scanner
     {
