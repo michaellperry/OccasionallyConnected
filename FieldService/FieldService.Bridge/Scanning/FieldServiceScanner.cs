@@ -24,6 +24,8 @@ namespace FieldService.Bridge.Scanning
             _pump = new HttpMessagePump(distributorUri, _queue, new NoOpBookmarkStore());
             _pump.ApiKey = "123456";
 
+            _messageIdMap = new MessageIdMap();
+
             AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
                 OnInsertHome, OnUpdateHome);
             AddTableScanner("Incident", r => IncidentRecord.FromDataRow(r),
