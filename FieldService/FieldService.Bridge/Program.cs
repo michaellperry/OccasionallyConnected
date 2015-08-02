@@ -17,7 +17,7 @@ namespace FieldService.Bridge
                 "messageQueue.json");
             if (!File.Exists(messageFile))
                 File.WriteAllText(messageFile, string.Empty);
-            Uri distributorUri = new Uri("http://localhost:20624/",
+            Uri distributorUri = new Uri("http://localhost.fiddler:20624/api/distributor/",
                 UriKind.Absolute);
 
             var scanner = new FieldServiceScanner(

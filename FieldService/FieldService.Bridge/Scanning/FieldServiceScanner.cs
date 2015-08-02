@@ -18,6 +18,9 @@ namespace FieldService.Bridge.Scanning
         {
             _queue = new FileMessageQueue(queueFolderName);
             _pump = new HttpMessagePump(distributorUri, _queue, new NoOpBookmarkStore());
+
+            AddTableScanner("Home", r => HomeRecord.FromDataRow(r),
+                OnInsertHome);
         }
 
         protected override async Task StartUp()
@@ -30,6 +33,31 @@ namespace FieldService.Bridge.Scanning
         {
             _queue.Enqueue(message);
             _pump.Enqueue(message);
+        }
+
+        private async Task OnInsertHome(HomeRecord record)
+        {
+            Console.WriteLine("Inserted home #{0} with address {1}.",
+                record.HomeId, record.Address);
+
+            var homeId = Guid.NewGuid();
+
+            EmitMessage(Message.CreateMessage(
+                string.Empty,
+                "Home",
+                Guid.Empty,
+                new
+                {
+                    HomeId = homeId
+                }));
+            EmitMessage(Message.CreateMessage(
+                homeId.ToCanonicalString(),
+                "HomeAddress",
+                homeId,
+                new
+                {
+                    Value = record.Address
+                }));
         }
     }
 }
