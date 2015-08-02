@@ -74,12 +74,15 @@ namespace FieldService.Bridge.Queueing
 
             var incidentId = Guid.Parse(incidentIdStr);
             int incidentFk = await _messageIdMap.GetDatabaseId(
-                "Visit", incidentId);
+                "Incident", incidentId);
             string visitHashStr = Convert.ToBase64String(message.Hash.Code);
 
-            await connection.ExecuteAsync(
-                "exec VisitSP @p1, @p2, @p3, ''",
-                incidentFk, visitHashStr, dateOfVisit);
+            if (incidentFk != 0)
+                await connection.ExecuteAsync(
+                    "exec VisitSP @p1, @p2, @p3, ''",
+                    incidentFk, visitHashStr, dateOfVisit);
+            else
+                Console.WriteLine("No incident found for {0}", incidentId);
         }
 
         private async Task HandleOutcome(Message message, DbConnection connection)
