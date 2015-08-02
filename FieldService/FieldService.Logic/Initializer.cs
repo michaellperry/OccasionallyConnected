@@ -40,12 +40,12 @@ namespace FieldService
                 application.Load(new Technician(technicianId)));
 
 
-            pump.Subscribe(() => application.Root
-                .GetObjectId().ToCanonicalString());
-            pump.Subscribe(() => application.Root
-                .Visits.Select(v => v.Incident.GetObjectId().ToCanonicalString()));
-            pump.Subscribe(() => application.Root
-                .Visits.Select(v => v.Incident.Home.GetObjectId().ToCanonicalString()));
+            pump.Subscribe(() => application.Root == null ? null :
+                application.Root.GetObjectId().ToCanonicalString());
+            pump.Subscribe(() => application.Root == null ? new List<string>() :
+                application.Root.Visits.Select(v => v.Incident.GetObjectId().ToCanonicalString()));
+            pump.Subscribe(() => application.Root == null ? new List<string>() :
+                application.Root.Visits.Select(v => v.Incident.Home.GetObjectId().ToCanonicalString()));
 
 
             return application;
