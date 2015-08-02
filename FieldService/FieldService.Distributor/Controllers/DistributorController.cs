@@ -15,7 +15,9 @@ namespace FieldService.Distributor.Controllers
     {
         protected DistributorController() : base(
             WebConfigurationManager.AppSettings["StorageConnectionString"],
-            WebConfigurationManager.AppSettings["NotificationConnectionString"])
+            WebConfigurationManager.AppSettings["NotificationConnectionString"],
+            WebConfigurationManager.AppSettings["ServiceBusConnectionString"],
+            WebConfigurationManager.AppSettings["ServiceBusPath"])
         {
             
         }
