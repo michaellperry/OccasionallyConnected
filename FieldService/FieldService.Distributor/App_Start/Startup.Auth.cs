@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using FieldService.Distributor.Authentication;
+using FieldService.Distributor.Models;
+using FieldService.Distributor.Providers;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.ActiveDirectory;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using FieldService.Distributor.Providers;
-using FieldService.Distributor.Models;
-using Microsoft.Owin.Security.ActiveDirectory;
-using FieldService.Distributor.Authentication;
+using System;
 
 namespace FieldService.Distributor
 {
@@ -75,8 +71,6 @@ namespace FieldService.Distributor
                     },
                     Tenant = "mperryfacetedworlds.onmicrosoft.com"
                 });
-
-            app.UseEnterpriseAuthentication();
         }
     }
 }

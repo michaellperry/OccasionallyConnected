@@ -1,12 +1,8 @@
-using Microsoft.Owin.Security.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Infrastructure;
 using System.Security.Claims;
-using System.Security.Principal;
+using System.Threading.Tasks;
+
 namespace FieldService.Distributor.Authentication
 {
     public class EnterpriseAuthenticationHandler :
@@ -14,11 +10,12 @@ namespace FieldService.Distributor.Authentication
     {
         protected override Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
+            string apiKey = Request.Headers.Get("ApiKey");
             ClaimsIdentity identity = new ClaimsIdentity(new EnterpriseIdentity
             {
                 Name = "Dispatcher"
             });
-            AuthenticationProperties properties = null;
+            var properties = new AuthenticationProperties();
             return Task.FromResult(new AuthenticationTicket(
                 identity, properties));
         }
