@@ -83,6 +83,9 @@ namespace FieldService.Bridge.Scanning
         private async Task OnUpdateHome(
             HomeRecord oldValues, HomeRecord newValues, DbConnection connection)
         {
+            Console.WriteLine("Updated home #{0} from address {1} to address {2}.",
+                newValues.HomeId, oldValues.Address, newValues.Address);
+
             var homeId = await _messageIdMap.GetOrCreateObjectId(
                 "Home", newValues.HomeId);
 
@@ -107,6 +110,9 @@ namespace FieldService.Bridge.Scanning
 
         private async Task OnInsertIncident(IncidentRecord record, DbConnection connection)
         {
+            Console.WriteLine("Inserted incident #{0} with description {1}.",
+                record.IncidentId, record.Description);
+
             var homeId = await _messageIdMap.GetOrCreateObjectId(
                 "Home", record.HomeId);
             var incidentId = await _messageIdMap.GetOrCreateObjectId(
@@ -139,6 +145,9 @@ namespace FieldService.Bridge.Scanning
             IncidentRecord oldValues, IncidentRecord newValues,
             DbConnection connection)
         {
+            Console.WriteLine("Updated incident #{0} from description {1} to {2}.",
+                newValues.IncidentId, oldValues.Description, newValues.Description);
+
             var incidentId = await _messageIdMap.GetOrCreateObjectId(
                 "Incident", newValues.IncidentId);
 
@@ -162,6 +171,9 @@ namespace FieldService.Bridge.Scanning
 
         private async Task OnInsertVisit(VisitRecord record, DbConnection connection)
         {
+            Console.WriteLine("Inserted visit #{0} assigning technician #{1} to incident #{2}.",
+                record.VisitId, record.TechnicianId, record.IncidentId);
+
             int homeFk = await connection.ExecuteScalarAsync<int>(
                 "select HomeId from Incident where IncidentId = @p1",
                 record.IncidentId);
