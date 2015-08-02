@@ -177,8 +177,12 @@ namespace FieldService.Bridge.Scanning
             int homeFk = await connection.ExecuteScalarAsync<int>(
                 "select HomeId from Incident where IncidentId = @p1",
                 record.IncidentId);
+            string technicianLogin = await connection.ExecuteScalarAsync<string>(
+                "select Login from Technician where TechnicianId = @p1",
+                record.TechnicianId);
 
-            Guid technicianId = Guid.NewGuid();
+            Guid technicianId = await _identityService.GetTechnicianIdentifier(
+                technicianLogin);
             Guid visitId    = await _messageIdMap.GetOrCreateObjectId(
                 "Visit",        record.VisitId);
             Guid incidentId = await _messageIdMap.GetOrCreateObjectId(
